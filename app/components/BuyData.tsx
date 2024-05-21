@@ -1,20 +1,37 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { FormEvent, useEffect, useRef, useState } from "react";
 
 import { Plan, PlanType, dataPlanTypes, planTypes } from "@/lib/types";
 import { buyData, getDataPlans } from "@/lib/data";
+import toast from "react-hot-toast";
+import { useRouter, useSearchParams } from "next/navigation";
+import Modal from "./Modal";
 
 const BuyData = ({ plans }: { plans: dataPlanTypes }) => {
+
+
+  const router = useRouter()
+
+  const searchParams = useSearchParams();
+	const dialogRef = useRef<null | HTMLDialogElement>(null);
+	const showDialog = searchParams.get("showDialog");
+
+
+
+  const closeDialog = () => {
+    dialogRef.current?.close();
+  };
+
+  const clickOk = () => {
+    closeDialog();
+  };
+
+  const [loading, setLoading] = useState(false)
+
   const [currentNetwork, setCurrentNetwork] = useState("");
   const [dataType, setDataType] = useState(["-----"]);
-  const [dataPlan, setDataPlan] = useState<Plan[]>([
-    {
-      dataplan_id: "",
-      plan: "",
-      plan_amount: "",
-    },
-  ]);
+  const [dataPlan, setDataPlan] = useState<Plan[]>([]);
 
   //all networks
 
@@ -48,6 +65,26 @@ const BuyData = ({ plans }: { plans: dataPlanTypes }) => {
   //mtn plans by type
 
   const mtnSME = mtnPlans.filter((plan) => plan.plan_type === "SME");
+  const alfasimMtnSME: Plan[] = [];
+
+  mtnSME.forEach((plan) => {
+    const unitGB = 260 + 5;
+    const integer = Math.trunc(parseInt(plan.plan.slice(0, -2)));
+
+    alfasimMtnSME.push({
+      id: plan.id,
+      dataplan_id: plan.dataplan_id,
+      network: plan.network,
+      plan_type: plan.plan_type,
+      plan_network: plan.plan_network,
+      month_validate: plan.month_validate,
+      plan: plan.plan,
+      plan_amount:
+        plan.plan === "500.0MB"
+          ? (parseInt(plan.plan_amount) + 5).toString()
+          : (integer * unitGB).toString(),
+    });
+  });
   const mtnSME2 = mtnPlans.filter((plan) => plan.plan_type === "SME2");
   const mtnGifting = mtnPlans.filter((plan) => plan.plan_type === "GIFTING");
   const mtnCorporateGifting = mtnPlans.filter(
@@ -114,7 +151,7 @@ const BuyData = ({ plans }: { plans: dataPlanTypes }) => {
   const handleDataTypeSelect = (value: string) => {
     switch (value) {
       case "SME":
-        setDataPlan(mtnSME);
+        setDataPlan(alfasimMtnSME);
         break;
       case "SME2":
         setDataPlan(mtnSME2);
@@ -150,34 +187,80 @@ const BuyData = ({ plans }: { plans: dataPlanTypes }) => {
             setDataPlan(airterlCorporateGifting);
             break;
         }
+        break;
+      case "CORPORATE GIFTING2":
+        switch (currentNetwork) {
+          case "MTN":
+            setDataPlan(mtnCorporateGifting2);
+            break;
+        }
+        break;
       case "DATA COUPONS":
         setDataPlan(mtnDataCoupons);
         break;
     }
   };
 
-  const handleSubmitForm = async (formData: FormData) => {
+  const confirmSubmit = () => {
+    setLoading(true)
+    router.replace('/data?showDialog=y')
+    setLoading(false)
+    
+  }
+
+  const handleSubmitForm = async(formData: FormData) => {
+
+    
+   
     let network_id = formData.get("network")!;
 
     let dataPlan = formData.get("data-plan")!;
 
     let phoneNumber = formData.get("phonenumber")!;
 
-    network_id = network_id?.toString();
-    dataPlan = dataPlan?.toString();
+    let network = network_id?.toString();
+    let plan = dataPlan?.toString();
+    let phone = phoneNumber.toString();
 
     const dataInfo = {
-      network_id: parseInt(network_id),
-      plan: parseInt(dataPlan),
-      mobile_number: phoneNumber.toString(),
+      network: network,
+      plan: plan,
+      mobile_number: phone,
       Ported_number: true,
     };
 
-    const response = await buyData(dataInfo);
-    console.log(response);
+    // const response = await buyData(dataInfo);
+    // if(response){
+    //   toast.success('Successfull')
+    //   router.replace('/dashboard')
+    //   setLoading(false)
+    // };
   };
 
+  useEffect(() => {
+
+      if (showDialog === "y") {
+        dialogRef.current?.showModal();
+      } else {
+        dialogRef.current?.close();
+      }
+    }, [showDialog]);
+
   return (
+    <>
+    <Modal title="Welcome to Alfasim Data!!!" closeDialog={closeDialog} showDialog={showDialog} dialogRef={dialogRef}>
+        <p>
+          Dear User
+          <br />
+          Are you sure you want to by data 1.0GB worth #200 for 081029248848. <br />
+          <br />
+          <div className="w-full mx-4 px-10 flex justify-between">
+
+          <button onClick={clickOk} className="border border-black px-2 py-2 rounded-md hover:bg-teal-800 hover:text-white cursor-pointer">Cancel</button>
+          <button onClick={closeDialog} className="border border-black px-2 py-2 rounded-md bg-teal-800 text-white cursor-pointer">Confirm</button>
+          </div>
+        </p>
+      </Modal>
     <div className="flex flex-col justify-center items-center">
       <div className="w-full h-[40%] border bg-teal-800 dark:bg-black dark:text-black p-10 flex flex-col gap-2 border-gray-200 my-6">
         <div className="w-1/2 md:w-1/5 border border-teal-800 py-2 md:py-5 px-5 md:px-10 mt-[-4rem] md:mt-[-4.5rem] bg-gray-200  rounded-md absolute left-[50%] -translate-x-[50%] text-center">
@@ -204,10 +287,7 @@ const BuyData = ({ plans }: { plans: dataPlanTypes }) => {
           <p>Glo</p>
         </div>
       </div>
-      <form
-        action={handleSubmitForm}
-        className="w-full md:w-[90%] border border-teal-800 dark:border-white dark:bg-black flex flex-col gap-2 p-5 bg-gray-200"
-      >
+      <form  className="w-full md:w-[90%] border border-teal-800 dark:border-white dark:bg-black flex flex-col gap-2 p-5 bg-gray-200">
         <label htmlFor="network">Network*</label>
         <select
           name="network"
@@ -250,7 +330,7 @@ const BuyData = ({ plans }: { plans: dataPlanTypes }) => {
               {plan.plan_type}
 
               {"       "}
-              {parseInt(plan.plan_amount) + 50}
+              {parseInt(plan.plan_amount)}
             </option>
           ))}
         </select>
@@ -261,13 +341,17 @@ const BuyData = ({ plans }: { plans: dataPlanTypes }) => {
           placeholder="09030220200"
           className={inputStyle}
         />
-        <input
+        <button
           type="submit"
-          value="Buy Data"
-          className="hover:bg-teal-800 py-2 px-6 hover:text-white bg-white border hover:border-white border-teal-800 text-teal-800 rounded-md md:w-1/5"
-        />
+          onClick={()=>confirmSubmit()}
+          disabled={loading? true : false}
+          className={` py-2 px-6  border  border-teal-800 text-teal-800 rounded-md md:w-1/5   ${loading ? 'bg-gray-400' : 'bg-white cursor-pointer hover:bg-teal-800 hover:border-white hover:text-white'}`}
+        >
+          {loading ? "Submitting" : "Buy Data"}
+        </button>
       </form>
     </div>
+          </>
   );
 };
 

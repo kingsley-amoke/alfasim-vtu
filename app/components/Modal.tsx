@@ -4,26 +4,9 @@ import React, { useRef, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { modalProps } from "@/lib/types";
 
-const Modal = ({ title, children }: modalProps) => {
-	const searchParams = useSearchParams();
-	const dialogRef = useRef<null | HTMLDialogElement>(null);
-	const showDialog = searchParams.get("showDialog");
+const Modal = ({ title, children, showDialog, dialogRef, closeDialog }: modalProps) => {
 
-	useEffect(() => {
-		if (showDialog === "y") {
-			dialogRef.current?.showModal();
-		} else {
-			dialogRef.current?.close();
-		}
-	}, [showDialog]);
-
-	const closeDialog = () => {
-		dialogRef.current?.close();
-	};
-
-	const clickOk = () => {
-		closeDialog();
-	};
+	
 
 	const dialog: JSX.Element | null =
 		showDialog === "y" ? (
@@ -43,14 +26,7 @@ const Modal = ({ title, children }: modalProps) => {
 					</div>
 					<div className="px-5 pb-6">
 						{children}
-						<div className="flex justify-end ">
-							<button
-								onClick={clickOk}
-								className="py-2 px-4 bg-teal-800 dark:bg-black dark:border rounded-md text-white mt-20"
-							>
-								Continue to Dashboard
-							</button>
-						</div>
+						
 					</div>
 				</div>
 			</dialog>

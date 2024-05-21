@@ -23,6 +23,7 @@ import { Input } from "@/lib/ui/input";
 import { Label } from "@/lib/ui/label";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { Checkbox } from "@/lib/ui/checkbox";
+import { serverClient } from "@/lib/serverConnection";
 
 const formSchema = z
   .object({
@@ -101,10 +102,10 @@ const SignupForm = () => {
       const access_token = response.data.session?.access_token!;
       const refresh_token = response.data.session?.refresh_token!;
 
-      await connectToSupabase().auth.setSession({
-        access_token: access_token,
-        refresh_token: refresh_token,
-      });
+      // await serverClient().auth.setSession({
+      //   access_token: access_token,
+      //   refresh_token: refresh_token,
+      // });
 
       referral && (await handleReferral(referral));
 

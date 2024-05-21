@@ -47,12 +47,12 @@ export interface dataPlanTypes {
 }
 
 export interface Plan {
-  id?: number;
-  dataplan_id?: string;
-  network?: number;
-  plan_type?: PlanType;
-  plan_network?: PlanNetwork;
-  month_validate?: MonthValidate;
+  id: number;
+  dataplan_id: string;
+  network: number;
+  plan_type: PlanType;
+  plan_network: PlanNetwork;
+  month_validate: MonthValidate;
   plan: string;
   plan_amount: string;
 }
@@ -90,6 +90,10 @@ export interface modalProps {
   title: string;
   onClose?: () => void;
   onOk?: () => void;
+  closeDialog: () => void;
+  clickOK?: () => void;
+  dialogRef?: React.MutableRefObject<HTMLDialogElement | null>
+  showDialog: string | null;
   children: React.ReactNode;
 }
 

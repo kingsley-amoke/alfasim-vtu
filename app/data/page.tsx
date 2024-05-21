@@ -5,7 +5,7 @@ import { dataPlanTypes } from "@/lib/types";
 const page = async () => {
 
   const plans: dataPlanTypes = await getDataPlans();
-  
+
   return (
     <div>
       <DataPage plans={plans} />

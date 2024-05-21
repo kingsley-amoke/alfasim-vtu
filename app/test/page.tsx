@@ -1,13 +1,13 @@
 import { getNetworks } from "@/lib/data";
 import axios from "axios";
 import React from "react";
+import { getDataList } from "../aab";
 
 const page = async () => {
-  const response = await getNetworks();
+  await getDataList();
 
-  console.log(response);
 
-  return <div>{response.MTN.data_plans[0].network_id}</div>;
+  return <div>Click</div>;
 };
 
 export default page;

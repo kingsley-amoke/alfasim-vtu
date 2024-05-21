@@ -1,12 +1,13 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import Navbar from "../components/Navbar";
 import Dashboard from "../components/Dashboard";
 import { fetchNotifications, getLoggedUser } from "@/lib/data";
 import Modal from "./Modal";
 import Footer from "./Footer";
+import { useSearchParams } from "next/navigation";
 
 const HomePage = () => {
   const [unreadNotification, setUnreadNotification] = useState(0);
@@ -35,14 +36,38 @@ const HomePage = () => {
     data && setUser(data);
   };
 
+  const searchParams = useSearchParams();
+	const dialogRef = useRef<null | HTMLDialogElement>(null);
+	const showDialog = searchParams.get("showDialog");
+
+
+
+  const closeDialog = () => {
+    dialogRef.current?.close();
+  };
+
+  const clickOk = () => {
+    closeDialog();
+  };
+
+
   useEffect(() => {
     fetchLoggedUser();
     handleCount();
-  }, []);
+
+      if (showDialog === "y") {
+        dialogRef.current?.showModal();
+      } else {
+        dialogRef.current?.close();
+      }
+    }, [showDialog]);
+  
+
+  
 
   return (
     <>
-      <Modal title="Welcome to Alfasim Data!!!">
+      <Modal title="Welcome to Alfasim Data!!!" closeDialog={closeDialog} showDialog={showDialog} dialogRef={dialogRef}>
         <p>
           We provide best and cheapest data, airtime, and cable subscription.{" "}
           <br />
@@ -50,6 +75,14 @@ const HomePage = () => {
           <br />
           <a href="tel:+8038095687">08038095687</a>
         </p>
+        <div className="flex justify-end ">
+							<button
+								onClick={clickOk}
+								className="py-2 px-4 bg-teal-800 dark:bg-black dark:border rounded-md text-white mt-20"
+							>
+								Continue to Dashboard
+							</button>
+						</div>
       </Modal>
       <div>
         <div>

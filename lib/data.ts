@@ -448,24 +448,52 @@ export const getDataPlans = async () => {
 //buy data
 
 export const buyData = async (data: {
-  network_id: number;
-  plan: number;
+  network: string;
+  plan: string;
   mobile_number: string;
   Ported_number: boolean;
 }) => {
-  const options = {
-    method: "POST",
-    headers: getASBHeaders(),
-    body: JSON.stringify(data),
+  // const options = {
+  //   method: "POST",
+  //   headers: getASBHeaders(),
+  //   body: JSON.stringify(data),
+  // };
+  // try {
+  //   console.log(options)
+  //   const res = await fetch(`${asbUrl}/data`, options);
+  //   const data = res.json();
+  //   console.log(data)
+  // } catch (error) {
+  //   console.log(error);
+  // }
+
+
+  const input = {
+    "network": data.network,
+    "mobile_number": data.mobile_number,
+    "plan": data.plan,
+    "Ported_number": true
   };
-  try {
-    const res = await axios.post(`${asbUrl}/data`, options);
-    if (res.status == 200) {
-      return res.data;
+  
+  let response = await fetch(`${asbUrl}/data/`, {
+    method: 'POST',
+    headers: getASBHeaders(),
+    body: JSON.stringify(input)
+  })
+  .then(response => {
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
     }
-  } catch (error) {
-    console.log(error);
-  }
+    return response.json();
+  })
+  .then(data => {
+    return data
+  })
+  .catch(error => {
+    console.error('There was a problem with your fetch operation:', error);
+  });
+
+  return response;
 };
 
 //buy airtime
