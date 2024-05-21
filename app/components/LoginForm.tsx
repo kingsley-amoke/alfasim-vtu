@@ -18,7 +18,7 @@ import {
 } from "@/lib/ui/card";
 import { Label } from "@/lib/ui/label";
 import { Input } from "@/lib/ui/input";
-import { Button } from "@/lib/ui/Button";
+import { Button } from "@/lib/ui/button";
 import { Checkbox } from "@/lib/ui/checkbox";
 import Link from "next/link";
 import { serverClient } from "@/lib/serverConnection";

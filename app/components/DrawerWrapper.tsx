@@ -8,7 +8,7 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/lib/ui/drawer";
-import { Button } from "@/lib/ui/Button";
+import { Button } from "@/lib/ui/button";
 
 import { FaSignal } from "react-icons/fa";
 import { FcElectricity } from "react-icons/fc";

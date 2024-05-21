@@ -18,7 +18,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/lib/ui/card";
-import { Button } from "@/lib/ui/Button";
+import { Button } from "@/lib/ui/button";
 import { Input } from "@/lib/ui/input";
 import { Label } from "@/lib/ui/label";
 import { ReloadIcon } from "@radix-ui/react-icons";

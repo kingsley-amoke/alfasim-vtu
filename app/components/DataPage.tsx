@@ -47,7 +47,7 @@ const DataPage = ({ plans }: { plans: dataPlanTypes }) => {
       </div>
 
       <div className="grow h-full w-full mt-5">
-        <BuyData plans={plans} />
+        <BuyData plans={plans} user={user}/>
       </div>
       <div>
         <Footer />

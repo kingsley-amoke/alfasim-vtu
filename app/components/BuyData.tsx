@@ -2,36 +2,57 @@
 
 import React, { FormEvent, useEffect, useRef, useState } from "react";
 
-import { Plan, PlanType, dataPlanTypes, planTypes } from "@/lib/types";
+import {
+  Plan,
+  PlanType,
+  dataPlanTypes,
+  planTypes,
+  userDataTypes,
+} from "@/lib/types";
 import { buyData, getDataPlans } from "@/lib/data";
 import toast from "react-hot-toast";
 import { useRouter, useSearchParams } from "next/navigation";
 import Modal from "./Modal";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/lib/ui/alert-dialog";
+import { Button } from "@/lib/ui/button";
+import { LoadingSkeleton } from "./Skeleton";
 
-const BuyData = ({ plans }: { plans: dataPlanTypes }) => {
+const BuyData = ({
+  plans,
+  user,
+}: {
+  plans: dataPlanTypes;
+  user: userDataTypes;
+}) => {
+  const router = useRouter();
 
-
-  const router = useRouter()
-
-  const searchParams = useSearchParams();
-	const dialogRef = useRef<null | HTMLDialogElement>(null);
-	const showDialog = searchParams.get("showDialog");
-
-
-
-  const closeDialog = () => {
-    dialogRef.current?.close();
-  };
-
-  const clickOk = () => {
-    closeDialog();
-  };
-
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
+  const [planId, setPlanId] = useState("");
+  const [phone, setPhone] = useState("");
+  const [selectedPlan, setSelectedPlan] = useState<Plan>();
 
   const [currentNetwork, setCurrentNetwork] = useState("");
   const [dataType, setDataType] = useState(["-----"]);
   const [dataPlan, setDataPlan] = useState<Plan[]>([]);
+
+  const filterSelectedPlan = () => {
+    const selectedPlan: Plan[] = dataPlan.filter(
+      (plan) => plan.dataplan_id === planId
+    );
+
+    
+    setSelectedPlan(selectedPlan[0]);
+  };
 
   //all networks
 
@@ -201,157 +222,178 @@ const BuyData = ({ plans }: { plans: dataPlanTypes }) => {
     }
   };
 
-  const confirmSubmit = () => {
-    setLoading(true)
-    router.replace('/data?showDialog=y')
-    setLoading(false)
-    
-  }
 
-  const handleSubmitForm = async(formData: FormData) => {
+  const onCancelSubmit = () => {
+    setLoading(false);
+  };
 
-    
-   
-    let network_id = formData.get("network")!;
-
-    let dataPlan = formData.get("data-plan")!;
-
-    let phoneNumber = formData.get("phonenumber")!;
-
-    let network = network_id?.toString();
-    let plan = dataPlan?.toString();
-    let phone = phoneNumber.toString();
-
+  const handleSubmitForm = async () => {
+    setLoading(true);
     const dataInfo = {
-      network: network,
-      plan: plan,
+      network: selectedPlan?.network.toString()!,
+      plan: selectedPlan?.id.toString()!,
       mobile_number: phone,
       Ported_number: true,
     };
 
-    // const response = await buyData(dataInfo);
-    // if(response){
-    //   toast.success('Successfull')
-    //   router.replace('/dashboard')
-    //   setLoading(false)
-    // };
+    console.log(dataInfo)
+
+    const response = await buyData(dataInfo);
+    if(response){
+      toast.success('Successfull')
+      router.replace('/dashboard')
+      setLoading(false)
+    };
   };
-
-  useEffect(() => {
-
-      if (showDialog === "y") {
-        dialogRef.current?.showModal();
-      } else {
-        dialogRef.current?.close();
-      }
-    }, [showDialog]);
 
   return (
     <>
-    <Modal title="Welcome to Alfasim Data!!!" closeDialog={closeDialog} showDialog={showDialog} dialogRef={dialogRef}>
-        <p>
-          Dear User
-          <br />
-          Are you sure you want to by data 1.0GB worth #200 for 081029248848. <br />
-          <br />
-          <div className="w-full mx-4 px-10 flex justify-between">
-
-          <button onClick={clickOk} className="border border-black px-2 py-2 rounded-md hover:bg-teal-800 hover:text-white cursor-pointer">Cancel</button>
-          <button onClick={closeDialog} className="border border-black px-2 py-2 rounded-md bg-teal-800 text-white cursor-pointer">Confirm</button>
+      <div className="flex flex-col justify-center items-center">
+        <div className="w-full h-[40%] border bg-teal-800 dark:bg-black dark:text-black p-10 flex flex-col gap-2 border-gray-200 my-6">
+          <div className="w-1/2 md:w-1/5 border border-teal-800 py-2 md:py-5 px-5 md:px-10 mt-[-4rem] md:mt-[-4.5rem] bg-gray-200  rounded-md absolute left-[50%] -translate-x-[50%] text-center">
+            Buy Data
           </div>
-        </p>
-      </Modal>
-    <div className="flex flex-col justify-center items-center">
-      <div className="w-full h-[40%] border bg-teal-800 dark:bg-black dark:text-black p-10 flex flex-col gap-2 border-gray-200 my-6">
-        <div className="w-1/2 md:w-1/5 border border-teal-800 py-2 md:py-5 px-5 md:px-10 mt-[-4rem] md:mt-[-4.5rem] bg-gray-200  rounded-md absolute left-[50%] -translate-x-[50%] text-center">
-          Buy Data
+          <div className={networkStyle}>
+            <p>*461*4#</p>
+            <p>MTN SME</p>
+          </div>
+          <div className={networkStyle}>
+            <p>*131*4#</p>
+            <p>MTN Gifting</p>
+          </div>
+          <div className={networkStyle}>
+            <p>*228#</p>
+            <p>9mobile</p>
+          </div>
+          <div className={networkStyle}>
+            <p>*140#</p>
+            <p>Airtel</p>
+          </div>
+          <div className={networkStyle}>
+            <p>*323#</p>
+            <p>Glo</p>
+          </div>
         </div>
-        <div className={networkStyle}>
-          <p>*461*4#</p>
-          <p>MTN SME</p>
-        </div>
-        <div className={networkStyle}>
-          <p>*131*4#</p>
-          <p>MTN Gifting</p>
-        </div>
-        <div className={networkStyle}>
-          <p>*228#</p>
-          <p>9mobile</p>
-        </div>
-        <div className={networkStyle}>
-          <p>*140#</p>
-          <p>Airtel</p>
-        </div>
-        <div className={networkStyle}>
-          <p>*323#</p>
-          <p>Glo</p>
-        </div>
-      </div>
-      <form  className="w-full md:w-[90%] border border-teal-800 dark:border-white dark:bg-black flex flex-col gap-2 p-5 bg-gray-200">
-        <label htmlFor="network">Network*</label>
-        <select
-          name="network"
-          id="network"
-          className={inputStyle}
-          onChange={(e) => handleNetworkSelect(e.target.value)}
-        >
-          <option value="default">-----</option>
-          {networks.map((network) => (
-            <option value={network.id} key={network.id}>
-              {network.name}
-            </option>
-          ))}
-        </select>
-        <label htmlFor="data-type">Data Type*</label>
-        <select
-          name="data-type"
-          id="data-type"
-          className={inputStyle}
-          onChange={(e) => handleDataTypeSelect(e.target.value)}
-        >
-          <option value="default">-----</option>
-          {dataType.map((type, index) => (
-            <option value={type} key={index}>
-              {type}
-            </option>
-          ))}
-        </select>
-        <label htmlFor="data-plan">Data Plan*</label>
-        <select name="data-plan" id="data-plan" className={inputStyle}>
-          <option value="default">-----</option>
-          {dataPlan.map((plan) => (
-            <option
-              value={plan.dataplan_id}
-              className="flex items-center justify-between w-full"
-              key={plan.id}
-            >
-              {plan.plan}
-              {"       "}
-              {plan.plan_type}
+        {!loading ?(
+        <form className="w-full md:w-[90%] border border-teal-800 dark:border-white dark:bg-black flex flex-col gap-2 p-5 bg-gray-200">
+          <label htmlFor="network">Network*</label>
+          <select
+            name="network"
+            id="network"
+            className={inputStyle}
+            onChange={(e) => handleNetworkSelect(e.target.value)}
+          >
+            <option value="default">-----</option>
+            {networks.map((network) => (
+              <option value={network.id} key={network.id}>
+                {network.name}
+              </option>
+            ))}
+          </select>
+          <label htmlFor="data-type">Data Type*</label>
+          <select
+            name="data-type"
+            id="data-type"
+            className={inputStyle}
+            onChange={(e) => {
+              handleDataTypeSelect(e.target.value);
+            }}
+          >
+            <option value="default">-----</option>
+            {dataType.map((type, index) => (
+              <option value={type} key={index}>
+                {type}
+              </option>
+            ))}
+          </select>
+          <label htmlFor="data-plan">Data Plan*</label>
+          <select
+            name="data-plan"
+            id="data-plan"
+            className={inputStyle}
+            onChange={(e) => setPlanId(e.target.value)}
+          >
+            <option value="default">-----</option>
+            {dataPlan.map((plan) => (
+              <option
+                value={plan.dataplan_id}
+                className="flex items-center justify-between w-full"
+                key={plan.id}
+              >
+                {plan.plan}
+                {"       "}
+                {plan.plan_type}
 
-              {"       "}
-              {parseInt(plan.plan_amount)}
-            </option>
-          ))}
-        </select>
-        <label htmlFor="phonenumber">Phone Number*</label>
-        <input
-          type="text"
-          name="phonenumber"
-          placeholder="09030220200"
-          className={inputStyle}
-        />
-        <button
-          type="submit"
-          onClick={()=>confirmSubmit()}
-          disabled={loading? true : false}
-          className={` py-2 px-6  border  border-teal-800 text-teal-800 rounded-md md:w-1/5   ${loading ? 'bg-gray-400' : 'bg-white cursor-pointer hover:bg-teal-800 hover:border-white hover:text-white'}`}
-        >
-          {loading ? "Submitting" : "Buy Data"}
-        </button>
-      </form>
-    </div>
-          </>
+                {"       "}
+                {parseInt(plan.plan_amount)}
+              </option>
+            ))}
+          </select>
+          <label htmlFor="phonenumber">Phone Number*</label>
+          <input
+            type="text"
+            name="phonenumber"
+            placeholder="09030220200"
+            className={inputStyle}
+            onChange={(e) => setPhone(e.target.value)}
+          />
+          {/* <button
+            type="submit"
+            onClick={() => confirmSubmit()}
+            disabled={loading ? true : false}
+            className={` py-2 px-6  border  border-teal-800 text-teal-800 rounded-md md:w-1/5   ${
+              loading
+                ? "bg-gray-400"
+                : "bg-white cursor-pointer hover:bg-teal-800 hover:border-white hover:text-white"
+            }`}
+          >
+            {loading ? "Submitting" : "Buy Data"}
+          </button> */}
+
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <Button
+                variant="outline"
+                onClick={() => filterSelectedPlan()}
+                disabled={loading ? true : false}
+                className={`text-teal-800 rounded-md md:w-1/5   ${
+                  loading
+                    ? "bg-gray-400"
+                    : "bg-white cursor-pointer hover:bg-teal-800 hover:border-white hover:text-white"
+                }`}
+              >
+                Buy Data
+              </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Hello {user?.username}!!</AlertDialogTitle>
+                <AlertDialogDescription>
+                  Are you sure that you want to buy {selectedPlan?.plan} worth {selectedPlan?.plan_amount} for {phone} 
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel
+                  onClick={() => onCancelSubmit()}
+                  className="mt-5"
+                >
+                  Cancel
+                </AlertDialogCancel>
+                <AlertDialogAction onClick={() => handleSubmitForm()} className="border rounded-md cursor-pointer bg-teal-800 hover:border-white text-white w-full">
+                  Confirm
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+        </form> 
+        ) : (
+          <div className="h-full w-full flex flex-col gap-5 py-20 p justify-center items-center bg-teal-800/20 dark:bg-black/20 ">
+          <p className="font-bold text-3xl px-10">Processing please wait!!</p>
+          <LoadingSkeleton />
+        </div>
+        )}
+      </div>
+    </>
   );
 };
 
