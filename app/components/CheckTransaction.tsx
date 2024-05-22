@@ -1,12 +1,11 @@
 import { fetchOneTransaction } from "@/lib/data";
+import { transactionTypes } from "@/lib/types";
 import React from "react";
 
-const CheckTransaction = async ({ id }: { id: string }) => {
-  const response = await fetchOneTransaction(id);
+const CheckTransaction = async ({transaction }: transactionTypes) => {
+ 
 
-  const [transaction] = response!;
-
-  return <div>{transaction.amount}</div>;
+  return <div>transaction.amount</div>;
 };
 
 export default CheckTransaction;

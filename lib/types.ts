@@ -84,15 +84,13 @@ export enum PlanType {
   Sme2 = "SME2",
 }
 
-
-
 export interface modalProps {
   title: string;
   onClose?: () => void;
   onOk?: () => void;
   closeDialog: () => void;
   clickOK?: () => void;
-  dialogRef?: React.MutableRefObject<HTMLDialogElement | null>
+  dialogRef?: React.MutableRefObject<HTMLDialogElement | null>;
   showDialog: string | null;
   children: React.ReactNode;
 }
@@ -111,6 +109,12 @@ export interface transactionTypes {
   purpose: string;
   amount: string;
   status: string;
+  serviceName?: string;
+  planSize?: string;
+  previousBalance: string;
+  newBalance: string;
+  phone?: string;
+  transactionId?: string;
 }
 
 export interface PaystackParams {

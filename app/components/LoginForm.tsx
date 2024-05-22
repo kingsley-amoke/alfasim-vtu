@@ -56,12 +56,12 @@ const LoginForm = () => {
       const access_token = response.data.session?.access_token!;
       const refresh_token = response.data.session?.refresh_token!;
 
-      // await serverClient().auth.setSession({
-      //   access_token: access_token,
-      //   refresh_token: refresh_token,
-      // });
+      await connectToSupabase().auth.setSession({
+        access_token: access_token,
+        refresh_token: refresh_token,
+      });
 
-      router.push("/dashboard?showDialog=y");
+      router.replace("/dashboard?showDialog=y");
       toast.success("Login successful");
     } catch (error) {
       console.log(error);

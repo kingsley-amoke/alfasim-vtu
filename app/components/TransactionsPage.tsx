@@ -17,7 +17,7 @@ import { notificationTypes, transactionTypes } from "@/lib/types";
 import Navbar from "./Navbar";
 
 import { Ban, CircleCheckBig, CircleDotDashedIcon } from "lucide-react";
-import { Button } from "@/lib/ui/Button";
+import { Button } from "@/lib/ui/button";
 
 const WalletPage = ({
   transactions,
