@@ -10,7 +10,7 @@ import {
   transactionTypes,
   userDataTypes,
 } from "@/lib/types";
-import { buyData, getDataPlans, setTransaction } from "@/lib/data";
+import { buyData, deductBalance, getDataPlans, setTransaction } from "@/lib/data";
 import toast from "react-hot-toast";
 import { useRouter, useSearchParams } from "next/navigation";
 import Modal from "./Modal";
@@ -103,7 +103,7 @@ const BuyData = ({
       month_validate: plan.month_validate,
       plan: plan.plan,
       plan_amount:
-        plan.plan === "500.0MB"
+        plan.plan.slice(-2) === "MB"
           ? (parseInt(plan.plan_amount) + 5).toString()
           : (integer * unitGBSME).toString(),
     });
@@ -126,7 +126,7 @@ const BuyData = ({
       month_validate: plan.month_validate,
       plan: plan.plan,
       plan_amount:
-        plan.plan === "500.0MB"
+      plan.plan.slice(-2) === "MB"
           ? (parseInt(plan.plan_amount) + 5).toString()
           : (integer * unitGBSME2).toString(),
     });
@@ -152,7 +152,7 @@ const BuyData = ({
       month_validate: plan.month_validate,
       plan: plan.plan,
       plan_amount:
-        plan.plan === "500.0MB"
+        plan.plan.slice(-2) === "MB"
           ? (parseInt(plan.plan_amount) + 5).toString()
           : (integer * unitGBGifting).toString(),
     });
@@ -179,7 +179,7 @@ const BuyData = ({
       month_validate: plan.month_validate,
       plan: plan.plan,
       plan_amount:
-        plan.plan === "500.0MB"
+        plan.plan.slice(-2) === "MB"
           ? (parseInt(plan.plan_amount) + 5).toString()
           : (integer * unitGBCorporateGifting).toString(),
     });
@@ -207,7 +207,7 @@ const BuyData = ({
       month_validate: plan.month_validate,
       plan: plan.plan,
       plan_amount:
-        plan.plan === "500.0MB"
+        plan.plan.slice(-2) === "MB"
           ? (parseInt(plan.plan_amount) + 5).toString()
           : (integer * unitGBCorporateGifting2).toString(),
     });
@@ -235,7 +235,7 @@ const BuyData = ({
       month_validate: plan.month_validate,
       plan: plan.plan,
       plan_amount:
-        plan.plan === "500.0MB"
+        plan.plan.slice(-2) === "MB"
           ? (parseInt(plan.plan_amount) + 5).toString()
           : (integer * unitGBDataCoupons).toString(),
     });
@@ -262,7 +262,7 @@ const BuyData = ({
       month_validate: plan.month_validate,
       plan: plan.plan,
       plan_amount:
-        plan.plan === "500.0MB"
+        plan.plan.slice(-2) === "MB"
           ? (parseInt(plan.plan_amount) + 5).toString()
           : (integer * unitGBGloGifting).toString(),
     });
@@ -290,7 +290,7 @@ const BuyData = ({
       month_validate: plan.month_validate,
       plan: plan.plan,
       plan_amount:
-        plan.plan === "500.0MB"
+      plan.plan.slice(-2) === "MB"
           ? (parseInt(plan.plan_amount) + 5).toString()
           : (integer * unitGBGloCorporateGifting).toString(),
     });
@@ -320,7 +320,7 @@ const BuyData = ({
       month_validate: plan.month_validate,
       plan: plan.plan,
       plan_amount:
-        plan.plan === "500.0MB"
+        plan.plan.slice(-2) === "MB"
           ? (parseInt(plan.plan_amount) + 5).toString()
           : (integer * unitGBEtisalatGifting).toString(),
     });
@@ -347,7 +347,7 @@ const BuyData = ({
       month_validate: plan.month_validate,
       plan: plan.plan,
       plan_amount:
-        plan.plan === "500.0MB"
+        plan.plan.slice(-2) === "MB"
           ? (parseInt(plan.plan_amount) + 5).toString()
           : (integer * unitGBEtisalatCorporateGifting).toString(),
     });
@@ -377,7 +377,7 @@ const BuyData = ({
       month_validate: plan.month_validate,
       plan: plan.plan,
       plan_amount:
-        plan.plan === "500.0MB"
+        plan.plan.slice(-2) === "MB"
           ? (parseInt(plan.plan_amount) + 5).toString()
           : (integer * unitGBAirtelGifting).toString(),
     });
@@ -405,7 +405,7 @@ const BuyData = ({
       month_validate: plan.month_validate,
       plan: plan.plan,
       plan_amount:
-        plan.plan === "500.0MB"
+        plan.plan.slice(-2) === "MB"
           ? (parseInt(plan.plan_amount) + 5).toString()
           : (integer * unitGBAirtelCoporateGifting).toString(),
     });
@@ -497,12 +497,23 @@ const BuyData = ({
 
   const createDataTransaction = async (data: transactionTypes) => {
     const response = await setTransaction(data);
-    console.log(response);
+    return response;
   };
 
   const handleSubmitForm = async () => {
 
+
+
     if(!selectedPlan || !user) return
+
+    const integer = Math.trunc(parseInt(selectedPlan.plan.slice(0, -2)));
+
+      const transactionAmount = (selectedPlan.network === 2 ? (parseInt(selectedPlan.plan_amount) + 10) : parseInt(selectedPlan.plan_amount) + 5) * integer
+
+    if(parseInt(user?.balance) <  transactionAmount) {
+      toast.error("Insufficient Balance");
+      return
+    }
 
     setLoading(true);
     const dataInfo = {
@@ -521,10 +532,6 @@ const BuyData = ({
       console.log(response);
       //create a transaction
 
-      const integer = Math.trunc(parseInt(selectedPlan.plan.slice(0, -2)));
-
-      const transactionAmount = (selectedPlan.network === 2 ? (parseInt(selectedPlan.plan_amount) + 10) : parseInt(selectedPlan.plan_amount) + 5) * integer
-
       const data: transactionTypes = {
         email: user?.email,
         amount: transactionAmount.toString(),
@@ -540,11 +547,35 @@ const BuyData = ({
       
       const transacrion = await createDataTransaction(data);
       console.log(transacrion);
+
+      await deductBalance(user?.email, transactionAmount.toString());
       
       toast.success("Successfull");
       router.replace("/dashboard");
       setLoading(false);
     }else{
+      console.log(response)
+      
+
+      const integer = Math.trunc(parseInt(selectedPlan.plan.slice(0, -2)));
+
+      const transactionAmount = (selectedPlan.network === 2 ? (parseInt(selectedPlan.plan_amount) + 10) : parseInt(selectedPlan.plan_amount) + 5) * integer
+
+      const data: transactionTypes = {
+        email: user?.email,
+        amount: transactionAmount.toString(),
+        purpose: "data",
+        status: response.Status,
+        transactionId: response.ident,
+        phone: phone,
+        network: currentNetwork,
+        planSize: selectedPlan.plan,
+        previousBalance: user.balance,
+        newBalance: response.Status === "failed" ? user.balance : (parseInt(user.balance) - transactionAmount).toString()
+      };
+
+      const transaction = await createDataTransaction(data);
+      console.log(transaction);
       toast.error(response.Status)
       setLoading(false);
     }
@@ -674,7 +705,7 @@ const BuyData = ({
                   <AlertDialogTitle>Hello {user?.username}!!</AlertDialogTitle>
                   <AlertDialogDescription>
                     Are you sure that you want to buy {selectedPlan?.plan} worth{" "}
-                    {selectedPlan?.plan_amount} for {phone}
+                    NGN{selectedPlan?.plan_amount} for {phone}
                   </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>

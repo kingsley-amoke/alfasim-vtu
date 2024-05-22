@@ -8,25 +8,7 @@ const page = async({ params }: { params: { id: string } }) => {
 
 
 
-  // let response = await fetchOneTransaction(id);
-  let response= [
-    {
-    id: '1',
-    amount: '23',
-    created_at: '2017',
-    status: 'active',
-    email: 'ewe',
-    previousBalance: '4',
-    newBalance: '4',
-    transactionId: '1',
-    purpose: 'Transaction',
-    phone: "09159960425",
-    network: 'MTN',
-    planSize: '1.0 GB',
-    },
-    
-
-  ]
+  let response = await fetchOneTransaction(id);
 
   if (!response) {
 
@@ -36,7 +18,8 @@ const page = async({ params }: { params: { id: string } }) => {
   }
 
   
-  const transaction = response[0]
+  const [transaction] = response;
+
 
   return (
     <div>

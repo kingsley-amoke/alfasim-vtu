@@ -117,6 +117,21 @@ export interface transactionTypes {
   transactionId?: string;
 }
 
+export interface DBTransactionTypes{
+  created_at: string
+  email: string
+  purpose: string
+  amount: string
+  id: string
+  status: string
+  network: string
+  plan_size: string
+  previous_balance: string
+  new_balance: string
+  phone: string
+  transaction_id: string
+}
+
 export interface PaystackParams {
   amount: number;
   email: string;

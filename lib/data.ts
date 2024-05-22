@@ -4,6 +4,7 @@ import axios from "axios";
 
 import { serverClient } from "./serverConnection";
 import {
+  DBTransactionTypes,
   PaystackParams,
   VerifyParams,
   notificationTypes,
@@ -36,6 +37,28 @@ export const recharge = async (email: string | undefined, amount: string) => {
     const { balance } = userData![0];
 
     const newBalance = parseInt(balance) + parseInt(amount);
+
+    const { data, error } = await serverClient()
+      .from("users")
+      .update({ balance: newBalance })
+      .eq("email", email)
+      .select();
+
+    return { data, error };
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+//deducts from user balance
+
+export const deductBalance = async (email: string | undefined, amount: string) => {
+  try {
+    const userData = await fetchUser(email);
+
+    const { balance } = userData![0];
+
+    const newBalance = parseInt(balance) - parseInt(amount);
 
     const { data, error } = await serverClient()
       .from("users")
@@ -225,7 +248,7 @@ export const fetchOneTransaction = async (id: string) => {
       .select("*")
       .eq("id", id);
 
-    let transaction: transactionTypes[] = transactions!;
+    let transaction: DBTransactionTypes[] = transactions!;
 
     if (error) {
       console.log(error);
@@ -271,7 +294,7 @@ export const fetchDataHistory = async (email: string) => {
       .eq("email", email)
       .eq("purpose", "data");
 
-    let transaction: transactionTypes[] = transactions!;
+    let transaction: DBTransactionTypes[] = transactions!;
 
     if (error) {
       console.log(error);

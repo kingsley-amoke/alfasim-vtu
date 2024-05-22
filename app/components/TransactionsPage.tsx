@@ -13,7 +13,7 @@ import {
   TableRow,
 } from "./Table";
 import { getLoggedUser } from "@/lib/data";
-import { notificationTypes, transactionTypes } from "@/lib/types";
+import { DBTransactionTypes, notificationTypes, transactionTypes } from "@/lib/types";
 import Navbar from "./Navbar";
 
 import { Ban, CircleCheckBig, CircleDotDashedIcon } from "lucide-react";
@@ -23,7 +23,7 @@ const WalletPage = ({
   transactions,
   notifications,
 }: {
-  transactions: transactionTypes[];
+  transactions: DBTransactionTypes[];
   notifications: notificationTypes[];
 }) => {
   const router = useRouter();
@@ -74,6 +74,8 @@ const WalletPage = ({
             <TableRow>
               <TableHead className="md:w-[22rem] md:pl-32">ID</TableHead>
               <TableHead>Date</TableHead>
+              <TableHead>Network</TableHead>
+              <TableHead>Phone Number</TableHead>
 
               <TableHead className="text-left">Amount</TableHead>
               <TableHead className="text-center">Status</TableHead>
@@ -90,9 +92,15 @@ const WalletPage = ({
                 }
                 onClick={() => router.push(`/transactions/${transaction.id}`)}
               >
-                <TableCell className="font-medium">{transaction.id}</TableCell>
+                <TableCell className="font-medium">{transaction.transaction_id}</TableCell>
                 <TableCell className="">
-                  {transaction.created_at.slice(0, 10)}
+                  {transaction?.created_at?.slice(0, 10)}
+                </TableCell>
+                <TableCell className="">
+                  {transaction?.network}
+                </TableCell>
+                <TableCell className="">
+                  {transaction?.phone}
                 </TableCell>
 
                 <TableCell className="text-left">
