@@ -12,13 +12,7 @@ const Footer = () => {
         <div className="w-full md:w-1/3 mx-2">
           <div>
             <Link href="/">
-              <Image
-                src="/logo.jpg"
-                width={50}
-                height={50}
-                alt="logo"
-                className="w-50 h-50"
-              />
+              <h2>ALFASIM TELECOM</h2>
             </Link>
           </div>
           <p className="my-5">

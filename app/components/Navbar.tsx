@@ -40,7 +40,7 @@ const Navbar = ({ user, count }: { count?: number; user?: userDataTypes }) => {
       {loggedInPaths.includes(path) && <DrawerWrapper user={user} />}
       <div>
         <Link href="/">
-          <Image src="/logo.jpg" alt="logo" width={100} height={100} />
+        <h2>ALFASIM TELECOM</h2>
         </Link>
       </div>
       {path == "/" && (
