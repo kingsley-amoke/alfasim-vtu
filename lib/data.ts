@@ -51,17 +51,12 @@ export const recharge = async (email: string | undefined, amount: string) => {
 
 //creates a transaction
 
-export const setTransaction = async (
-  email: string,
-  amount: string,
-  purpose: string,
-  status: string = "pending"
-) => {
+export const setTransaction = async (transaction: transactionTypes) => {
   try {
     const { data, error } = await serverClient()
       .from("transactions")
       .insert([
-        { email: email, amount: amount, purpose: purpose, status: status },
+        { email: transaction.email, amount: transaction.amount, purpose: transaction.purpose, status: transaction.status, transaction_id: transaction.transactionId, phone: transaction.phone, network: transaction.network, plan_size:transaction.planSize, previous_balance:transaction.previousBalance, new_balance:transaction.newBalance},
       ])
       .select();
     return { data, error };

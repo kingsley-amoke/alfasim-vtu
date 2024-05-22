@@ -25,7 +25,7 @@ export interface userDataTypes {
   lastName?: string;
   phone?: string;
   username?: string;
-  balance?: string;
+  balance: string;
   referrals?: string;
   referral_bonus?: string;
 }
@@ -103,16 +103,16 @@ export interface notificationTypes {
   title: string;
 }
 export interface transactionTypes {
-  id: string;
-  created_at: string;
-  email: string;
+  id?: string;
+  created_at?: string;
+  email: string | undefined;
   purpose: string;
   amount: string;
   status: string;
-  serviceName?: string;
+  network?: string | undefined;
   planSize?: string;
-  previousBalance: string;
-  newBalance: string;
+  previousBalance: string | undefined;
+  newBalance: string | undefined;
   phone?: string;
   transactionId?: string;
 }

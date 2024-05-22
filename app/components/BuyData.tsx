@@ -7,9 +7,10 @@ import {
   PlanType,
   dataPlanTypes,
   planTypes,
+  transactionTypes,
   userDataTypes,
 } from "@/lib/types";
-import { buyData, getDataPlans } from "@/lib/data";
+import { buyData, getDataPlans, setTransaction } from "@/lib/data";
 import toast from "react-hot-toast";
 import { useRouter, useSearchParams } from "next/navigation";
 import Modal from "./Modal";
@@ -50,7 +51,6 @@ const BuyData = ({
       (plan) => plan.dataplan_id === planId
     );
 
-    
     setSelectedPlan(selectedPlan[0]);
   };
 
@@ -88,8 +88,10 @@ const BuyData = ({
   const mtnSME = mtnPlans.filter((plan) => plan.plan_type === "SME");
   const alfasimMtnSME: Plan[] = [];
 
+  const unitGB = 260 + 5;
+  
   mtnSME.forEach((plan) => {
-    const unitGB = 260 + 5;
+
     const integer = Math.trunc(parseInt(plan.plan.slice(0, -2)));
 
     alfasimMtnSME.push({
@@ -222,12 +224,19 @@ const BuyData = ({
     }
   };
 
-
   const onCancelSubmit = () => {
     setLoading(false);
   };
 
+  const createDataTransaction = async (data: transactionTypes) => {
+    const response = await setTransaction(data);
+    console.log(response);
+  };
+
   const handleSubmitForm = async () => {
+
+    if(!selectedPlan || !user) return
+
     setLoading(true);
     const dataInfo = {
       network: selectedPlan?.network.toString()!,
@@ -236,14 +245,42 @@ const BuyData = ({
       Ported_number: true,
     };
 
-    console.log(dataInfo)
+    console.log(dataInfo);
 
     const response = await buyData(dataInfo);
-    if(response){
-      toast.success('Successfull')
-      router.replace('/dashboard')
-      setLoading(false)
-    };
+   
+    if (response.Status === 'successful') {
+
+      console.log(response);
+      //create a transaction
+
+      const integer = Math.trunc(parseInt(selectedPlan.plan.slice(0, -2)));
+
+      const transactionAmount = unitGB * integer
+
+      const data: transactionTypes = {
+        email: user?.email,
+        amount: transactionAmount.toString(),
+        purpose: "data",
+        status: response.Status,
+        transactionId: response.ident,
+        phone: phone,
+        network: currentNetwork,
+        planSize: selectedPlan.plan,
+        previousBalance: user.balance,
+        newBalance: (parseInt(user.balance) - transactionAmount).toString(),
+      };
+      
+      const transacrion = await createDataTransaction(data);
+      console.log(transacrion);
+      
+      toast.success("Successfull");
+      router.replace("/dashboard");
+      setLoading(false);
+    }else{
+      toast.error(response.Status)
+      setLoading(false);
+    }
   };
 
   return (
@@ -274,70 +311,70 @@ const BuyData = ({
             <p>Glo</p>
           </div>
         </div>
-        {!loading ?(
-        <form className="w-full md:w-[90%] border border-teal-800 dark:border-white dark:bg-black flex flex-col gap-2 p-5 bg-gray-200">
-          <label htmlFor="network">Network*</label>
-          <select
-            name="network"
-            id="network"
-            className={inputStyle}
-            onChange={(e) => handleNetworkSelect(e.target.value)}
-          >
-            <option value="default">-----</option>
-            {networks.map((network) => (
-              <option value={network.id} key={network.id}>
-                {network.name}
-              </option>
-            ))}
-          </select>
-          <label htmlFor="data-type">Data Type*</label>
-          <select
-            name="data-type"
-            id="data-type"
-            className={inputStyle}
-            onChange={(e) => {
-              handleDataTypeSelect(e.target.value);
-            }}
-          >
-            <option value="default">-----</option>
-            {dataType.map((type, index) => (
-              <option value={type} key={index}>
-                {type}
-              </option>
-            ))}
-          </select>
-          <label htmlFor="data-plan">Data Plan*</label>
-          <select
-            name="data-plan"
-            id="data-plan"
-            className={inputStyle}
-            onChange={(e) => setPlanId(e.target.value)}
-          >
-            <option value="default">-----</option>
-            {dataPlan.map((plan) => (
-              <option
-                value={plan.dataplan_id}
-                className="flex items-center justify-between w-full"
-                key={plan.id}
-              >
-                {plan.plan}
-                {"       "}
-                {plan.plan_type}
+        {!loading ? (
+          <form className="w-full md:w-[90%] border border-teal-800 dark:border-white dark:bg-black flex flex-col gap-2 p-5 bg-gray-200">
+            <label htmlFor="network">Network*</label>
+            <select
+              name="network"
+              id="network"
+              className={inputStyle}
+              onChange={(e) => handleNetworkSelect(e.target.value)}
+            >
+              <option value="default">-----</option>
+              {networks.map((network) => (
+                <option value={network.id} key={network.id}>
+                  {network.name}
+                </option>
+              ))}
+            </select>
+            <label htmlFor="data-type">Data Type*</label>
+            <select
+              name="data-type"
+              id="data-type"
+              className={inputStyle}
+              onChange={(e) => {
+                handleDataTypeSelect(e.target.value);
+              }}
+            >
+              <option value="default">-----</option>
+              {dataType.map((type, index) => (
+                <option value={type} key={index}>
+                  {type}
+                </option>
+              ))}
+            </select>
+            <label htmlFor="data-plan">Data Plan*</label>
+            <select
+              name="data-plan"
+              id="data-plan"
+              className={inputStyle}
+              onChange={(e) => setPlanId(e.target.value)}
+            >
+              <option value="default">-----</option>
+              {dataPlan.map((plan) => (
+                <option
+                  value={plan.dataplan_id}
+                  className="flex items-center justify-between w-full"
+                  key={plan.id}
+                >
+                  {plan.plan}
+                  {"       "}
+                  {plan.plan_type}
 
-                {"       "}
-                {parseInt(plan.plan_amount)}
-              </option>
-            ))}
-          </select>
-          <label htmlFor="phonenumber">Phone Number*</label>
-          <input
-            type="text"
-            name="phonenumber"
-            placeholder="09030220200"
-            className={inputStyle}
-            onChange={(e) => setPhone(e.target.value)}
-          />
-          {/* <button
+                  {"       "}
+                  {parseInt(plan.plan_amount)}
+                </option>
+              ))}
+            </select>
+            <label htmlFor="phonenumber">Phone Number*</label>
+            <input
+              type="text"
+              name="phonenumber"
+              placeholder="09030220200"
+              className={inputStyle}
+              onChange={(e) => setPhone(e.target.value)}
+            />
+            {/* <button
             type="submit"
             onClick={() => confirmSubmit()}
             disabled={loading ? true : false}
@@ -350,47 +387,51 @@ const BuyData = ({
             {loading ? "Submitting" : "Buy Data"}
           </button> */}
 
-          <AlertDialog>
-            <AlertDialogTrigger asChild>
-              <Button
-                variant="outline"
-                onClick={() => filterSelectedPlan()}
-                disabled={loading ? true : false}
-                className={`text-teal-800 rounded-md md:w-1/5   ${
-                  loading
-                    ? "bg-gray-400"
-                    : "bg-white cursor-pointer hover:bg-teal-800 hover:border-white hover:text-white"
-                }`}
-              >
-                Buy Data
-              </Button>
-            </AlertDialogTrigger>
-            <AlertDialogContent>
-              <AlertDialogHeader>
-                <AlertDialogTitle>Hello {user?.username}!!</AlertDialogTitle>
-                <AlertDialogDescription>
-                  Are you sure that you want to buy {selectedPlan?.plan} worth {selectedPlan?.plan_amount} for {phone} 
-                </AlertDialogDescription>
-              </AlertDialogHeader>
-              <AlertDialogFooter>
-                <AlertDialogCancel
-                  onClick={() => onCancelSubmit()}
-                  className="mt-5"
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button
+                  variant="outline"
+                  onClick={() => filterSelectedPlan()}
+                  disabled={loading ? true : false}
+                  className={`text-teal-800 rounded-md md:w-1/5   ${
+                    loading
+                      ? "bg-gray-400"
+                      : "bg-white cursor-pointer hover:bg-teal-800 hover:border-white hover:text-white"
+                  }`}
                 >
-                  Cancel
-                </AlertDialogCancel>
-                <AlertDialogAction onClick={() => handleSubmitForm()} className="border rounded-md cursor-pointer bg-teal-800 hover:border-white text-white w-full">
-                  Confirm
-                </AlertDialogAction>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
-        </form> 
+                  Buy Data
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Hello {user?.username}!!</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    Are you sure that you want to buy {selectedPlan?.plan} worth{" "}
+                    {selectedPlan?.plan_amount} for {phone}
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel
+                    onClick={() => onCancelSubmit()}
+                    className="mt-5"
+                  >
+                    Cancel
+                  </AlertDialogCancel>
+                  <AlertDialogAction
+                    onClick={() => handleSubmitForm()}
+                    className="border rounded-md cursor-pointer bg-teal-800 hover:border-white text-white w-full"
+                  >
+                    Confirm
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+          </form>
         ) : (
           <div className="h-full w-full flex flex-col gap-5 py-20 p justify-center items-center bg-teal-800/20 dark:bg-black/20 ">
-          <p className="font-bold text-3xl px-10">Processing please wait!!</p>
-          <LoadingSkeleton />
-        </div>
+            <p className="font-bold text-3xl px-10">Processing please wait!!</p>
+            <LoadingSkeleton />
+          </div>
         )}
       </div>
     </>
