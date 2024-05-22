@@ -505,12 +505,12 @@ const BuyData = ({
 
 
     if(!selectedPlan || !user) return
-
     const integer = Math.trunc(parseInt(selectedPlan.plan.slice(0, -2)));
 
-      const transactionAmount = (selectedPlan.network === 2 ? (parseInt(selectedPlan.plan_amount) + 10) : parseInt(selectedPlan.plan_amount) + 5) * integer
+    const transactionAmount = selectedPlan.plan.slice(-2) === "MB" ? parseInt(selectedPlan.plan_amount)  : (parseInt(selectedPlan.plan_amount) + 5) * integer
 
     if(parseInt(user?.balance) <  transactionAmount) {
+      
       toast.error("Insufficient Balance");
       return
     }
@@ -556,10 +556,6 @@ const BuyData = ({
     }else{
       console.log(response)
       
-
-      const integer = Math.trunc(parseInt(selectedPlan.plan.slice(0, -2)));
-
-      const transactionAmount = (selectedPlan.network === 2 ? (parseInt(selectedPlan.plan_amount) + 10) : parseInt(selectedPlan.plan_amount) + 5) * integer
 
       const data: transactionTypes = {
         email: user?.email,

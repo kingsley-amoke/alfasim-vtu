@@ -7,7 +7,7 @@ const CheckTransaction = async ({transaction }:{transaction: DBTransactionTypes}
 
  
 
-  return (<div className="h-screen w-full flex justify-center border border-red-400">
+  return (<div className="h-screen w-full flex justify-center ">
     <div className="w-full md:w-1/3 flex flex-col mt-20 mx-2 fixed left-[50%] -translate-x-[50%]">
     <p className="uppercase text-center" w-full>Transaction Details</p>
     </div>

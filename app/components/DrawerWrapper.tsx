@@ -109,7 +109,7 @@ const DrawerWrapper = ({
                   variant="outline"
                   className="flex justify-center items-center"
                 >
-                  <AiOutlineClose size={30} />
+                  <AiOutlineClose size={30} className="text-black dark:text-white"/>
                 </Button>
               </DrawerClose>
             </DrawerTitle>
