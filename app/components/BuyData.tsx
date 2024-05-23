@@ -527,7 +527,7 @@ const BuyData = ({
 
     const response = await buyData(dataInfo);
 
-    if(!response){
+    if(response.error){
       const data: transactionTypes = {
         email: user?.email,
         amount: transactionAmount.toString(),
@@ -543,7 +543,7 @@ const BuyData = ({
 
       const transaction = await createDataTransaction(data);
       console.log(transaction);
-      toast.error('failed')
+      toast.error('Network error, Try again later')
       setLoading(false);
       return
     }

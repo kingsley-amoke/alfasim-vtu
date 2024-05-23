@@ -85,8 +85,26 @@ const BuyData = ({ user }: { user: userDataTypes }) => {
     const response = await buyAirtime(airtimeInfo);
 
     console.log(response)
+
+    let networkName = ''
+      
+    switch(network) {
+      case '1':
+        networkName =  'MTN'
+        break;
+      case '2':
+        networkName = 'Glo'
+        break;
+      case '3':
+        networkName = '9mobile'
+        break;
+      case '4':
+        networkName = 'Airtel'
+        break;
+    }
+
    
-    if(!response){
+    if(response.error){
       const data: transactionTypes = {
         email: user?.email,
         amount: amountToPay,
@@ -94,7 +112,7 @@ const BuyData = ({ user }: { user: userDataTypes }) => {
         status: 'failed',
         transactionId: 'failed',
         phone: phone,
-        network: network,
+        network: networkName,
         planSize: amount,
         previousBalance: user.balance,
         newBalance: user.balance
@@ -102,7 +120,7 @@ const BuyData = ({ user }: { user: userDataTypes }) => {
 
       const transaction = await createDataTransaction(data);
       console.log(transaction);
-      toast.error('failed')
+      toast.error('Network Error, Try again later')
       setLoading(false);
       return
     }
@@ -110,23 +128,6 @@ const BuyData = ({ user }: { user: userDataTypes }) => {
     if (response.results[0].Status === 'successful') {
 
       //create a transaction
-
-      let networkName = ''
-      
-      switch(network) {
-        case '1':
-          networkName =  'MTN'
-          break;
-        case '2':
-          networkName = 'Glo'
-          break;
-        case '3':
-          networkName = '9mobile'
-          break;
-        case '4':
-          networkName = 'Airtel'
-          break;
-      }
 
       const data: transactionTypes = {
         email: user?.email,

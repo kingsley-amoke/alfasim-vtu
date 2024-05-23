@@ -513,7 +513,7 @@ export const buyData = async (data: {
   })
     .then((response) => {
       if (!response.ok) {
-        throw new Error("Network response was not ok");
+        // throw new Error("Network response was not ok");
         console.log(response)
       }
       return response.json();
@@ -539,7 +539,7 @@ export const buyAirtime = async (data: {
   
 }) => {
 
-  const response = await fetch(`${asbUrl}/topup`, {
+  const response = await fetch(`${asbUrl}/topup/`, {
     method: "POST",
     headers: getASBHeaders(),
     body: JSON.stringify(data),
@@ -547,13 +547,12 @@ export const buyAirtime = async (data: {
     .then((response) => {
       if (!response.ok) {
         // throw new Error("Network response was not ok");
-        console.log(response)
       }
       
       return response.json();
     })
     .then((data) => {
-      console.log(data)
+      // console.log(data.error)
       return data;
     })
     .catch((error) => {
