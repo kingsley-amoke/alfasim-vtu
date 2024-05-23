@@ -285,7 +285,7 @@ export const fetchWalletHistory = async (email: string) => {
       .eq("email", email)
       .eq("purpose", "recharge");
 
-    let transaction: transactionTypes[] = transactions!;
+    let transaction: DBTransactionTypes[] = transactions!;
 
     if (error) {
       console.log(error);

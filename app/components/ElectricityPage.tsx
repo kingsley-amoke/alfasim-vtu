@@ -45,7 +45,7 @@ const ElectricityPage = () => {
       </div>
       <div className="flex w-full ">
         <div className="grow h-full w-full mt-5">
-          <SubscribeElectricity />
+          <SubscribeElectricity user={user}/>
         </div>
       </div>
       <div>

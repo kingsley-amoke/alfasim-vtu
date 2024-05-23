@@ -151,3 +151,17 @@ export interface PageProps {
     reference: string;
   };
 }
+
+export type alertPropsTypes = {
+  buttonProps: {
+    title:string,
+      onClick?: () => void,
+      loading: boolean,
+  },
+  headerProps: {
+      title: string,
+      description: string,
+  },
+  onCancel: () => void,
+  onConfirm: () => void,
+  }

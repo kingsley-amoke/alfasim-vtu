@@ -1,11 +1,33 @@
 "use client";
 
+import { alertPropsTypes, userDataTypes } from "@/lib/types";
 import React, { useState } from "react";
+import ConfirmationPopUp from "./ConfirmationPopUp";
 
-const SubscribeElectricity = () => {
+const SubscribeElectricity = ({user}: {user: userDataTypes}) => {
   const providers = ["IBEC", "EEDC"];
+
+
+  const [meterType, setMeterType] = useState('')
+  const [meterNumber, setMeterNumber] = useState('')
+
   const [amount, setAmount] = useState<string>("");
   const [amountToPay, setAmountToPay] = useState<number>(0);
+
+  const [loading, setLoading] = useState(false)
+
+
+
+const meterTypes = [
+  {
+    id: 1,
+    name: 'PREPAID'
+  },
+  {
+    id: 2,
+    name: 'POSTPAID'
+  }
+]
 
   //calculate discount
 
@@ -21,25 +43,38 @@ const SubscribeElectricity = () => {
   const inputStyle =
     "outline-none border border-teal-800 dark:border-white p-2 rounded-sm w-full";
 
-  const handleSubmitForm = (formData: FormData) => {
-    let provider = formData.get("provider");
 
-    let meterType = formData.get("meter-type");
+  const handleCancel = () => {
+    setLoading(false);
+  }
 
-    let meterNumber = formData.get("meter-number");
-    let amount = formData.get("amount");
-    let amountToPay = formData.get("amount-to-pay");
+  const handleSubmitForm = async () => {
+
 
     const dataInfo = {
-      provider: provider,
-      meterType: meterType,
-      meterNumber: meterNumber,
+      disco_name: 'disco',
+      MeterType: meterType,
+      meter_number: meterNumber,
       amount: amount,
-      amountToPay: amountToPay,
     };
 
     console.log(dataInfo);
   };
+
+  const info:alertPropsTypes = {
+    buttonProps:{
+      loading: loading,
+      title: 'Validate',
+
+    },
+    headerProps: {
+      title: `Hi ${user?.username}, Are you sure you want to proceed?`,
+      description: 'You will be charged NGN'+ amountToPay.toString() + ' ' + 'for this subscription'
+    },
+    onCancel:handleCancel,
+    onConfirm: handleSubmitForm
+
+  }
 
   return (
     <div className="flex flex-col justify-start items-center h-screen ml-10 mr-5">
@@ -51,14 +86,15 @@ const SubscribeElectricity = () => {
         <select name="provider" id="provider" className={inputStyle}>
           <option value="default">-----</option>
           {providers.map((provider) => (
-            <option value="provider">{provider}</option>
+            <option value="provider" key={provider}>{provider}</option>
           ))}
         </select>
         <label htmlFor="meter-type">Meter Type*</label>
-        <select name="provider" id="provider" className={inputStyle}>
+        <select name="meter-type" id="meter-type" className={inputStyle} onChange={(e) => setMeterType(e.target.value)}>
           <option value="default">-----</option>
-          <option value="prepaid">Prepaid</option>
-          <option value="postpaid">Postpaid</option>
+          {meterTypes.map((type) => (
+            <option value={type.id} key={type.id}>{type.name}</option>
+          ))}
         </select>
 
         <label htmlFor="meter-number">Meter Number*</label>
@@ -67,6 +103,7 @@ const SubscribeElectricity = () => {
           name="meter-number"
           placeholder="1234456"
           className={inputStyle}
+          onChange={(e) => setMeterNumber(e.target.value)}
         />
         <label htmlFor="amount">Amount (NGN)*</label>
         <input
@@ -86,13 +123,10 @@ const SubscribeElectricity = () => {
           className={inputStyle}
           value={amountToPay}
           disabled
+          
         />
 
-        <input
-          type="submit"
-          value="Continue"
-          className="hover:bg-teal-800 py-2 px-6 hover:text-white bg-white border hover:border-white border-teal-800 text-teal-800 rounded-md md:w-1/5"
-        />
+        <ConfirmationPopUp info={info}/>
       </form>
       <div className="w-1/2 md:w-1/5 border border-teal-800 dark:border-white py-2 md:py-5 px-5 md:px-10 dark:bg-black bg-teal-800 text-white rounded-md  text-center absolute top-[8.5rem] md:top-[8rem]">
         Electricity

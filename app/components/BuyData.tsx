@@ -704,7 +704,7 @@ const BuyData = ({
             {loading ? "Submitting" : "Buy Data"}
           </button> */}
 
-            <AlertDialog>
+          <AlertDialog>
               <AlertDialogTrigger asChild>
                 <Button
                   variant="outline"
@@ -742,7 +742,7 @@ const BuyData = ({
                   </AlertDialogAction>
                 </AlertDialogFooter>
               </AlertDialogContent>
-            </AlertDialog>
+            </AlertDialog>  
           </form>
         ) : (
           <div className="h-full w-full flex flex-col gap-5 py-20 p justify-center items-center bg-teal-800/20 dark:bg-black/20 ">

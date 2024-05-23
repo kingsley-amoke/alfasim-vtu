@@ -45,7 +45,7 @@ const CablePage = () => {
       </div>
       <div className="flex w-full ">
         <div className="grow h-full w-full mt-5">
-          <SubscribeCable />
+          <SubscribeCable user={user}/>
         </div>
       </div>
       <div>

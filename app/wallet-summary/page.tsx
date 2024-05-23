@@ -4,8 +4,7 @@ import {
   getLoggedUser,
 } from "@/lib/data";
 import React from "react";
-import WalletPage from "../components/TransactionsPage";
-import { transactionTypes } from "@/lib/types";
+import WalletSummaryPage from "../components/WalletSummaryPage";
 
 const page = async () => {
   const user = await getLoggedUser();
@@ -14,14 +13,15 @@ const page = async () => {
 
   const wallet = await fetchWalletHistory(email);
 
-  const transactions = wallet!;
+  const transactions = wallet?.reverse()!;
+
   const response = await fetchNotifications();
 
   const notifications = response!;
 
   return (
     <div>
-      <WalletPage transactions={transactions} notifications={notifications} />
+      <WalletSummaryPage transactions={transactions} notifications={notifications} />
     </div>
   );
 };

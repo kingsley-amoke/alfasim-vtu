@@ -2,9 +2,9 @@
 
 import React, { useState } from "react";
 
-import { planTypes } from "@/lib/types";
+import { planTypes, userDataTypes } from "@/lib/types";
 
-const SubscribeCable = () => {
+const SubscribeCable = ({user}: {user: userDataTypes}) => {
 	const [plan, setPlan] = useState<planTypes[]>([{ plan: "", price: "" }]);
 
 	//DSTV plans

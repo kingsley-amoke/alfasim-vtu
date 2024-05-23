@@ -1,7 +1,7 @@
 "use client";
 
 import { buyAirtime, deductBalance, setTransaction } from "@/lib/data";
-import { Plan, transactionTypes, userDataTypes } from "@/lib/types";
+import { Plan, alertPropsTypes, transactionTypes, userDataTypes } from "@/lib/types";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -17,6 +17,8 @@ import { Button } from "@/lib/ui/button";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
+import ConfirmationPopUp from "./ConfirmationPopUp";
+import { LoadingSkeleton } from "./Skeleton";
 
 const BuyData = ({ user }: { user: userDataTypes }) => {
   const inputStyle =
@@ -125,7 +127,7 @@ const BuyData = ({ user }: { user: userDataTypes }) => {
       return
     }
 
-    if (response.results[0].Status === 'successful') {
+    if (response.Status === 'successful') {
 
       //create a transaction
 
@@ -133,8 +135,8 @@ const BuyData = ({ user }: { user: userDataTypes }) => {
         email: user?.email,
         amount: amountToPay,
         purpose: "airtime",
-        status: response.results[0].Status,
-        transactionId: response.results[0].ident,
+        status: response.Status,
+        transactionId: response.ident,
         phone: phone,
         network: networkName,
         planSize: amount,
@@ -152,7 +154,7 @@ const BuyData = ({ user }: { user: userDataTypes }) => {
       setLoading(false);
     }else{
       
-      if(response.results[0].Status !== "failed"){
+      if(response.Status !== "failed"){
         await deductBalance(user?.email, amountToPay);
       }
 
@@ -161,8 +163,8 @@ const BuyData = ({ user }: { user: userDataTypes }) => {
         email: user?.email,
         amount: amountToPay,
         purpose: "airtime",
-        status: response.results[0].Status,
-        transactionId: response.results[0].ident,
+        status: response.Status,
+        transactionId: response.ident,
         phone: phone,
         network: network,
         planSize: amount,
@@ -175,11 +177,28 @@ const BuyData = ({ user }: { user: userDataTypes }) => {
       toast.error(response.Status)
       setLoading(false);
     }
+    setLoading(false);
   };
+
+  const info:alertPropsTypes = {
+    buttonProps:{
+      loading: loading,
+      title: 'Buy Airtime',
+
+    },
+    headerProps: {
+      title: `Hi ${user?.username}`,
+      description: `Are you sure that you want to buy NGN${amount} worth NGN
+      ${amountToPay} for ${phone}`
+    },
+    onCancel:onCancelSubmit,
+    onConfirm: handleSubmitForm
+
+  }
 
   return (
     <div className="flex flex-col justify-start items-center h-screen ml-10 mr-5 pt-9">
-      <form className="w-full border border-teal-800 dark:border-white dark:bg-black flex flex-col gap-2 p-5 mt-5 pt-20 bg-gray-200">
+      {loading?(<form className="w-full border border-teal-800 dark:border-white dark:bg-black flex flex-col gap-2 p-5 mt-5 pt-20 bg-gray-200">
         <label htmlFor="network">Network*</label>
         <select
           name="network"
@@ -223,45 +242,15 @@ const BuyData = ({ user }: { user: userDataTypes }) => {
           onChange={(e) => setAmountToPay(e.target.value)}
         />
 
-        <AlertDialog>
-          <AlertDialogTrigger asChild>
-            <Button
-              variant="outline"
-              disabled={loading ? true : false}
-              className={`text-teal-800 rounded-md md:w-1/5   ${
-                loading
-                  ? "bg-gray-400"
-                  : "bg-white cursor-pointer hover:bg-teal-800 hover:border-white hover:text-white"
-              }`}
-            >
-              Buy Airtime
-            </Button>
-          </AlertDialogTrigger>
-          <AlertDialogContent>
-            <AlertDialogHeader>
-              <AlertDialogTitle>Hello {user?.username}!!</AlertDialogTitle>
-              <AlertDialogDescription>
-                Are you sure that you want to buy NGN{amount} worth NGN
-                {amountToPay} for {phone}
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogCancel
-                onClick={() => onCancelSubmit()}
-                className="mt-5"
-              >
-                Cancel
-              </AlertDialogCancel>
-              <AlertDialogAction
-                onClick={() => handleSubmitForm()}
-                className="border rounded-md cursor-pointer bg-teal-800 hover:border-white text-white w-full"
-              >
-                Confirm
-              </AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
+       <ConfirmationPopUp info={info}/>
       </form>
+      ):
+      (
+        <div className="h-full w-full flex flex-col gap-5 py-20 p justify-center items-center bg-teal-800/20 dark:bg-black/20 ">
+            <p className="font-bold text-3xl px-10">Processing please wait!!</p>
+            <LoadingSkeleton />
+          </div>
+      )}
       <div className="w-1/2 md:w-1/5 border border-teal-800 dark:border-white py-2 md:py-5 px-5 md:px-10  bg-teal-800 dark:bg-black  text-white rounded-md  text-center absolute top-[8.5rem] md:top-[8rem]">
         Buy Airtime
       </div>
