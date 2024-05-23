@@ -1,6 +1,6 @@
 "use client";
 
-import { buyAirtime, setTransaction } from "@/lib/data";
+import { buyAirtime, deductBalance, setTransaction } from "@/lib/data";
 import { Plan, transactionTypes, userDataTypes } from "@/lib/types";
 import {
   AlertDialog,
@@ -16,6 +16,7 @@ import {
 import { Button } from "@/lib/ui/button";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
+import toast from "react-hot-toast";
 
 const BuyData = ({ user }: { user: userDataTypes }) => {
   const inputStyle =
@@ -60,16 +61,117 @@ const BuyData = ({ user }: { user: userDataTypes }) => {
 
   const handleSubmitForm = async () => {
 
-    const dataInfo = {
-      network_id: network,
+    if(!user || !phone || !amount || !network) return
+
+
+    if(parseInt(user?.balance) <  parseInt(amountToPay)) {
+      
+      toast.error("Insufficient Balance");
+      return
+    }
+
+    setLoading(true);
+  
+    const airtimeInfo = {
+      network: network,
       amount: amount,
       mobile_number: phone,
       Ported_number: true,
       airtime_type: "VTU",
     };
 
-    // const response = await buyAirtime(dataInfo);
-    console.log(dataInfo);
+    console.log(airtimeInfo);
+
+    const response = await buyAirtime(airtimeInfo);
+   
+    if(!response){
+      const data: transactionTypes = {
+        email: user?.email,
+        amount: amountToPay,
+        purpose: "airtime",
+        status: 'failed',
+        transactionId: 'failed',
+        phone: phone,
+        network: network,
+        planSize: amount,
+        previousBalance: user.balance,
+        newBalance: user.balance
+      };
+
+      const transaction = await createDataTransaction(data);
+      console.log(transaction);
+      toast.error('failed')
+      setLoading(false);
+      return
+    }
+
+    if (response.results[0].Status === 'successful') {
+
+      //create a transaction
+
+      let networkName = ''
+      
+      switch(network) {
+        case '1':
+          networkName =  'MTN'
+          break;
+        case '2':
+          networkName = 'Glo'
+          break;
+        case '3':
+          networkName = '9mobile'
+          break;
+        case '4':
+          networkName = 'Airtel'
+          break;
+      }
+
+      const data: transactionTypes = {
+        email: user?.email,
+        amount: amountToPay,
+        purpose: "airtime",
+        status: response.results[0].Status,
+        transactionId: response.results[0].ident,
+        phone: phone,
+        network: networkName,
+        planSize: amount,
+        previousBalance: user.balance,
+        newBalance: (parseInt(user.balance) - parseInt(amountToPay)).toString(),
+      };
+      
+      const transacrion = await createDataTransaction(data);
+      console.log(transacrion);
+
+      await deductBalance(user?.email, amountToPay);
+      
+      toast.success("Successfull");
+      router.replace("/dashboard");
+      setLoading(false);
+    }else{
+      
+      if(response.results[0].Status !== "failed"){
+        await deductBalance(user?.email, amountToPay);
+      }
+
+
+      const data: transactionTypes = {
+        email: user?.email,
+        amount: amountToPay,
+        purpose: "airtime",
+        status: response.results[0].Status,
+        transactionId: response.results[0].ident,
+        phone: phone,
+        network: network,
+        planSize: amount,
+        previousBalance: user.balance,
+        newBalance: response.results[0].Status === "failed" ? user.balance : (parseInt(user.balance) - parseInt(amountToPay)).toString()
+      };
+
+      const transaction = await createDataTransaction(data);
+      console.log(transaction);
+      toast.error(response.Status)
+      setLoading(false);
+    }
   };
 
   return (

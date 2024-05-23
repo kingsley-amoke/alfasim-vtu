@@ -12,7 +12,7 @@ const page = async () => {
   const { email } = user!;
   const airtime = await fetchAirtimeHistory(email);
 
-  const transactions = airtime!;
+  const transactions = airtime?.reverse()!;
 
   const response = await fetchNotifications();
 

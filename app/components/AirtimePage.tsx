@@ -47,7 +47,7 @@ const AirtimePage = () => {
       </div>
       <div className="flex w-full ">
         <div className="grow h-full w-full mt-5">
-          <BuyAirtime />
+          <BuyAirtime user={user}/>
         </div>
       </div>
       <div>

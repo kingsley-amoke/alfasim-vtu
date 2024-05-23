@@ -526,6 +526,27 @@ const BuyData = ({
     console.log(dataInfo);
 
     const response = await buyData(dataInfo);
+
+    if(!response){
+      const data: transactionTypes = {
+        email: user?.email,
+        amount: transactionAmount.toString(),
+        purpose: "data",
+        status: 'failed',
+        transactionId: 'failed',
+        phone: phone,
+        network: currentNetwork,
+        planSize: selectedPlan.plan,
+        previousBalance: user.balance,
+        newBalance: user.balance 
+      };
+
+      const transaction = await createDataTransaction(data);
+      console.log(transaction);
+      toast.error('failed')
+      setLoading(false);
+      return
+    }
    
     if (response.Status === 'successful') {
 
@@ -554,7 +575,9 @@ const BuyData = ({
       router.replace("/dashboard");
       setLoading(false);
     }else{
-      console.log(response)
+      if(response.Status !== "failed"){
+        await deductBalance(user?.email, transactionAmount.toString());
+      }
       
 
       const data: transactionTypes = {

@@ -52,7 +52,10 @@ export const recharge = async (email: string | undefined, amount: string) => {
 
 //deducts from user balance
 
-export const deductBalance = async (email: string | undefined, amount: string) => {
+export const deductBalance = async (
+  email: string | undefined,
+  amount: string
+) => {
   try {
     const userData = await fetchUser(email);
 
@@ -79,7 +82,18 @@ export const setTransaction = async (transaction: transactionTypes) => {
     const { data, error } = await serverClient()
       .from("transactions")
       .insert([
-        { email: transaction.email, amount: transaction.amount, purpose: transaction.purpose, status: transaction.status, transaction_id: transaction.transactionId, phone: transaction.phone, network: transaction.network, plan_size:transaction.planSize, previous_balance:transaction.previousBalance, new_balance:transaction.newBalance},
+        {
+          email: transaction.email,
+          amount: transaction.amount,
+          purpose: transaction.purpose,
+          status: transaction.status,
+          transaction_id: transaction.transactionId,
+          phone: transaction.phone,
+          network: transaction.network,
+          plan_size: transaction.planSize,
+          previous_balance: transaction.previousBalance,
+          new_balance: transaction.newBalance,
+        },
       ])
       .select();
     return { data, error };
@@ -317,7 +331,7 @@ export const fetchAirtimeHistory = async (email: string) => {
       .eq("email", email)
       .eq("purpose", "airtime");
 
-    let transaction: transactionTypes[] = transactions!;
+    let transaction: DBTransactionTypes[] = transactions!;
 
     if (error) {
       console.log(error);
@@ -485,31 +499,30 @@ export const buyData = async (data: {
   //   console.log(error);
   // }
 
-
   const input = {
-    "network": data.network,
-    "mobile_number": data.mobile_number,
-    "plan": data.plan,
-    "Ported_number": true
+    network: data.network,
+    mobile_number: data.mobile_number,
+    plan: data.plan,
+    Ported_number: true,
   };
-  
+
   let response = await fetch(`${asbUrl}/data/`, {
-    method: 'POST',
+    method: "POST",
     headers: getASBHeaders(),
-    body: JSON.stringify(input)
+    body: JSON.stringify(input),
   })
-  .then(response => {
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
-    return response.json();
-  })
-  .then(data => {
-    return data
-  })
-  .catch(error => {
-    console.error('There was a problem with your fetch operation:', error);
-  });
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      return response.json();
+    })
+    .then((data) => {
+      return data;
+    })
+    .catch((error) => {
+      console.error("There was a problem with your fetch operation:", error);
+    });
 
   return response;
 };
@@ -517,21 +530,29 @@ export const buyData = async (data: {
 //buy airtime
 
 export const buyAirtime = async (data: {
-  network_id: number;
-  amount: number;
+  network: string;
+  amount: string;
   mobile_number: string;
   Ported_number: boolean;
   airtime_type: string;
 }) => {
-  const options = {
+  const response = await fetch(`${asbUrl}/topup`, {
     method: "POST",
     headers: getASBHeaders(),
     body: JSON.stringify(data),
-  };
-  try {
-    const res = await axios.post(`${asbUrl}/topup`, options);
-    return res;
-  } catch (error) {
-    console.log(error);
-  }
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      return response.json();
+    })
+    .then((data) => {
+      return data;
+    })
+    .catch((error) => {
+      console.error("There was a problem with your fetch operation:", error);
+    });
+
+  return response;
 };
