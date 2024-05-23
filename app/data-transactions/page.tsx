@@ -12,7 +12,7 @@ const page = async () => {
   const { email } = user!;
   const data = await fetchDataHistory(email);
 
-  const transactions = data!;
+  const transactions = data?.reverse()!;
 
   const response = await fetchNotifications();
 

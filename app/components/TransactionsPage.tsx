@@ -107,21 +107,22 @@ const WalletPage = ({
                   {`NGN ${transaction.amount}`}
                 </TableCell>
                 <TableCell className="text-left flex justify-center items-center">
-                  {transaction.status === "completed" ? (
+                  {transaction.status === "successful" ? (
                     <div className="flex items-center justify-between gap-5">
                       Completed
                       <CircleCheckBig color="green" />
                     </div>
-                  ) : transaction.status === "pending" ? (
-                    <div className="flex items-center justify-between gap-5">
-                      Pending
-                      <CircleDotDashedIcon color="orange" />
-                    </div>
-                  ) : (
+                  ) : transaction.status === "failed" ? (
                     <div className="flex items-center justify-between gap-5">
                       Failed
                       <Ban color="red" />
                     </div>
+                  ) : (
+                    
+                    <div className="flex items-center justify-between gap-5">
+                    Pending
+                    <CircleDotDashedIcon color="orange" />
+                  </div>
                   )}
                 </TableCell>
               </TableRow>
