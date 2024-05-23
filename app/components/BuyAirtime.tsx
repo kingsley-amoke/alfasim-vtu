@@ -83,6 +83,8 @@ const BuyData = ({ user }: { user: userDataTypes }) => {
     console.log(airtimeInfo);
 
     const response = await buyAirtime(airtimeInfo);
+
+    console.log(response)
    
     if(!response){
       const data: transactionTypes = {
