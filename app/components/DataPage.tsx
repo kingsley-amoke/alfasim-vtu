@@ -12,10 +12,9 @@ import { dataPlanTypes } from "@/lib/types";
 const DataPage = ({ plans }: { plans: dataPlanTypes }) => {
   const [unreadNotification, setUnreadNotification] = useState(0);
   const [user, setUser] = useState({
+    email: '',
     username: "",
     balance: "",
-    referrals: "",
-    referral_bonus: "",
   });
 
   const handleCount = async () => {
