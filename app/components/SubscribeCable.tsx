@@ -112,7 +112,9 @@ const SubscribeCable = ({user}: {user: userDataTypes}) => {
 				<select name="cable-plan" id="cable-plan" className={inputStyle}>
 					{/* <option value="default">-----</option> */}
 					{plan.map((plan) => (
-						<option value={plan.plan} className="flex items-center">
+						<option key={plan.plan
+							
+						} value={plan.plan} className="flex items-center">
 							{plan.plan}
 							{"--------"}
 							{plan.price}

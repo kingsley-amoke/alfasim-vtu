@@ -8,7 +8,7 @@ import FundWallet from "../components/FundWallet";
 import Pay from "../pay/components/Pay";
 import { userDataTypes } from "@/lib/types";
 
-const page = () => {
+const RechargePage = () => {
   const [unreadNotification, setUnreadNotification] = useState(0);
   const [user, setUser] = useState<userDataTypes>({
     email: '',
@@ -47,4 +47,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default RechargePage;

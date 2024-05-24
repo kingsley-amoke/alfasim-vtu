@@ -9,9 +9,8 @@ const page = async ({ searchParams }: PageProps) => {
     if (searchParams) {
       if (searchParams.reference && searchParams.trxref) {
         //please retry payment verification multiple times to avoid errors associated with payment confirmation
-        const paymentStatus = await verifyPaystackTransaction({
-          reference: searchParams.reference,
-        });
+        const paymentStatus = await verifyPaystackTransaction(searchParams.reference,
+        );
 
         if (paymentStatus) {
           if (

@@ -1,6 +1,7 @@
 'use client'
 
 
+import Image from "next/image";
 import {useRouter} from "next/navigation";
 export default function NotFound() {
 
@@ -16,7 +17,7 @@ export default function NotFound() {
               <div className="flex flex-col justify-between gap-64 items-center">
                 <div>
                   <h1 className="my-2 font-bold text-2xl">
-                    Looks like you've found the doorway to the great nothing
+                    Looks like you have found the doorway to the great nothing
                   </h1>
                   <p className="my-2">
                     Sorry about that! Please visit our hompage to get where you
@@ -29,12 +30,12 @@ export default function NotFound() {
               </div>
             </div>
             <div>
-              <img src="https://i.ibb.co/G9DC8S0/404-2.png" />
+              <Image src="https://i.ibb.co/G9DC8S0/404-2.png" alt="alt2"/>
             </div>
           </div>
         </div>
         <div>
-          <img src="https://i.ibb.co/ck1SGFJ/Group.png" />
+          <Image src="https://i.ibb.co/ck1SGFJ/Group.png" alt="alt"/>
         </div>
       </div>
     </div>

@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import React from "react";
 
 const ConfirmPayment = () => {
@@ -12,7 +13,7 @@ const ConfirmPayment = () => {
         <p className="text-gray-600 mb-4">
           Your generous contribution of ${20} will make a significant impact.
         </p>
-        <img
+        <Image
           className="w-full h-auto rounded"
           src="https://media.istockphoto.com/id/1183770076/vector/thank-you-hand-lettering-for-holiday-thanksgiving-day.jpg?s=612x612&w=0&k=20&c=DT8uCFB7E9lqvmyHMKa0H8dthWzprr8xGcF5GWoLdAM="
           alt="Success Image"

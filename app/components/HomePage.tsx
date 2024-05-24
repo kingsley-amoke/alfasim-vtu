@@ -117,7 +117,7 @@ const HomePage = () => {
       } else {
         dialogRef.current?.close();
       }
-    }, [reference]);
+    });
   
 
   
