@@ -418,7 +418,7 @@ export const verifyPaystackTransaction = async (reference: string) => {
 
 //paystack function for creating new customer
 
-export const createCustomer = async (data: userDataTypes) => {
+export const createCustomer = async (data: any) => {
   const options = {
     method: "POST",
     headers: getPaystackHeaders(),

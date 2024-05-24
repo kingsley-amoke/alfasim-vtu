@@ -62,7 +62,8 @@ const SignupForm = () => {
       email: email,
       first_name: firstName,
       last_name: lastName,
-      phone: phone,
+      phone: phone
+
     };
 
     try {
