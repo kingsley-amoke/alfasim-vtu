@@ -40,7 +40,11 @@ const Navbar = ({ user, count }: { count?: number; user?: userDataTypes }) => {
       {loggedInPaths.includes(path) && <DrawerWrapper user={user} />}
       
       {path == "/" && (
-        <div className="flex gap-32 items-center">
+        <>
+          <div className="md:hidden flex-1 w-full text-center text-xl font-bold">ALFASIM TELECOM</div>
+        <div className=" hidden w-full md:flex gap-32 justify-between items-center">
+         
+          <div>
           <div className="hidden md:flex">
             <ul className="flex gap-10">
               <li className="hover:text-teal-800">
@@ -54,7 +58,7 @@ const Navbar = ({ user, count }: { count?: number; user?: userDataTypes }) => {
               </li>
             </ul>
           </div>
-          <div>
+          
             <div className="hidden md:flex gap-4">
               <ToggleTheme />
 
@@ -64,9 +68,13 @@ const Navbar = ({ user, count }: { count?: number; user?: userDataTypes }) => {
             </div>
           </div>
         </div>
+        </>
       )}
       {path == "/register" && (
-        <div className="flex gap-32 items-center">
+        <>
+        <div className="md:hidden flex-1 w-full text-center text-xl font-bold">ALFASIM TELECOM</div>
+        <div className="hidden md:flex gap-32 items-center">
+          
           <div className="hidden md:flex">
             <ul className="flex gap-10">
               <li className="hover:text-teal-800">
@@ -88,9 +96,12 @@ const Navbar = ({ user, count }: { count?: number; user?: userDataTypes }) => {
             </div>
           </div>
         </div>
+      </>
       )}
       {path == "/login" && (
-        <div className="flex gap-32 items-center">
+        <>
+          <div className="md:hidden flex-1 w-full text-center text-xl font-bold">ALFASIM TELECOM</div>
+        <div className="hidden md:flex gap-32 items-center">
           <div className="hidden md:flex">
             <ul className="flex gap-10">
               <li className="hover:text-teal-800">
@@ -104,7 +115,7 @@ const Navbar = ({ user, count }: { count?: number; user?: userDataTypes }) => {
               </li>
             </ul>
           </div>
-          <div>
+          <div className="hidden md:flex">
             <div className="hidden md:flex gap-4">
               <ToggleTheme />
 
@@ -112,6 +123,7 @@ const Navbar = ({ user, count }: { count?: number; user?: userDataTypes }) => {
             </div>
           </div>
         </div>
+        </>
       )}
       {loggedInPaths.includes(path) && (
         <div className="flex items-center gap-5">
