@@ -34,10 +34,10 @@ const NotificationPage = ({
 
   const count = unreadNotifications.length;
   const [user, setUser] = useState({
+    email:'',
     username: "",
     balance: "",
-    referrals: "",
-    referral_bonus: "",
+   
   });
 
   const fetchLoggedUser = async () => {
