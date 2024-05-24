@@ -4,13 +4,18 @@ import React, { useEffect, useRef, useState } from "react";
 
 import Navbar from "../components/Navbar";
 import Dashboard from "../components/Dashboard";
-import { fetchNotifications, getLoggedUser } from "@/lib/data";
+import { fetchNotifications, getLoggedUser, recharge, setTransaction, verifyPaystackTransaction } from "@/lib/data";
 import Modal from "./Modal";
 import Footer from "./Footer";
-import { useSearchParams } from "next/navigation";
-import { userDataTypes } from "@/lib/types";
+import { useRouter, useSearchParams } from "next/navigation";
+import { transactionTypes, userDataTypes } from "@/lib/types";
 
 const HomePage = () => {
+
+  const router = useRouter()
+
+
+
   const [unreadNotification, setUnreadNotification] = useState(0);
   const [user, setUser] = useState<userDataTypes>({
     email: "",
@@ -33,13 +38,63 @@ const HomePage = () => {
   const fetchLoggedUser = async () => {
     const data = await getLoggedUser();
 
-    data && setUser(data);
+ if(data){
+    setUser(data);
+
+    verifyPayment(data)
+ }
   };
 
   const searchParams = useSearchParams();
 	const dialogRef = useRef<null | HTMLDialogElement>(null);
 	const showDialog = searchParams.get("showDialog");
+  const reference = searchParams.get("trxref");
 
+
+  const verifyPayment = async (user: userDataTypes) => {
+
+    if(reference) {
+
+    const response = await verifyPaystackTransaction(reference)
+    if(response.data.status === 'success'){
+
+      const trans: transactionTypes = {
+        email: user.email,
+        purpose: 'wallet',
+        amount: (response.data.amount / 100).toString(),
+        status: response.data.status,
+        network: response.data.channel,
+        planSize: response.data.currency,
+        previousBalance: user?.balance,
+        newBalance: ((response.data.amount / 100) + parseInt(user?.balance)).toString(),
+        phone: reference,
+        transactionId: response.data.id
+      }
+
+      await recharge(user?.email, trans.amount)
+
+      await setTransaction(trans)
+      router.replace('/')
+     
+    } else{
+      const trans: transactionTypes = {
+        email: user.email,
+        purpose: 'wallet',
+        amount: (response.data.amount / 100).toString(),
+        status: response.data.status,
+        network: response.data.channel,
+        planSize: response.data.currency,
+        previousBalance: user?.balance,
+        newBalance: user?.balance,
+        phone: reference,
+        transactionId: response.data.id
+      }
+
+      await setTransaction(trans)
+      router.replace('/')
+    }
+    }
+  }
 
 
   const closeDialog = () => {
@@ -52,15 +107,17 @@ const HomePage = () => {
 
 
   useEffect(() => {
-    fetchLoggedUser();
+    const data = fetchLoggedUser();
     handleCount();
+
+  
 
       if (showDialog === "y") {
         dialogRef.current?.showModal();
       } else {
         dialogRef.current?.close();
       }
-    }, [showDialog]);
+    }, [reference]);
   
 
   

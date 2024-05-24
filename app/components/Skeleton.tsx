@@ -17,7 +17,7 @@ export { Skeleton };
 export function LoadingSkeleton() {
 	return (
 		<div className="flex items-center space-x-4">
-			<Skeleton className="h-20 w-20 rounded-full" />
+			<Skeleton className="h-10 md:h-20 w-10 md:w-20 rounded-full" />
 
 			<Skeleton className="h-4 w-4 rounded-full" />
 			<Skeleton className="h-4 w-4 rounded-full" />

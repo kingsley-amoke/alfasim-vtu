@@ -1,6 +1,6 @@
 "use client";
 
-import { paystackPay } from "@/lib/data";
+import { paystackPay, verifyPaystackTransaction } from "@/lib/data";
 import { userDataTypes } from "@/lib/types";
 import React, { useState } from "react";
 
@@ -20,9 +20,9 @@ export default function Pay({ user }: { user: userDataTypes }) {
       channels: ["bank_transfer", "card", "ussd", "bank"],
     });
     setSubmitting(false);
-    console.log(paystackResponse);
+    // console.log(paystackResponse.data.reference);
     if (paystackResponse.status === true) {
-      window.location.href = paystackResponse.data.authorization_url; //extract the redirection and user it for redirecting the donor to the unique page generated for them to make payment
+      window.location.href = paystackResponse.data.authorization_url;
     }
   };
 

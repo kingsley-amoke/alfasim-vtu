@@ -1,6 +1,12 @@
-import Link from "next/link";
+'use client'
 
+
+import {useRouter} from "next/navigation";
 export default function NotFound() {
+
+
+  const router = useRouter()
+
 	return (
     <div>
       <div className="lg:px-24 lg:py-24 md:py-20 md:px-44 px-4 py-24 items-center flex justify-center flex-col-reverse lg:flex-row md:gap-28 gap-16">
@@ -17,7 +23,7 @@ export default function NotFound() {
                     need to go.
                   </p>
                 </div>
-                <button className="sm:w-full lg:w-auto my-2 rounded md py-4 px-8 text-center hover:bg-teal-800 hover:text-white border border-teal-800 dark:border-white">
+                <button className="sm:w-full lg:w-auto my-2 rounded md py-4 px-8 text-center hover:bg-teal-800 hover:text-white border border-teal-800 dark:border-white" onClick={() => router.replace('/')}>
                   Go to Dashboard!
                 </button>
               </div>

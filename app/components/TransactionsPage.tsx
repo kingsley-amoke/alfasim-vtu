@@ -30,10 +30,9 @@ const WalletPage = ({
   const path = usePathname();
 
   const [user, setUser] = useState({
+    email: "",
     username: "",
     balance: "",
-    referrals: "",
-    referral_bonus: "",
   });
 
   const unreadNotifications = notifications.filter(

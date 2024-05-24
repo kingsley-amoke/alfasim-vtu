@@ -37,7 +37,7 @@ const Sidebar = ({ user }: { user: { username: string; balance: string } }) => {
 		},
 		{
 			link: "/convert-airtime",
-			title: "Airtime To Cash",
+			title: "Airtime 2 Cash",
 			icon: BiHome,
 		},
 		{
@@ -79,9 +79,9 @@ const Sidebar = ({ user }: { user: { username: string; balance: string } }) => {
 
 	return (
 		<div className="flex flex-col gap-2 bg-teal-800 text-gray-400 pt-32 w-full">
-			<div className="w-full flex justify-center items-center gap-5 py-3">
-				<div>
-					<RxAvatar size={50} />
+			<div className="w-full flex justify-between items-center gap-5 py-3">
+				<div className="w-10">
+					<RxAvatar size={50}/>
 				</div>
 				<div>
 					<p className="text-md text-white capitalize">{user?.username}</p>

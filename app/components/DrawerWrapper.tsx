@@ -47,7 +47,7 @@ import { userDataTypes } from "@/lib/types";
     },
     {
       link: "/convert-airtime",
-      title: "Airtime To Cash",
+      title: "Airtime 2 Cash",
       icon: BiHome,
     },
     {
@@ -139,10 +139,10 @@ const DrawerWrapper = ({
                     >
                       <Link
                         href={item.link}
-                        className="flex gap-2 justify-between items-center text-2xl"
+                        className="flex gap-5 justify-between items-center text-2xl"
                       >
                         {<item.icon />}
-                        <div className="flex justify-start w-[80%]">
+                        <div className="flex justify-start w-full md:w-[80%] text-left">
                           {item.title}
                         </div>
                       </Link>

@@ -240,7 +240,7 @@ export const fetchTransactions = async (email: string) => {
       .select()
       .eq("email", email);
 
-    let transactions: transactionTypes[] = data!;
+    let transactions: DBTransactionTypes[] = data!;
 
     if (error) {
       console.log(error);
@@ -283,7 +283,7 @@ export const fetchWalletHistory = async (email: string) => {
       .from("transactions")
       .select("*")
       .eq("email", email)
-      .eq("purpose", "recharge");
+      .eq("purpose", "wallet");
 
     let transaction: DBTransactionTypes[] = transactions!;
 
@@ -347,12 +347,11 @@ export const fetchAirtimeHistory = async (email: string) => {
 //paystack integration
 
 const secretKey: string = process.env.NEXT_PUBLIC_PAYSTACK_SECRET_KEY as string;
-const testKey: string = "sk_test_a1c26ed17b48cb17ff04568ce8e3c3561d5466e1";
 const paystackUrl: string = process.env
   .NEXT_PUBLIC_PAYSTACK_PAYMENT_URL as string;
 
 const getPaystackHeaders = () => ({
-  Authorization: `Bearer ${testKey}`,
+  Authorization: `Bearer ${secretKey}`,
   "Content-Type": "application/json",
 });
 
@@ -393,21 +392,25 @@ export const paystackPay = async ({
 
 //paystack function for confirming payment
 
-export const verifyPaystackTransaction = async ({
-  reference,
-}: VerifyParams) => {
-  const options = {
-    method: "GET",
-    headers: getPaystackHeaders(),
-  };
+export const verifyPaystackTransaction = async (reference: string) => {
+  
+
 
   try {
     const response = await fetch(
       `${paystackUrl}/transaction/verify/${reference}`,
-      options
-    );
-    const data = await response.json();
-    return data;
+      {
+      
+          method: "GET",
+          headers: {
+            'Authorization': `Bearer ${secretKey}`
+          },
+      
+      }
+    )
+      const data = await response.json();
+      return data
+  
   } catch (error) {
     return error;
   }
@@ -485,19 +488,7 @@ export const buyData = async (data: {
   mobile_number: string;
   Ported_number: boolean;
 }) => {
-  // const options = {
-  //   method: "POST",
-  //   headers: getASBHeaders(),
-  //   body: JSON.stringify(data),
-  // };
-  // try {
-  //   console.log(options)
-  //   const res = await fetch(`${asbUrl}/data`, options);
-  //   const data = res.json();
-  //   console.log(data)
-  // } catch (error) {
-  //   console.log(error);
-  // }
+
 
   const input = {
     network: data.network,

@@ -30,10 +30,10 @@ const WalletSummaryPage = ({
   const path = usePathname();
 
   const [user, setUser] = useState({
+    email: '',
     username: "",
     balance: "",
-    referrals: "",
-    referral_bonus: "",
+  
   });
 
   const unreadNotifications = notifications.filter(
@@ -74,7 +74,7 @@ const WalletSummaryPage = ({
             <TableRow>
               <TableHead className="md:w-[22rem] md:pl-32">ID</TableHead>
               <TableHead>Date</TableHead>
-
+              <TableHead>Payment Method</TableHead>
               <TableHead className="text-left">Amount</TableHead>
               <TableHead className="text-center">Status</TableHead>
             </TableRow>
@@ -94,13 +94,15 @@ const WalletSummaryPage = ({
                 <TableCell className="">
                   {transaction?.created_at?.slice(0, 10)}
                 </TableCell>
-                
+                <TableCell className="text-left">
+                  {transaction.network}
+                </TableCell>
 
                 <TableCell className="text-left">
                   {`NGN ${transaction.amount}`}
                 </TableCell>
                 <TableCell className="text-left flex justify-center items-center">
-                  {transaction.status === "successful" ? (
+                  {transaction.status === "success" ? (
                     <div className="flex items-center justify-between gap-5">
                       Completed
                       <CircleCheckBig color="green" />

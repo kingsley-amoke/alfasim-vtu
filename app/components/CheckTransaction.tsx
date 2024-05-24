@@ -14,14 +14,14 @@ const CheckTransaction = async ({transaction }:{transaction: DBTransactionTypes}
     
     <Table className="w-full lg:w-1/2 flex flex-col mt-40 mx-2 border border-teal-800 fixed left-[50%] -translate-x-[50%]">
     
-      <TableHeader className="text-center bg-teal-800 text-white py-5">Your purchase of {transaction.network} {transaction.plan_size} to {transaction.phone} {transaction.status === "failed" ? "has" : 'is'} {transaction.status}. </TableHeader>
+      <TableHeader className="text-center bg-teal-800 text-white py-5">{transaction.purpose === 'wallet' ? `Wallet recharge ${transaction.status}`: `Your purchase of ${transaction.network} ${transaction.plan_size} to ${transaction.phone} ${transaction.status === "failed" ? "has" : 'is'} ${transaction.status}.`} </TableHeader>
       <TableBody className="w-full">
         <TableRow className="flex flex-1">
-          <TableCell className="font-bold w-1/3 border border-r-1">Network</TableCell>
+          <TableCell className="font-bold w-1/3 border border-r-1">{transaction.purpose === 'wallet' ? "Payment Method" :"Network"}</TableCell>
           <TableCell>{transaction.network}</TableCell>
         </TableRow>
         <TableRow  className="flex flex-1">
-          <TableCell className="font-bold w-1/3 border border-r-1">Plan Size</TableCell>
+          <TableCell className="font-bold w-1/3 border border-r-1">{transaction.purpose === 'wallet' ? "Currency" :"Plan Size"}</TableCell>
           <TableCell>{transaction?.plan_size}</TableCell>
         </TableRow>
         <TableRow  className="flex flex-1">
@@ -37,7 +37,7 @@ const CheckTransaction = async ({transaction }:{transaction: DBTransactionTypes}
           <TableCell>NGN {transaction.amount}</TableCell>
         </TableRow>
         <TableRow  className="flex flex-1">
-          <TableCell className="font-bold w-1/3 border border-r-1">Phone</TableCell>
+          <TableCell className="font-bold w-1/3 border border-r-1">{transaction.purpose === 'wallet' ? "Reference" :"Phone"}</TableCell>
           <TableCell>{transaction.phone}</TableCell>
         </TableRow>
         <TableRow  className="flex flex-1">

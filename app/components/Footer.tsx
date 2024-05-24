@@ -3,7 +3,7 @@ import { BsInstagram, BsTwitterX } from "react-icons/bs";
 import { FaFacebook } from "react-icons/fa";
 import { LiaLinkedin } from "react-icons/lia";
 import Link from "next/link";
-import Image from "next/image";
+
 
 const Footer = () => {
 	return (
@@ -72,7 +72,7 @@ const Footer = () => {
         <hr className="md:hidden mb-5" />
         <div className="w-full md:w-1/6 mx-2">
           <h4 className="font-bold text-lg">Contact</h4>
-          <p className="pt-5 pb-2">Phone: 08635465798</p>
+          <p className="pt-5 pb-2">Phone: 08038095687</p>
           <p>email: alfasimdata@gmail.com</p>
         </div>
         <div className="flex md:hidden items-center gap-5 w-full justify-evenly mt-5">
