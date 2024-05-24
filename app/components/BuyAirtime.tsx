@@ -19,6 +19,7 @@ import React, { useState } from "react";
 import toast from "react-hot-toast";
 import ConfirmationPopUp from "./ConfirmationPopUp";
 import { LoadingSkeleton } from "./Skeleton";
+import { boolean } from "zod";
 
 const BuyData = ({ user }: { user: userDataTypes }) => {
   const inputStyle =
@@ -182,8 +183,9 @@ const BuyData = ({ user }: { user: userDataTypes }) => {
 
   const info:alertPropsTypes = {
     buttonProps:{
-      loading: loading,
+    
       title: 'Buy Airtime',
+      loading: loading
 
     },
     headerProps: {
@@ -198,7 +200,7 @@ const BuyData = ({ user }: { user: userDataTypes }) => {
 
   return (
     <div className="flex flex-col justify-start items-center h-screen ml-10 mr-5 pt-9">
-      {loading?(<form className="w-full border border-teal-800 dark:border-white dark:bg-black flex flex-col gap-2 p-5 mt-5 pt-20 bg-gray-200">
+      {!loading?(<form className="w-full border border-teal-800 dark:border-white dark:bg-black flex flex-col gap-2 p-5 mt-5 pt-20 bg-gray-200">
         <label htmlFor="network">Network*</label>
         <select
           name="network"

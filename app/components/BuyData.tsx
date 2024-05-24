@@ -704,7 +704,7 @@ const BuyData = ({
             {loading ? "Submitting" : "Buy Data"}
           </button> */}
 
-          <AlertDialog>
+          <AlertDialog >
               <AlertDialogTrigger asChild>
                 <Button
                   variant="outline"

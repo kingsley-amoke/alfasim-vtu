@@ -6,13 +6,11 @@ import React from 'react'
 
 const ConfirmationPopUp = ({info}: {info : alertPropsTypes}) => {
 
-    const buttonClick = info.buttonProps.onClick!
-
   return (
     <AlertDialog>
     <AlertDialogTrigger asChild>
       <Button
-      onClick={info.buttonProps.onClick ? () => buttonClick : undefined}
+      onClick={() => info.buttonProps.onClick ? info.buttonProps.onClick : undefined}
         variant="outline"
         disabled={info.buttonProps.loading ? true : false}
         className={`text-teal-800 rounded-md md:w-1/5   ${

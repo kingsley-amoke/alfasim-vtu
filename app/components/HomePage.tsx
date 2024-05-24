@@ -76,7 +76,7 @@ const HomePage = () => {
           </a>
           <br />
         </p>
-        <div className="flex ">
+        <div className="flex md:mt-40">
 							<button
 								onClick={clickOk}
 								className="py-2 px-4 bg-teal-800 dark:bg-black dark:border rounded-md text-white"

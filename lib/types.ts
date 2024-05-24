@@ -155,8 +155,9 @@ export interface PageProps {
 export type alertPropsTypes = {
   buttonProps: {
     title:string,
+    loading: boolean
       onClick?: () => void,
-      loading: boolean,
+      
   },
   headerProps: {
       title: string,
