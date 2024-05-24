@@ -10,13 +10,13 @@ export default function Pay({ user }: { user: userDataTypes }) {
 
   const email = user.email!;
 
-  const handleDonate = async (): Promise<void> => {
+  const handleRecharge = async (): Promise<void> => {
     setSubmitting(true);
     const paystackResponse = await paystackPay({
       amount: amount,
       email: email,
       currency: "NGN",
-      callback_url: "http://localhost:3000/pay/confirm-payment",
+      callback_url: "http://localhost:3000/dashboard",
       channels: ["bank_transfer", "card", "ussd", "bank"],
     });
     setSubmitting(false);
@@ -34,18 +34,32 @@ export default function Pay({ user }: { user: userDataTypes }) {
 
   return (
     <div className="flex items-center justify-center min-h-screen">
-      <div className="max-w-xl p-6 border border-teal-800 dark:border-white rounded-lg shadow-md flex">
-        <div className="w-1/2 pr-6">
-          <img className="w-full h-auto rounded" src="/logo.jpg" alt="logo" />
+      <div className="max-w-xl p-6 border border-teal-800 dark:border-white rounded-lg shadow-md flex flex-col md:flex-row">
+        <div className="md:w-1/2 pr-6 hidden md:block">
+          <h2>A</h2>
+          <h2>L</h2>
+          <h2>F</h2>
+          <h2>A</h2>
+          <h2>S</h2>
+          <h2>I</h2>
+          <h2>M</h2>
+          <h2><br /></h2>
+          <h2>T</h2>
+          <h2>E</h2>
+          <h2>L</h2>
+          <h2>E</h2>
+          <h2>C</h2>
+          <h2>O</h2>
+          <h2>M</h2>
         </div>
-        <div className="w-1/2">
+        <div className="md:w-1/2">
           <h2 className="text-2xl font-semibold mb-4">Recharge your wallet</h2>
-          <p className=" mb-4">
+          <h3 className=" mb-4">
             Enter the amount you want to fund your wallet with below. <br />{" "}
             <p className="font-bold">
               Note: All payments are processed by paystack.
             </p>
-          </p>
+          </h3>
           <div className="mb-4">
             <label
               htmlFor="donationAmount"
@@ -64,7 +78,7 @@ export default function Pay({ user }: { user: userDataTypes }) {
           </div>
           <button
             disabled={submitting}
-            onClick={handleDonate}
+            onClick={handleRecharge}
             className="w-full p-3  border border-teal-800 dark:border-white hover:text-white rounded hover:bg-teal-800"
           >
             {submitting ? "Please wait ..." : "Recharge Now"}

@@ -6,14 +6,14 @@ import Footer from "../components/Footer";
 import { fetchNotifications, getLoggedUser } from "@/lib/data";
 import FundWallet from "../components/FundWallet";
 import Pay from "../pay/components/Pay";
+import { userDataTypes } from "@/lib/types";
 
 const page = () => {
   const [unreadNotification, setUnreadNotification] = useState(0);
-  const [user, setUser] = useState({
+  const [user, setUser] = useState<userDataTypes>({
+    email: '',
     username: "",
     balance: "",
-    referrals: "",
-    referral_bonus: "",
   });
 
   const handleCount = async () => {

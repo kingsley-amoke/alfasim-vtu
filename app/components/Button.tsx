@@ -9,7 +9,7 @@ const Button = ({ links = "", action, children, ...props }: buttonTypes) => {
     <>
       <Link href={links}>
         <button
-          className="dark:border-white dark:bg-black dark:text-white hover:bg-teal-800 py-2 px-6 hover:text-white bg-white border hover:border-white border-teal-800 text-teal-800 rounded-md"
+          className="dark:border-white dark:bg-black dark:text-white hover:bg-teal-800 py-2 px-6 hover:text-white bg-white border hover:border-white border-teal-800 text-teal-800 rounded-md w-full"
           onClick={() => {
             action;
           }}

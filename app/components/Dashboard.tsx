@@ -36,39 +36,46 @@ const Dashboard = ({
 	const handleRedeem = async () => {
 		redeemRef.current.disabled = true;
 
+    if(user.referral_bonus){
+      
 		if (user?.referral_bonus === "0") {
 			toast.error("No bonus this time, refer people to earn!");
 			return;
 		}
 
-		const response = await redeemBonus(user?.username, user?.referral_bonus);
+
+		const response = await redeemBonus(user.username, user.referral_bonus);
 
 		response?.error && toast.error("An error occured");
 
 		toast.success("Bonus has been added to your wallet");
 
 		router.refresh;
+    }
 	};
 
 	const statsStyle =
-    " w-full md:w-1/3 flex justify-center items-center py-4 gap-10 cursor-pointer";
+    "w-full md:w-1/3 flex justify-between md:justify-center px-5 mr-5 md:mr-0 items-center py-4 md:gap-10 cursor-pointer";
 
   const cardStyles =
     "h-full w-full rounded-lg p-5 flex flex-wrap flex-col justify-center gap-2 cursor-pointer hover:shadow-teal-300 hover:shadow-lg border border-white bg-teal-800 dark:bg-black text-white";
 
   return (
     <div>
-      <section className="flex bg-teal-800 dark:bg-black text-white flex-col md:flex-row gap-32 justify-between items-center px-10 py-20">
+      <section className="flex bg-teal-800 dark:bg-black text-white flex-col md:flex-row gap-5 md:gap-32 justify-between items-center px-2 md:px-10 pt-5 pb-10 md:py-20">
         <div>
+          <div className="flex w-full justify-between items-center">
+
           <h5 className="capitalize">{`Hi ${user?.username}!`}</h5>
-          <div className="w-full flex justify-between items-center">
-            <h2 className="mb-5 text-3xl font-bold">WELCOME TO ALFASIM DATA</h2>
             <div
               className="md:hidden cursor-pointer"
               onClick={handleNotification}
             >
               <Notification count={count} />
             </div>
+          </div>
+          <div className="w-full flex justify-between items-center">
+            <h2 className="mb-5 text-xl md:text-3xl font-bold">WELCOME TO ALFASIM DATA</h2>
           </div>
           <p>
             We offer the most affordable and cheapest data, airtime, <br />
@@ -79,7 +86,7 @@ const Dashboard = ({
         </div>
         <Button links="recharge">Fund Wallet</Button>
       </section>
-      <section className=" dark:border  dark:border-white mx-10 my-10 shadow-sm shadow-slate-600 rounded-md md:rounded-none">
+      <section className=" dark:border  dark:border-white mx-2 md:mx-10 my-10 shadow-sm shadow-slate-600 rounded-md md:rounded-none">
         <p className="font-bold text-lg uppercase my-3 pt-3 ml-10">
           Transaction statistics
         </p>
@@ -91,7 +98,7 @@ const Dashboard = ({
             <div>
               <BiWallet size={40} />
             </div>
-            <div className="w-1/3 flex gap-2">
+            <div className="w-1/2 md:w-1/3 flex gap-2">
               <p>Wallet Balance</p>
               <p className="text-md">{`NGN ${user?.balance}`}</p>
             </div>
@@ -102,7 +109,7 @@ const Dashboard = ({
             <div>
               <BsPersonCheck size={40} />
             </div>
-            <div className="w-1/3">
+            <div className="w-1/2 md:w-1/3">
               <p>Referrals</p>
               <p>{user?.referrals}</p>
             </div>
@@ -113,18 +120,19 @@ const Dashboard = ({
             <div>
               <BiMoney size={40} />
             </div>
-            <div className="w-1/3 flex justify-between items-center">
-              <div className="w-2/3">
+            <div className="w-1/2 md:w-1/3 flex justify-between items-center">
+              <div className="w-full md:w-2/3">
                 <p>Bonus</p>
-                <p>{`NGN ${user?.referral_bonus}`}</p>
+                {user?.referral_bonus && <p>{`NGN ${user?.referral_bonus}`}</p>}
               </div>
+             {user?.referral_bonus && 
               <button
-                className="py-1 px-2 text-[8px] font-bold shadow-sm shadow-black rounded-lg hover:bg-teal-500 border bg-teal-800 text-white"
-                onClick={handleRedeem}
-                ref={redeemRef}
-              >
-                Redeem
-              </button>
+              className="py-1 px-2 text-[12px] md:text-[8px] font-bold shadow-sm shadow-black rounded-lg hover:bg-teal-500 border bg-teal-800 text-white"
+              onClick={handleRedeem}
+              ref={redeemRef}
+            >
+              Redeem
+            </button>}
             </div>
           </div>
           <div
@@ -134,7 +142,7 @@ const Dashboard = ({
             <div>
               <BiMoney size={40} />
             </div>
-            <div className="w-1/3">
+            <div className="w-1/2 md:w-1/3">
               <p>Wallet Summary</p>
             </div>
           </div>
@@ -146,7 +154,7 @@ const Dashboard = ({
             <div>
               <BiMoney size={40} />
             </div>
-            <div className="w-1/3">
+            <div className="w-1/2 md:w-1/3">
               <p>Data Transactions</p>
             </div>
           </div>
@@ -158,7 +166,7 @@ const Dashboard = ({
             <div>
               <BiMoney size={40} />
             </div>
-            <div className="w-1/3">
+            <div className="w-1/2 md:w-1/3">
               <p>Airtime Transactions</p>
             </div>
           </div>
@@ -208,7 +216,7 @@ const Dashboard = ({
           />
         </Link>
       </section>
-      <section className="px-10 py-20">
+      <section className="px-2 md:px-10 py-20">
         <h2 className="w-full font-bold text-2xl">FAQ</h2>
         <FAQ
           question="Is Alfasim Data reliable"

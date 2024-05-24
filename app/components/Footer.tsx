@@ -7,15 +7,15 @@ import Image from "next/image";
 
 const Footer = () => {
 	return (
-    <footer className="w-full">
-      <div className="w-full flex flex-col md:flex-row justify-evenly my-10">
+    <footer className="w-full ">
+      <div className="w-full flex flex-col md:flex-row justify-evenly my-10 mx-2 md:ml-auto">
         <div className="w-full md:w-1/3 mx-2">
-          <div>
+          <div className="font-bold">
             <Link href="/">
               <h2>ALFASIM TELECOM</h2>
             </Link>
           </div>
-          <p className="my-5">
+          <p className="my-5 text-wrap">
             Here at AlfasimData, we offer you the most affordable and most
             cheapest data, airtime, Dstv, Gotv and Startimes subscription... ..
           </p>
@@ -73,7 +73,7 @@ const Footer = () => {
         <div className="w-full md:w-1/6 mx-2">
           <h4 className="font-bold text-lg">Contact</h4>
           <p className="pt-5 pb-2">Phone: 08635465798</p>
-          <p>email: lakfg@gmail.com</p>
+          <p>email: alfasimdata@gmail.com</p>
         </div>
         <div className="flex md:hidden items-center gap-5 w-full justify-evenly mt-5">
           <a href="#">

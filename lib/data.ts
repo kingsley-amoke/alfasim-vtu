@@ -352,7 +352,7 @@ const paystackUrl: string = process.env
   .NEXT_PUBLIC_PAYSTACK_PAYMENT_URL as string;
 
 const getPaystackHeaders = () => ({
-  Authorization: `Bearer ${secretKey}`,
+  Authorization: `Bearer ${testKey}`,
   "Content-Type": "application/json",
 });
 

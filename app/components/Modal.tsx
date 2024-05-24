@@ -12,14 +12,14 @@ const Modal = ({ title, children, showDialog, dialogRef, closeDialog }: modalPro
 		showDialog === "y" ? (
 			<dialog
 				ref={dialogRef}
-				className="fixed top-50 left-50 -translate-x-50 -translate-y-50 z-10 rounded-xl dark:backdrop:bg-slate-950/90 backdrop:bg-gray-800/80"
+				className="fixed top-50 left-50 -translate-x-50 -translate-y-50 z-10 rounded-xl dark:backdrop:bg-slate-950/90 backdrop:bg-gray-800/80 h-1/2 md:h-auto"
 			>
-				<div className="w-[500px] max-w-full dark:bg-black bg-gray-200 flex flex-col pt-5">
-					<div className="flex justify-between mb-4 pt-2 px-5">
-						<h1 className="text-2xl">{title}</h1>
+				<div className="w-[500px] max-w-full dark:bg-black bg-gray-200 flex flex-col">
+					<div className="flex justify-between mb-4 pt-5 px-5">
+						<h1 className=" text-xl md:text-2xl">{title}</h1>
 						<button
 							onClick={closeDialog}
-							className="flex justify-center items-center mb-2 py-1 px-2 cursor-pointer border-none rounded w-8 h-8 font-bold bg-red-600 dark:bg-black text-white dark:border dark:rounded-full"
+							className="flex justify-center items-center mb-2 py-1 px-2 cursor-pointer border-none rounded h-6 md:w-8 h-6 md:h-8 font-bold bg-red-600 dark:bg-black text-white dark:border dark:rounded-full"
 						>
 							x
 						</button>

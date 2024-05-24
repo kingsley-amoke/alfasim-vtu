@@ -8,14 +8,14 @@ import { fetchNotifications, getLoggedUser } from "@/lib/data";
 import Modal from "./Modal";
 import Footer from "./Footer";
 import { useSearchParams } from "next/navigation";
+import { userDataTypes } from "@/lib/types";
 
 const HomePage = () => {
   const [unreadNotification, setUnreadNotification] = useState(0);
-  const [user, setUser] = useState({
+  const [user, setUser] = useState<userDataTypes>({
+    email: "",
     username: "",
     balance: "",
-    referrals: "",
-    referral_bonus: "",
   });
 
   const handleCount = async () => {
@@ -67,18 +67,19 @@ const HomePage = () => {
 
   return (
     <>
-      <Modal title="Welcome to Alfasim Data!!!" closeDialog={closeDialog} showDialog={showDialog} dialogRef={dialogRef}>
+      <Modal title={`Welcome ${user.username}`} closeDialog={closeDialog} showDialog={showDialog} dialogRef={dialogRef}>
         <p>
           We provide best and cheapest data, airtime, and cable subscription.{" "}
           <br />
+          <a href="tel:+8038095687">
           For complaint, contact our support team. <br />
+          </a>
           <br />
-          <a href="tel:+8038095687">08038095687</a>
         </p>
-        <div className="flex justify-end ">
+        <div className="flex ">
 							<button
 								onClick={clickOk}
-								className="py-2 px-4 bg-teal-800 dark:bg-black dark:border rounded-md text-white mt-20"
+								className="py-2 px-4 bg-teal-800 dark:bg-black dark:border rounded-md text-white"
 							>
 								Continue to Dashboard
 							</button>

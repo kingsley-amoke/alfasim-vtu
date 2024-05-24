@@ -20,11 +20,11 @@ export interface authTypes {
 }
 
 export interface userDataTypes {
-  email?: string;
+  email: string;
   firstName?: string;
   lastName?: string;
   phone?: string;
-  username?: string;
+  username: string;
   balance: string;
   referrals?: string;
   referral_bonus?: string;

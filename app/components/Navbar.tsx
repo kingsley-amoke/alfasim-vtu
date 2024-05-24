@@ -36,13 +36,9 @@ const Navbar = ({ user, count }: { count?: number; user?: userDataTypes }) => {
   };
 
   return (
-    <nav className="flex justify-between items-center py-5 px-10 w-full z-10 dark:bg-slate-950">
+    <nav className="flex justify-between items-center py-5 px-5 md:px-10 w-full z-10 dark:bg-slate-950">
       {loggedInPaths.includes(path) && <DrawerWrapper user={user} />}
-      <div>
-        <Link href="/">
-        <h2>ALFASIM TELECOM</h2>
-        </Link>
-      </div>
+      
       {path == "/" && (
         <div className="flex gap-32 items-center">
           <div className="hidden md:flex">
@@ -59,7 +55,7 @@ const Navbar = ({ user, count }: { count?: number; user?: userDataTypes }) => {
             </ul>
           </div>
           <div>
-            <div className="flex gap-4">
+            <div className="hidden md:flex gap-4">
               <ToggleTheme />
 
               <Button links="login">Login</Button>
@@ -85,7 +81,7 @@ const Navbar = ({ user, count }: { count?: number; user?: userDataTypes }) => {
             </ul>
           </div>
           <div>
-            <div className="flex gap-4">
+            <div className="hidden md:flex gap-4">
               <ToggleTheme />
 
               <Button links="login">Login</Button>
@@ -109,7 +105,7 @@ const Navbar = ({ user, count }: { count?: number; user?: userDataTypes }) => {
             </ul>
           </div>
           <div>
-            <div className="flex gap-4">
+            <div className="hidden md:flex gap-4">
               <ToggleTheme />
 
               <Button links="register">Register</Button>
@@ -131,7 +127,7 @@ const Navbar = ({ user, count }: { count?: number; user?: userDataTypes }) => {
           </div>
 
           <div
-            className="bg-red-700 text-white w-12 h-12 rounded-full flex items-center justify-center cursor-pointer"
+            className="bg-red-700 text-white w-8 md:w-12 h-8 md:h-12 rounded-full flex items-center justify-center cursor-pointer"
             onClick={handleLogout}
           >
             <BiExit size={30} />
