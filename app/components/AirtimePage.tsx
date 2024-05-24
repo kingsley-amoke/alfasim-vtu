@@ -9,10 +9,9 @@ import { fetchNotifications, getLoggedUser } from "@/lib/data";
 const AirtimePage = () => {
   const [unreadNotification, setUnreadNotification] = useState<number>(0);
   const [user, setUser] = useState({
+    email: '',
     username: "",
     balance: "",
-    referrals: "",
-    referral_bonus: "",
   });
 
   const handleCount = async () => {
