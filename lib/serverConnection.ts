@@ -13,14 +13,14 @@ export const serverClient = () => {
             },
             set(name:string, value:string, options: CookieOptions){
                 try {
-                    return cookies().set({name, value, ...options})
+                    cookies().set({name, value, ...options})
                 } catch (error) {
                     console.log(error)
                 }
             },
             remove(name:string, options:CookieOptions){
                try {
-                return cookies().set({name, value: '', ...options})
+                cookies().set({name, value: '', ...options})
                } catch (error) {
                 console.log(error)
                }
