@@ -7,8 +7,8 @@ import useEmblaCarousel, {
 import { AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai";
 
 
-import { cn } from "../../lib/ui/utils";
-import { Button } from "../../lib/ui/Button";
+import { cn } from "@/lib/ui/utils";
+import { Button } from "@/lib/ui/button";
 
 type CarouselApi = UseEmblaCarouselType[1];
 type UseCarouselParameters = Parameters<typeof useEmblaCarousel>;

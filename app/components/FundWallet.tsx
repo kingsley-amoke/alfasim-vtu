@@ -6,7 +6,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
-import { Button } from "@/lib/ui/Button";
+import { Button } from "@/lib/ui/button";
 import {
   Card,
   CardContent,
