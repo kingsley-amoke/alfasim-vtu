@@ -505,11 +505,9 @@ const BuyData = ({
 
 
     if(!selectedPlan || !user) return
-    const integer = Math.trunc(parseInt(selectedPlan.plan.slice(0, -2)));
+  
 
-    const transactionAmount = selectedPlan.plan.slice(-2) === "MB" ? parseInt(selectedPlan.plan_amount)  : (parseInt(selectedPlan.plan_amount) + 5) * integer
-
-    if(parseInt(user?.balance) <  transactionAmount) {
+    if(parseInt(user?.balance) <  parseInt(selectedPlan?.plan_amount)) {
       
       toast.error("Insufficient Balance");
       return
@@ -530,7 +528,7 @@ const BuyData = ({
     if(response.error){
       const data: transactionTypes = {
         email: user?.email,
-        amount: transactionAmount.toString(),
+        amount: selectedPlan?.plan_amount,
         purpose: "data",
         status: 'failed',
         transactionId: 'failed',
@@ -555,7 +553,7 @@ const BuyData = ({
 
       const data: transactionTypes = {
         email: user?.email,
-        amount: transactionAmount.toString(),
+        amount: selectedPlan?.plan_amount,
         purpose: "data",
         status: response.Status,
         transactionId: response.ident,
@@ -563,26 +561,26 @@ const BuyData = ({
         network: currentNetwork,
         planSize: selectedPlan.plan,
         previousBalance: user.balance,
-        newBalance: (parseInt(user.balance) - transactionAmount).toString(),
+        newBalance: (parseInt(user.balance) - parseInt(selectedPlan?.plan_amount)).toString(),
       };
       
       const transacrion = await createDataTransaction(data);
       console.log(transacrion);
 
-      await deductBalance(user?.email, transactionAmount.toString());
+      await deductBalance(user?.email, selectedPlan?.plan_amount);
       
       toast.success("Successfull");
       router.replace("/dashboard");
       setLoading(false);
     }else{
       if(response.Status !== "failed"){
-        await deductBalance(user?.email, transactionAmount.toString());
+        await deductBalance(user?.email, selectedPlan?.plan_amount);
       }
       
 
       const data: transactionTypes = {
         email: user?.email,
-        amount: transactionAmount.toString(),
+        amount: selectedPlan?.plan_amount,
         purpose: "data",
         status: response.Status,
         transactionId: response.ident,
@@ -590,7 +588,7 @@ const BuyData = ({
         network: currentNetwork,
         planSize: selectedPlan.plan,
         previousBalance: user.balance,
-        newBalance: response.Status === "failed" ? user.balance : (parseInt(user.balance) - transactionAmount).toString()
+        newBalance: response.Status === "failed" ? user.balance : (parseInt(user.balance) - parseInt(selectedPlan?.plan_amount)).toString()
       };
 
       const transaction = await createDataTransaction(data);
