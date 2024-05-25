@@ -96,12 +96,12 @@ const DrawerWrapper = ({
 }) => {
   const path = usePathname();
   return (
-    <div>
+    <div >
       <Drawer direction={"left"}>
-        <DrawerTrigger>
+        <DrawerTrigger >
           <BiMenu size={40} />
         </DrawerTrigger>
-        <DrawerContent className="bg-teal-800 text-white">
+        <DrawerContent className="bg-teal-800 text-white w-2/3 p-0">
           <DrawerHeader>
             <DrawerTitle>
               <DrawerClose>
@@ -113,7 +113,7 @@ const DrawerWrapper = ({
                 </Button>
               </DrawerClose>
             </DrawerTitle>
-            <DrawerDescription className="overflow-y-scroll">
+            <DrawerDescription className="overflow-y-scroll w-full">
               <div className="w-full flex justify-center items-center gap-5 py-3">
                 <div>
                   <RxAvatar size={50} />
@@ -139,7 +139,7 @@ const DrawerWrapper = ({
                     >
                       <Link
                         href={item.link}
-                        className="flex gap-5 justify-between items-center text-2xl"
+                        className="flex gap-5 justify-between items-center text-md md:text-2xl"
                       >
                         {<item.icon />}
                         <div className="flex justify-start w-full md:w-[80%] text-left">
