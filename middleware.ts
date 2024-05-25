@@ -7,24 +7,26 @@ export default async function middleware(req: NextRequest){
 
 const {pathname} = req.nextUrl
 
+const url = process.env.NEXT_PUBLIC_HOME
+
 
 const user = await serverClient().auth.getUser()
 
 
 
 if(user.data.user !== null && pathname == '/'){
-    return NextResponse.redirect('http://localhost:3000/dashboard?showDialog=y')
+    return NextResponse.redirect(/dashboard?showDialog=y')
 }
 if(user.data.user !== null && pathname == '/login'){
-    return NextResponse.redirect('http://localhost:3000/dashboard?showDialog=y')
+    return NextResponse.redirect('/dashboard?showDialog=y')
 }
 
 if(user.data.user !== null && pathname == '/register'){
-    return NextResponse.redirect('http://localhost:3000/dashboard?showDialog=y')
+    return NextResponse.redirect('/dashboard?showDialog=y')
 }
 
 if(user.data.user === null && loggedInPaths.includes(pathname)){
-    return NextResponse.redirect('http://localhost:3000/login')
+    return NextResponse.redirect('/login')
 }
 
     
