@@ -41,11 +41,11 @@ const Navbar = ({ user, count }: { count?: number; user?: userDataTypes }) => {
       
       {path == "/" && (
         <>
-          <div className="md:hidden flex-1 w-full text-center text-xl font-bold">ALFASIM TELECOM</div>
+          {/* <div className="md:hidden flex-1 w-full text-center text-xl font-bold">ALFASIM TELECOM</div> */}
         <div className=" hidden w-full md:flex gap-32 justify-between items-center">
          
-          <div>
-          <div className="hidden md:flex">
+         
+          <div className="flex">
             <ul className="flex gap-10">
               <li className="hover:text-teal-800">
                 <a href="#services">Our Services</a>
@@ -66,14 +66,14 @@ const Navbar = ({ user, count }: { count?: number; user?: userDataTypes }) => {
 
               <Button links="register">Register</Button>
             </div>
-          </div>
+          
         </div>
         </>
       )}
       {path == "/register" && (
         <>
         <div className="md:hidden flex-1 w-full text-center text-xl font-bold">ALFASIM TELECOM</div>
-        <div className="hidden md:flex gap-32 items-center">
+        <div className="hidden md:flex gap-32 justify-between items-center w-full ">
           
           <div className="hidden md:flex">
             <ul className="flex gap-10">
@@ -101,7 +101,7 @@ const Navbar = ({ user, count }: { count?: number; user?: userDataTypes }) => {
       {path == "/login" && (
         <>
           <div className="md:hidden flex-1 w-full text-center text-xl font-bold">ALFASIM TELECOM</div>
-        <div className="hidden md:flex gap-32 items-center">
+        <div className="hidden md:flex gap-32 justify-between items-center w-full">
           <div className="hidden md:flex">
             <ul className="flex gap-10">
               <li className="hover:text-teal-800">
