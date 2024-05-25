@@ -1,12 +1,16 @@
 "use client";
 
-import React from "react";
+import React, { Suspense } from "react";
 import { FloatingWhatsApp } from "react-floating-whatsapp";
+import Delayed from "./Delayed";
 
 const FloatingWhatsapp = () => {
   return (
     <div>
-      <FloatingWhatsApp phoneNumber="+2348105311007" accountName="Smoq Dev" />
+      <Delayed waitBeforeShow={2000}>
+
+      <FloatingWhatsApp phoneNumber="+2348038095687" accountName="Alfasim" messageDelay={5}/>
+      </Delayed>
     </div>
   );
 };
