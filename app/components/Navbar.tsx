@@ -41,7 +41,7 @@ const Navbar = ({ user, count }: { count?: number; user?: userDataTypes }) => {
       
       {path == "/" && (
         <>
-          {/* <div className="md:hidden flex-1 w-full text-center text-xl font-bold">ALFASIM TELECOM</div> */}
+          <div className="md:hidden flex-1 w-full text-center text-xl font-bold">ALFASIM TELECOM</div>
         <div className=" hidden w-full md:flex gap-32 justify-between items-center">
          
          

@@ -13,6 +13,7 @@ import {
 } from "./types";
 import { headers } from "next/headers";
 import { isDynamicServerError } from "next/dist/client/components/hooks-server-context";
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
 //fetches one user by username
 
@@ -25,9 +26,9 @@ export const fetchUser = async (email: string | undefined) => {
 
     return data;
   } catch (error) {
-    if(isDynamicServerError(error)){
-      throw error
-  }
+    if (isDynamicServerError(error)) {
+      throw error;
+    }
     console.log(error);
   }
 };
@@ -50,9 +51,9 @@ export const recharge = async (email: string | undefined, amount: string) => {
 
     return { data, error };
   } catch (error) {
-    if(isDynamicServerError(error)){
-      throw error
-  }
+    if (isDynamicServerError(error)) {
+      throw error;
+    }
     console.log(error);
   }
 };
@@ -78,9 +79,9 @@ export const deductBalance = async (
 
     return { data, error };
   } catch (error) {
-    if(isDynamicServerError(error)){
-      throw error
-  }
+    if (isDynamicServerError(error)) {
+      throw error;
+    }
     console.log(error);
   }
 };
@@ -108,9 +109,9 @@ export const setTransaction = async (transaction: transactionTypes) => {
       .select();
     return { data, error };
   } catch (error) {
-    if(isDynamicServerError(error)){
-      throw error
-  }
+    if (isDynamicServerError(error)) {
+      throw error;
+    }
     console.log(error);
   }
 };
@@ -137,9 +138,9 @@ export const getLoggedUser = async () => {
       return user;
     }
   } catch (error) {
-    if(isDynamicServerError(error)){
-      throw error
-  }
+    if (isDynamicServerError(error)) {
+      throw error;
+    }
     console.log(error);
   }
 };
@@ -162,9 +163,9 @@ export const handleReferral = async (username: string) => {
       .eq("email", email)
       .select();
   } catch (error) {
-    if(isDynamicServerError(error)){
-      throw error
-  }
+    if (isDynamicServerError(error)) {
+      throw error;
+    }
     console.log(error);
   }
 };
@@ -184,9 +185,9 @@ export const redeemBonus = async (username: string, referral_bonus: string) => {
 
     return { data: data, error: error };
   } catch (error) {
-    if(isDynamicServerError(error)){
-      throw error
-  }
+    if (isDynamicServerError(error)) {
+      throw error;
+    }
     console.log(error);
   }
 };
@@ -206,9 +207,9 @@ export const fetchNotifications = async () => {
 
     return notifications;
   } catch (error) {
-    if(isDynamicServerError(error)){
-      throw error
-  }
+    if (isDynamicServerError(error)) {
+      throw error;
+    }
     console.log(error);
   }
 };
@@ -231,9 +232,9 @@ export const fetchOneNotification = async (id: number) => {
 
     return notification;
   } catch (error) {
-    if(isDynamicServerError(error)){
-      throw error
-  }
+    if (isDynamicServerError(error)) {
+      throw error;
+    }
     console.log(error);
   }
 };
@@ -255,9 +256,9 @@ export const readNotifications = async (id: number) => {
 
     return notifications;
   } catch (error) {
-    if(isDynamicServerError(error)){
-      throw error
-  }
+    if (isDynamicServerError(error)) {
+      throw error;
+    }
     console.log(error);
   }
 };
@@ -280,9 +281,9 @@ export const fetchTransactions = async (email: string) => {
 
     return transactions;
   } catch (error) {
-    if(isDynamicServerError(error)){
-      throw error
-  }
+    if (isDynamicServerError(error)) {
+      throw error;
+    }
     console.log(error);
   }
 };
@@ -305,9 +306,9 @@ export const fetchOneTransaction = async (id: string) => {
 
     return transaction;
   } catch (error) {
-    if(isDynamicServerError(error)){
-      throw error
-  }
+    if (isDynamicServerError(error)) {
+      throw error;
+    }
     console.log(error);
   }
 };
@@ -331,9 +332,9 @@ export const fetchWalletHistory = async (email: string) => {
 
     return transaction;
   } catch (error) {
-    if(isDynamicServerError(error)){
-      throw error
-  }
+    if (isDynamicServerError(error)) {
+      throw error;
+    }
     console.log(error);
   }
 };
@@ -357,9 +358,9 @@ export const fetchDataHistory = async (email: string) => {
 
     return transaction;
   } catch (error) {
-    if(isDynamicServerError(error)){
-      throw error
-  }
+    if (isDynamicServerError(error)) {
+      throw error;
+    }
     console.log(error);
   }
 };
@@ -383,9 +384,9 @@ export const fetchAirtimeHistory = async (email: string) => {
 
     return transaction;
   } catch (error) {
-    if(isDynamicServerError(error)){
-      throw error
-  }
+    if (isDynamicServerError(error)) {
+      throw error;
+    }
     console.log(error);
   }
 };
@@ -432,9 +433,9 @@ export const paystackPay = async ({
     const data = await response.json();
     return data;
   } catch (error) {
-    if(isDynamicServerError(error)){
-      throw error
-  }
+    if (isDynamicServerError(error)) {
+      throw error;
+    }
     return error;
   }
 };
@@ -442,28 +443,22 @@ export const paystackPay = async ({
 //paystack function for confirming payment
 
 export const verifyPaystackTransaction = async (reference: string) => {
-  
-
-
   try {
     const response = await fetch(
       `${paystackUrl}/transaction/verify/${reference}`,
       {
-      
-          method: "GET",
-          headers: {
-            'Authorization': `Bearer ${secretKey}`
-          },
-      
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${secretKey}`,
+        },
       }
-    )
-      const data = await response.json();
-      return data
-  
+    );
+    const data = await response.json();
+    return data;
   } catch (error) {
-    if(isDynamicServerError(error)){
-      throw error
-  }
+    if (isDynamicServerError(error)) {
+      throw error;
+    }
     return error;
   }
 };
@@ -481,9 +476,9 @@ export const createCustomer = async (data: any) => {
     const data = response.json();
     return data;
   } catch (error) {
-    if(isDynamicServerError(error)){
-      throw error
-  }
+    if (isDynamicServerError(error)) {
+      throw error;
+    }
     console.log(error);
   }
 };
@@ -513,9 +508,9 @@ export const getNetworks = async () => {
       return res.data;
     }
   } catch (error) {
-    if(isDynamicServerError(error)){
-      throw error
-  }
+    if (isDynamicServerError(error)) {
+      throw error;
+    }
     console.log(error);
   }
 };
@@ -534,9 +529,9 @@ export const getDataPlans = async () => {
       return res.data;
     }
   } catch (error) {
-    if(isDynamicServerError(error)){
-      throw error
-  }
+    if (isDynamicServerError(error)) {
+      throw error;
+    }
     console.log(error);
   }
 };
@@ -549,8 +544,6 @@ export const buyData = async (data: {
   mobile_number: string;
   Ported_number: boolean;
 }) => {
-
-
   const input = {
     network: data.network,
     mobile_number: data.mobile_number,
@@ -566,7 +559,7 @@ export const buyData = async (data: {
     .then((response) => {
       if (!response.ok) {
         // throw new Error("Network response was not ok");
-        console.log(response)
+        console.log(response);
       }
       return response.json();
     })
@@ -574,9 +567,9 @@ export const buyData = async (data: {
       return data;
     })
     .catch((error) => {
-      if(isDynamicServerError(error)){
-        throw error
-    }
+      if (isDynamicServerError(error)) {
+        throw error;
+      }
       console.error("There was a problem with your fetch operation:", error);
     });
 
@@ -591,9 +584,7 @@ export const buyAirtime = async (data: {
   mobile_number: string;
   Ported_number: boolean;
   airtime_type: string;
-  
 }) => {
-
   const response = await fetch(`${asbUrl}/topup/`, {
     method: "POST",
     headers: getASBHeaders(),
@@ -603,7 +594,7 @@ export const buyAirtime = async (data: {
       if (!response.ok) {
         // throw new Error("Network response was not ok");
       }
-      
+
       return response.json();
     })
     .then((data) => {
@@ -611,11 +602,65 @@ export const buyAirtime = async (data: {
       return data;
     })
     .catch((error) => {
-      if(isDynamicServerError(error)){
-        throw error
-    }
+      if (isDynamicServerError(error)) {
+        throw error;
+      }
       console.error("There was a problem with your fetch operation:", error);
     });
 
   return response;
+};
+
+export const verifyPayment = async (
+  user: userDataTypes,
+  reference: string  | null,
+  router: AppRouterInstance
+) => {
+  const payRefArray: string[] = [];
+  if (reference) {
+    if (payRefArray.includes(reference)) {
+      router.replace("/");
+    } else {
+      payRefArray.push(reference);
+      const response = await verifyPaystackTransaction(reference);
+      if (response.data.status === "success") {
+        const trans: transactionTypes = {
+          email: user.email,
+          purpose: "wallet",
+          amount: (response.data.amount / 100).toString(),
+          status: response.data.status,
+          network: response.data.channel,
+          planSize: response.data.currency,
+          previousBalance: user?.balance,
+          newBalance: (
+            response.data.amount / 100 +
+            parseInt(user?.balance)
+          ).toString(),
+          phone: reference,
+          transactionId: response.data.id,
+        };
+
+        await recharge(user?.email, trans.amount);
+
+        await setTransaction(trans);
+        router.replace("/");
+      } else {
+        const trans: transactionTypes = {
+          email: user.email,
+          purpose: "wallet",
+          amount: (response.data.amount / 100).toString(),
+          status: response.data.status,
+          network: response.data.channel,
+          planSize: response.data.currency,
+          previousBalance: user?.balance,
+          newBalance: user?.balance,
+          phone: reference,
+          transactionId: response.data.id,
+        };
+
+        await setTransaction(trans);
+        router.replace("/");
+      }
+    }
+  }
 };
