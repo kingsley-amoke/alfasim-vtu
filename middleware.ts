@@ -15,7 +15,7 @@ const user = await serverClient().auth.getUser()
 
 
 if(user.data.user !== null && pathname == '/'){
-    return NextResponse.redirect(/dashboard?showDialog=y')
+    return NextResponse.redirect('/dashboard?showDialog=y')
 }
 if(user.data.user !== null && pathname == '/login'){
     return NextResponse.redirect('/dashboard?showDialog=y')
