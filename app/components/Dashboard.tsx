@@ -63,7 +63,7 @@ const Dashboard = ({
     "h-full w-full rounded-lg p-5 flex flex-wrap flex-col justify-center gap-2 cursor-pointer hover:shadow-teal-300 hover:shadow-lg border border-white bg-teal-800 dark:bg-black text-white";
 
   return (
-    <div>
+    <div className="mt-20 md:mt-0">
       <section className="flex bg-teal-800 dark:bg-black text-white flex-col md:flex-row gap-5 md:gap-32 justify-between items-center px-2 md:px-10 pt-5 pb-10 md:py-20">
         <div>
           <div className="flex w-full justify-between items-center">
