@@ -2,6 +2,7 @@ import React from "react";
 import ConfirmPayment from "../components/ConfirmPayment";
 import { PageProps } from "@/lib/types";
 import { verifyPaystackTransaction } from "@/lib/data";
+import { isDynamicServerError } from "next/dist/client/components/hooks-server-context";
 
 const page = async ({ searchParams }: PageProps) => {
   
@@ -23,6 +24,9 @@ const page = async ({ searchParams }: PageProps) => {
       }
     }
   } catch (error) {
+    if(isDynamicServerError(error)){
+      throw error
+  }
     console.error("Error:", error);
   }
   return (

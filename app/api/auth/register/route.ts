@@ -1,6 +1,7 @@
 
 
 import { connectToSupabase } from "@/lib/connection"
+import { isDynamicServerError } from "next/dist/client/components/hooks-server-context"
 
 
 export async function POST(req:Request){
@@ -20,6 +21,10 @@ export async function POST(req:Request){
           const res = error ? userError : userData
         return new Response(res)
     } catch (error) {
+
+        if(isDynamicServerError(error)){
+            throw error
+        }
         return new Response('Failed')
     }
 }

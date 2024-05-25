@@ -1,4 +1,5 @@
 import { connectToSupabase } from "@/lib/connection";
+import { isDynamicServerError } from "next/dist/client/components/hooks-server-context";
 
 export async function POST(req: Request) {
   let { email } = await req.json();
@@ -19,6 +20,9 @@ export async function POST(req: Request) {
 
     return new Response("Reset link sent");
   } catch (error) {
+    if(isDynamicServerError(error)){
+      throw error
+  }
     return new Response("Failed");
   }
 }

@@ -24,6 +24,7 @@ import { Label } from "@/lib/ui/label";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { Checkbox } from "@/lib/ui/checkbox";
 import { serverClient } from "@/lib/serverConnection";
+import { isDynamicServerError } from "next/dist/client/components/hooks-server-context";
 
 const formSchema = z
   .object({
@@ -115,6 +116,9 @@ const SignupForm = () => {
 
       toast.success("Registeration successful");
     } catch (error) {
+      if(isDynamicServerError(error)){
+        throw error
+    }
       console.log(error);
     }
     setIsSubmitting(false);

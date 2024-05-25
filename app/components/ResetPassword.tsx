@@ -12,6 +12,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { useSearchParams } from "next/navigation";
+import { isDynamicServerError } from "next/dist/client/components/hooks-server-context";
 
 const formSchema = z.object({
   email: z.string().email(),
@@ -125,6 +126,9 @@ const SendResetEmail = () => {
 
       console.log(response);
     } catch (error) {
+      if(isDynamicServerError(error)){
+        throw error
+    }
       console.log(error);
     }
     setIsSubmitting(false);

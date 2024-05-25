@@ -12,6 +12,7 @@ import {
   userDataTypes,
 } from "./types";
 import { headers } from "next/headers";
+import { isDynamicServerError } from "next/dist/client/components/hooks-server-context";
 
 //fetches one user by username
 
@@ -24,6 +25,9 @@ export const fetchUser = async (email: string | undefined) => {
 
     return data;
   } catch (error) {
+    if(isDynamicServerError(error)){
+      throw error
+  }
     console.log(error);
   }
 };
@@ -46,6 +50,9 @@ export const recharge = async (email: string | undefined, amount: string) => {
 
     return { data, error };
   } catch (error) {
+    if(isDynamicServerError(error)){
+      throw error
+  }
     console.log(error);
   }
 };
@@ -71,6 +78,9 @@ export const deductBalance = async (
 
     return { data, error };
   } catch (error) {
+    if(isDynamicServerError(error)){
+      throw error
+  }
     console.log(error);
   }
 };
@@ -98,6 +108,9 @@ export const setTransaction = async (transaction: transactionTypes) => {
       .select();
     return { data, error };
   } catch (error) {
+    if(isDynamicServerError(error)){
+      throw error
+  }
     console.log(error);
   }
 };
@@ -124,6 +137,9 @@ export const getLoggedUser = async () => {
       return user;
     }
   } catch (error) {
+    if(isDynamicServerError(error)){
+      throw error
+  }
     console.log(error);
   }
 };
@@ -146,6 +162,9 @@ export const handleReferral = async (username: string) => {
       .eq("email", email)
       .select();
   } catch (error) {
+    if(isDynamicServerError(error)){
+      throw error
+  }
     console.log(error);
   }
 };
@@ -165,6 +184,9 @@ export const redeemBonus = async (username: string, referral_bonus: string) => {
 
     return { data: data, error: error };
   } catch (error) {
+    if(isDynamicServerError(error)){
+      throw error
+  }
     console.log(error);
   }
 };
@@ -184,6 +206,9 @@ export const fetchNotifications = async () => {
 
     return notifications;
   } catch (error) {
+    if(isDynamicServerError(error)){
+      throw error
+  }
     console.log(error);
   }
 };
@@ -206,6 +231,9 @@ export const fetchOneNotification = async (id: number) => {
 
     return notification;
   } catch (error) {
+    if(isDynamicServerError(error)){
+      throw error
+  }
     console.log(error);
   }
 };
@@ -227,6 +255,9 @@ export const readNotifications = async (id: number) => {
 
     return notifications;
   } catch (error) {
+    if(isDynamicServerError(error)){
+      throw error
+  }
     console.log(error);
   }
 };
@@ -249,6 +280,9 @@ export const fetchTransactions = async (email: string) => {
 
     return transactions;
   } catch (error) {
+    if(isDynamicServerError(error)){
+      throw error
+  }
     console.log(error);
   }
 };
@@ -271,6 +305,9 @@ export const fetchOneTransaction = async (id: string) => {
 
     return transaction;
   } catch (error) {
+    if(isDynamicServerError(error)){
+      throw error
+  }
     console.log(error);
   }
 };
@@ -294,6 +331,9 @@ export const fetchWalletHistory = async (email: string) => {
 
     return transaction;
   } catch (error) {
+    if(isDynamicServerError(error)){
+      throw error
+  }
     console.log(error);
   }
 };
@@ -317,6 +357,9 @@ export const fetchDataHistory = async (email: string) => {
 
     return transaction;
   } catch (error) {
+    if(isDynamicServerError(error)){
+      throw error
+  }
     console.log(error);
   }
 };
@@ -340,6 +383,9 @@ export const fetchAirtimeHistory = async (email: string) => {
 
     return transaction;
   } catch (error) {
+    if(isDynamicServerError(error)){
+      throw error
+  }
     console.log(error);
   }
 };
@@ -386,6 +432,9 @@ export const paystackPay = async ({
     const data = await response.json();
     return data;
   } catch (error) {
+    if(isDynamicServerError(error)){
+      throw error
+  }
     return error;
   }
 };
@@ -412,6 +461,9 @@ export const verifyPaystackTransaction = async (reference: string) => {
       return data
   
   } catch (error) {
+    if(isDynamicServerError(error)){
+      throw error
+  }
     return error;
   }
 };
@@ -429,6 +481,9 @@ export const createCustomer = async (data: any) => {
     const data = response.json();
     return data;
   } catch (error) {
+    if(isDynamicServerError(error)){
+      throw error
+  }
     console.log(error);
   }
 };
@@ -458,6 +513,9 @@ export const getNetworks = async () => {
       return res.data;
     }
   } catch (error) {
+    if(isDynamicServerError(error)){
+      throw error
+  }
     console.log(error);
   }
 };
@@ -476,6 +534,9 @@ export const getDataPlans = async () => {
       return res.data;
     }
   } catch (error) {
+    if(isDynamicServerError(error)){
+      throw error
+  }
     console.log(error);
   }
 };
@@ -513,6 +574,9 @@ export const buyData = async (data: {
       return data;
     })
     .catch((error) => {
+      if(isDynamicServerError(error)){
+        throw error
+    }
       console.error("There was a problem with your fetch operation:", error);
     });
 
@@ -547,6 +611,9 @@ export const buyAirtime = async (data: {
       return data;
     })
     .catch((error) => {
+      if(isDynamicServerError(error)){
+        throw error
+    }
       console.error("There was a problem with your fetch operation:", error);
     });
 

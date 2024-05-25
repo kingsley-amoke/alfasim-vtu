@@ -22,6 +22,7 @@ import { Button } from "@/lib/ui/button";
 import { Checkbox } from "@/lib/ui/checkbox";
 import Link from "next/link";
 import { serverClient } from "@/lib/serverConnection";
+import { isDynamicServerError } from "next/dist/client/components/hooks-server-context";
 
 const formSchema = z.object({
   email: z.string().email(),
@@ -64,6 +65,9 @@ const LoginForm = () => {
       router.replace("/dashboard?showDialog=y");
       toast.success("Login successful");
     } catch (error) {
+      if(isDynamicServerError(error)){
+        throw error
+    }
       console.log(error);
     }
     setIsSubmitting(false);
