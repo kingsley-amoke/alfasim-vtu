@@ -10,13 +10,15 @@ export default function Pay({ user }: { user: userDataTypes }) {
 
   const email = user.email!;
 
+  const url = process.env.NEXT_PUBLIC_HOME!
+
   const handleRecharge = async (): Promise<void> => {
     setSubmitting(true);
     const paystackResponse = await paystackPay({
       amount: amount,
       email: email,
       currency: "NGN",
-      callback_url: "http://localhost:3000/dashboard",
+      callback_url: `${url}/dashboard`,
       channels: ["bank_transfer", "card", "ussd", "bank"],
     });
     setSubmitting(false);
