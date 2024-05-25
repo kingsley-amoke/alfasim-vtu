@@ -107,7 +107,7 @@ const HomePage = () => {
 
 
   useEffect(() => {
-    const data = fetchLoggedUser();
+    fetchLoggedUser();
     handleCount();
 
   
@@ -117,7 +117,7 @@ const HomePage = () => {
       } else {
         dialogRef.current?.close();
       }
-    });
+    }, []);
   
 
   
