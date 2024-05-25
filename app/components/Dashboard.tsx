@@ -3,11 +3,13 @@ import Button from "./Button";
 import { BiMoney, BiWallet } from "react-icons/bi";
 import { BsPersonCheck } from "react-icons/bs";
 import ServiceCard from "./ServiceCard";
-import { FaPhoneVolume, FaSignal } from "react-icons/fa";
+import { FaCcVisa, FaPhoneVolume, FaSignal } from "react-icons/fa";
 import { FaNairaSign } from "react-icons/fa6";
 import { LuRadioReceiver } from "react-icons/lu";
 import { FcElectricity } from "react-icons/fc";
 import { RiCoupon2Fill } from "react-icons/ri";
+import {GoGift} from "react-icons/go"
+import {MdMoney, MdOutline4GPlusMobiledata} from "react-icons/md"
 import Link from "next/link";
 
 import { redeemBonus } from "@/lib/data";
@@ -118,7 +120,7 @@ const Dashboard = ({
             className={`${statsStyle}border-r-0 md:border-l-0 border border-t-0 `}
           >
             <div>
-              <BiMoney size={40} />
+              <GoGift size={40} />
             </div>
             <div className="w-1/2 md:w-1/3 flex justify-between items-center">
               <div className="w-full md:w-2/3">
@@ -140,7 +142,7 @@ const Dashboard = ({
             onClick={() => router.push("/wallet-summary")}
           >
             <div>
-              <BiMoney size={40} />
+              <FaCcVisa size={40} />
             </div>
             <div className="w-1/2 md:w-1/3">
               <p>Wallet Summary</p>
@@ -152,7 +154,7 @@ const Dashboard = ({
             onClick={() => router.push("/data-transactions")}
           >
             <div>
-              <BiMoney size={40} />
+              <MdOutline4GPlusMobiledata size={40} />
             </div>
             <div className="w-1/2 md:w-1/3">
               <p>Data Transactions</p>
@@ -164,7 +166,7 @@ const Dashboard = ({
             onClick={() => router.push("/airtime-transactions")}
           >
             <div>
-              <BiMoney size={40} />
+              <MdMoney size={40} />
             </div>
             <div className="w-1/2 md:w-1/3">
               <p>Airtime Transactions</p>
