@@ -7,7 +7,6 @@ export default async function middleware(req: NextRequest){
 
 const {pathname} = req.nextUrl
 
-const url = process.env.NEXT_PUBLIC_HOME
 
 
 const user = await serverClient().auth.getUser()
