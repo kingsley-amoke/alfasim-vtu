@@ -113,7 +113,7 @@ const DrawerWrapper = ({
                 </Button>
               </DrawerClose>
             </DrawerTitle>
-            <DrawerDescription>
+            <DrawerDescription className="overflow-y-scroll">
               <div className="w-full flex justify-center items-center gap-5 py-3">
                 <div>
                   <RxAvatar size={50} />
