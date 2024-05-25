@@ -10,7 +10,7 @@ export default function Pay({ user }: { user: userDataTypes }) {
 
   const email = user.email!;
 
-  const url = process.env.NEXT_PUBLIC_HOME!
+  
 
   const handleRecharge = async (): Promise<void> => {
     setSubmitting(true);
@@ -18,7 +18,7 @@ export default function Pay({ user }: { user: userDataTypes }) {
       amount: amount,
       email: email,
       currency: "NGN",
-      callback_url: `${url}/dashboard`,
+      callback_url: 'https://alfasimdata.vercel.app/dashboard',
       channels: ["bank_transfer", "card", "ussd", "bank"],
     });
     setSubmitting(false);
