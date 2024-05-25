@@ -101,7 +101,7 @@ const DrawerWrapper = ({
         <DrawerTrigger >
           <BiMenu size={40} />
         </DrawerTrigger>
-        <DrawerContent className="bg-teal-800 text-white w-2/3 p-0">
+        <DrawerContent className="bg-teal-800 text-white w-2/3 md:w-1/2 lg:w-1/3 xl:w-1/4">
           <DrawerHeader>
             <DrawerTitle>
               <DrawerClose>
