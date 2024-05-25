@@ -9,8 +9,7 @@ import WalletPage from "../components/TransactionsPage";
 const page = async () => {
   const user = await getLoggedUser();
 
-  const { email } = user!;
-  const airtime = await fetchAirtimeHistory(email);
+  const airtime = await fetchAirtimeHistory(user?.email);
 
   const transactions = airtime?.reverse()!;
 

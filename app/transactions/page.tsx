@@ -8,10 +8,8 @@ import WalletPage from "../components/TransactionsPage";
 
 const page = async () => {
   const user = await getLoggedUser();
-
-  const { email } = user!;
   
-  const data = await fetchTransactions(email);
+  const data = await fetchTransactions(user?.email);
 
   const transactions = data?.reverse()!;
 
