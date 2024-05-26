@@ -614,12 +614,10 @@ export const buyAirtime = async (data: {
 export const verifyPayment = async (
   user: userDataTypes,
   reference: string  | null,
-  router: AppRouterInstance
 ) => {
   const payRefArray: string[] = [];
   if (reference) {
     if (payRefArray.includes(reference)) {
-      router.replace("/");
     } else {
       payRefArray.push(reference);
       const response = await verifyPaystackTransaction(reference);
@@ -643,7 +641,7 @@ export const verifyPayment = async (
         await recharge(user?.email, trans.amount);
 
         await setTransaction(trans);
-        router.replace("/");
+      
       } else {
         const trans: transactionTypes = {
           email: user.email,
@@ -659,8 +657,11 @@ export const verifyPayment = async (
         };
 
         await setTransaction(trans);
-        router.replace("/");
+       
       }
     }
+    
   }
+
+  return 'finished'
 };

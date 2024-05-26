@@ -9,6 +9,7 @@ import Modal from "./Modal";
 import Footer from "./Footer";
 import { useRouter, useSearchParams } from "next/navigation";
 import { transactionTypes, userDataTypes } from "@/lib/types";
+import { LoadingSkeleton } from "./Skeleton";
 
 const HomePage = () => {
 
@@ -27,6 +28,8 @@ const HomePage = () => {
     balance: "",
   });
 
+  const [loading, setLoading] = useState(false)
+
 
   const handleCount = async () => {
     const response = await fetchNotifications();
@@ -43,12 +46,15 @@ const HomePage = () => {
 
 
   const fetchLoggedUser = async () => {
+    setLoading(true)
     const data = await getLoggedUser();
 
  if(data){
-    setUser(data);
+   
+   setUser(data);
+   const response = await verifyPayment(data, reference)
 
-    verifyPayment(data,reference, router)
+    response === 'finished' && setLoading(false)
  }
   };
 
@@ -105,9 +111,17 @@ const HomePage = () => {
           <Navbar count={unreadNotification} user={user} />
         </div>
         <div className="flex w-full ">
+          {loading ? (
+            <div className="h-[20rem] md:h-[30rem] w-full flex justify-center items-center">
+
+            <LoadingSkeleton />
+            </div>
+          ) : (
           <div className=" grow h-full w-full">
             <Dashboard user={user} count={unreadNotification} />
           </div>
+          )
+          }
 			  </div>
 			  <Footer />
       </div>
