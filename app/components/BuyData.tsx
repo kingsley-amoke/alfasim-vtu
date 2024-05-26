@@ -143,6 +143,13 @@ const BuyData = ({
 
     const integer = Math.trunc(parseInt(plan.plan.slice(0, -2)));
 
+    const decimalPart = plan.plan.split('.')[1][0]
+    
+
+    const amount = plan.plan.slice(-2) === "MB"
+    ? (parseInt(plan.plan_amount) + 5).toString() : decimalPart === '5' ? ((integer * unitGBGifting ) + (unitGBGifting  / 2)).toString()
+    : (integer * unitGBGifting ).toString()
+
     alfasimMtnGifting.push({
       id: plan.id,
       dataplan_id: plan.dataplan_id,
@@ -151,10 +158,7 @@ const BuyData = ({
       plan_network: plan.plan_network,
       month_validate: plan.month_validate,
       plan: plan.plan,
-      plan_amount:
-        plan.plan.slice(-2) === "MB"
-          ? (parseInt(plan.plan_amount) + 5).toString()
-          : (integer * unitGBGifting).toString(),
+      plan_amount: amount
     });
   });
 
@@ -338,6 +342,13 @@ const BuyData = ({
 
     const integer = Math.trunc(parseInt(plan.plan.slice(0, -2)));
 
+    const decimalPart = plan.plan.split('.')[1][0]
+    
+
+    const amount = plan.plan.slice(-2) === "MB"
+    ? (parseInt(plan.plan_amount) + 5).toString() : decimalPart === '5' ? ((integer * unitGBEtisalatCorporateGifting ) + (unitGBEtisalatCorporateGifting  / 2)).toString()
+    : (integer * unitGBEtisalatCorporateGifting ).toString()
+
     alfasimEtisalatCorporateGifting.push({
       id: plan.id,
       dataplan_id: plan.dataplan_id,
@@ -346,10 +357,7 @@ const BuyData = ({
       plan_network: plan.plan_network,
       month_validate: plan.month_validate,
       plan: plan.plan,
-      plan_amount:
-        plan.plan.slice(-2) === "MB"
-          ? (parseInt(plan.plan_amount) + 5).toString()
-          : (integer * unitGBEtisalatCorporateGifting).toString(),
+      plan_amount: amount
     });
   });
 
@@ -366,7 +374,16 @@ const BuyData = ({
   
   airtelGifting.forEach((plan) => {
 
+
     const integer = Math.trunc(parseInt(plan.plan.slice(0, -2)));
+
+    const decimalPart = plan.plan.split('.')[1][0]
+    
+
+    const amount = plan.plan.slice(-2) === "MB"
+    ? (parseInt(plan.plan_amount) + 5).toString() : decimalPart === '5' ? ((integer * unitGBAirtelGifting) + (unitGBAirtelGifting / 2)).toString()
+    : (integer * unitGBAirtelGifting).toString()
+
 
     alfasimAirtelGifting.push({
       id: plan.id,
@@ -376,10 +393,7 @@ const BuyData = ({
       plan_network: plan.plan_network,
       month_validate: plan.month_validate,
       plan: plan.plan,
-      plan_amount:
-        plan.plan.slice(-2) === "MB"
-          ? (parseInt(plan.plan_amount) + 5).toString()
-          : (integer * unitGBAirtelGifting).toString(),
+      plan_amount: amount
     });
   });
 
@@ -388,15 +402,21 @@ const BuyData = ({
     (plan) => plan.plan_type === "CORPORATE GIFTING"
   );
 
-  const alfasimAirtelCoporateGifting: Plan[] = [];
+  const alfasimAirtelCorporateGifting: Plan[] = [];
 
   const unitGBAirtelCoporateGifting = 180 + 10;
   
   airtelCorporateGifting.forEach((plan) => {
 
-    const integer = Math.trunc(parseInt(plan.plan.slice(0, -2)));
 
-    alfasimAirtelCoporateGifting.push({
+    const integer = Math.trunc(parseInt(plan.plan.slice(0, -2)));
+   
+
+    const amount = plan.plan.slice(-2) === "MB"
+    ? (parseInt(plan.plan_amount) + 5).toString() 
+    : (integer * unitGBAirtelCoporateGifting).toString()
+
+    alfasimAirtelCorporateGifting.push({
       id: plan.id,
       dataplan_id: plan.dataplan_id,
       network: plan.network,
@@ -404,10 +424,7 @@ const BuyData = ({
       plan_network: plan.plan_network,
       month_validate: plan.month_validate,
       plan: plan.plan,
-      plan_amount:
-        plan.plan.slice(-2) === "MB"
-          ? (parseInt(plan.plan_amount) + 5).toString()
-          : (integer * unitGBAirtelCoporateGifting).toString(),
+      plan_amount: amount
     });
   });
 
@@ -474,7 +491,7 @@ const BuyData = ({
             setDataPlan(alfasimEtisalatCorporateGifting);
             break;
           case "Airtel":
-            setDataPlan(alfasimEtisalatCorporateGifting);
+            setDataPlan(alfasimAirtelCorporateGifting);
             break;
         }
         break;
