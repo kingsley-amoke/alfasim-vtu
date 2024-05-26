@@ -20,15 +20,11 @@ const Navbar = ({ user, count }: { count?: number; user?: userDataTypes }) => {
   const router = useRouter();
 
   const handleLogout = async () => {
-    const response = await axios.get("/api/auth/logout");
 
-    if (response.data === "logged out") {
-      router.push("/");
-      console.log(response.data);
-      toast.success("Logged out successfully");
-    } else {
-      toast.error("An error occurred");
-    }
+    await axios.get("/api/auth/logout");
+
+    router.push("/");
+    toast.success("Logged out successfully");
   };
 
   const handleNotification = async () => {
