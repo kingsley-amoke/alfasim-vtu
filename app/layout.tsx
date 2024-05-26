@@ -19,7 +19,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="scroll-smooth scroll-thin">
-      <body className={`${inter.className} dark:bg-black w-[100vw] box-border`}>
+      <body className={`${inter.className} dark:bg-black w-[100vw] box-border overflow-x-hidden`}>
         {" "}
         <ThemeProvider
           attribute="class"
