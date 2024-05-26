@@ -4,7 +4,14 @@ import React, { useEffect, useRef, useState } from "react";
 
 import Navbar from "../components/Navbar";
 import Dashboard from "../components/Dashboard";
-import { fetchNotifications, getLoggedUser, recharge, setTransaction, verifyPayment, verifyPaystackTransaction } from "@/lib/data";
+import {
+  fetchNotifications,
+  getLoggedUser,
+  recharge,
+  setTransaction,
+  verifyPayment,
+  verifyPaystackTransaction,
+} from "@/lib/data";
 import Modal from "./Modal";
 import Footer from "./Footer";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -12,13 +19,11 @@ import { transactionTypes, userDataTypes } from "@/lib/types";
 import { LoadingSkeleton } from "./Skeleton";
 
 const HomePage = () => {
-
-  const router = useRouter()
-
+  const router = useRouter();
 
   const searchParams = useSearchParams();
-	const dialogRef = useRef<null | HTMLDialogElement>(null);
-	const showDialog = searchParams.get("showDialog");
+  const dialogRef = useRef<null | HTMLDialogElement>(null);
+  const showDialog = searchParams.get("showDialog");
   const reference = searchParams.get("trxref");
 
   const [unreadNotification, setUnreadNotification] = useState(0);
@@ -28,8 +33,7 @@ const HomePage = () => {
     balance: "",
   });
 
-  const [loading, setLoading] = useState(false)
-
+  const [loading, setLoading] = useState(false);
 
   const handleCount = async () => {
     const response = await fetchNotifications();
@@ -43,23 +47,17 @@ const HomePage = () => {
     setUnreadNotification(unreadNotifications.length);
   };
 
-
-
   const fetchLoggedUser = async () => {
-    setLoading(true)
+    setLoading(true);
     const data = await getLoggedUser();
 
- if(data){
-   
-   setUser(data);
-   const response = await verifyPayment(data, reference)
+    if (data) {
+      setUser(data);
+      const response = await verifyPayment(data, reference);
 
-    response === 'finished' && setLoading(false)
- }
+      response === "finished" && setLoading(false);
+    }
   };
-
-
-
 
   const closeDialog = () => {
     dialogRef.current?.close();
@@ -69,42 +67,41 @@ const HomePage = () => {
     closeDialog();
   };
 
-
   useEffect(() => {
     fetchLoggedUser();
     handleCount();
 
-  
-
-      if (showDialog === "y") {
-        dialogRef.current?.showModal();
-      } else {
-        dialogRef.current?.close();
-      }
-    }, []);
-  
-
-  
+    if (showDialog === "y") {
+      dialogRef.current?.showModal();
+    } else {
+      dialogRef.current?.close();
+    }
+  }, []);
 
   return (
     <>
-      <Modal title={`Welcome ${user.username}`} closeDialog={closeDialog} showDialog={showDialog} dialogRef={dialogRef}>
+      <Modal
+        title={`Welcome ${user.username}`}
+        closeDialog={closeDialog}
+        showDialog={showDialog}
+        dialogRef={dialogRef}
+      >
         <p>
           We provide best and cheapest data, airtime, and cable subscription.{" "}
           <br />
           <a href="tel:+8038095687">
-          For complaint, contact our support team. <br />
+            For complaint, contact our support team. <br />
           </a>
           <br />
         </p>
         <div className="flex md:mt-40">
-							<button
-								onClick={clickOk}
-								className="py-2 px-4 bg-teal-800 dark:bg-black dark:border rounded-md text-white"
-							>
-								Continue to Dashboard
-							</button>
-						</div>
+          <button
+            onClick={clickOk}
+            className="py-2 px-4 bg-teal-800 dark:bg-black dark:border rounded-md text-white"
+          >
+            Continue to Dashboard
+          </button>
+        </div>
       </Modal>
       <div>
         <div>
@@ -112,18 +109,17 @@ const HomePage = () => {
         </div>
         <div className="flex w-full ">
           {loading ? (
-            <div className="h-[20rem] md:h-[30rem] w-full flex justify-center items-center">
-
-            <LoadingSkeleton />
+            <div className="h-[20rem] md:h-[30rem] w-full flex flex-col gap-10 justify-center items-center">
+              <div>Please wait...</div>
+              <LoadingSkeleton />
             </div>
           ) : (
-          <div className=" grow h-full w-full">
-            <Dashboard user={user} count={unreadNotification} />
-          </div>
-          )
-          }
-			  </div>
-			  <Footer />
+            <div className=" grow h-full w-full">
+              <Dashboard user={user} count={unreadNotification} />
+            </div>
+          )}
+        </div>
+        <Footer />
       </div>
     </>
   );
