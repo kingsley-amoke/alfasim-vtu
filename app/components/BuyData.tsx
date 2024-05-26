@@ -404,7 +404,7 @@ const BuyData = ({
 
   const alfasimAirtelCorporateGifting: Plan[] = [];
 
-  const unitGBAirtelCoporateGifting = 180 + 10;
+  const unitGBAirtelCoporateGifting = 275 + 10;
   
   airtelCorporateGifting.forEach((plan) => {
 
