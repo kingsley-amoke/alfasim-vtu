@@ -32,7 +32,7 @@ const Navbar = ({ user, count }: { count?: number; user?: userDataTypes }) => {
   };
 
   return (
-    <nav className="flex justify-between items-center py-5 px-5 md:px-10 w-full z-10 md:dark:bg-slate-950 fixed top-0 md:relative  md:top-auto dark:bg-black bg-white">
+    <nav className="flex justify-between items-center py-5 px-5 mb-20 md:mb-0 md:px-10 w-full z-10 md:dark:bg-slate-950 fixed top-0 md:relative  md:top-auto dark:bg-black bg-white">
       {loggedInPaths.includes(path) && <DrawerWrapper user={user} />}
       
       {path == "/" && (
