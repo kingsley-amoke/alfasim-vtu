@@ -4,7 +4,6 @@ import "./globals.css";
 import { Toaster } from "react-hot-toast";
 import { ThemeProvider } from "@/providers/ThemeProvider";
 import FloatingWhatsapp from "./components/FloatingWhatsapp";
-import { Suspense } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -28,10 +27,9 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-         
-
+          <Toaster />
           <FloatingWhatsapp />
-          
+
           {children}
         </ThemeProvider>
       </body>
