@@ -10,7 +10,7 @@ const page = () => {
   return (
     <>
       <Navbar />
-      <hr className="w-full my-5" />
+      <hr className="w-full mt-20 md:mt-0 my-5" />
       <div className="w-full flex justify-center items-center">
         <Tabs defaultValue="login" className="w-[400px]">
           <TabsList className="grid w-full grid-cols-2 data-[state=active]:bg-teal-800 dark:data-[state=active]:bg-teal-800">
