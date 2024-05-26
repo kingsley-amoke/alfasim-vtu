@@ -10,7 +10,7 @@ export default async function page() {
 			<header>
 				<Navbar />
 			</header>
-			<main className="w-full flex flex-col justify-center items-center">
+			<main className="w-full flex flex-col justify-center items-center mt-20 md:mt-0">
 				<Hero />
 				<hr className=" w-full"/>
 				<Services />
