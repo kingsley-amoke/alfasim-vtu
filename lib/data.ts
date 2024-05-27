@@ -683,10 +683,12 @@ export const verifyPayment = async (
           transactionId: response.data.id,
         };
 
-        await setReference(reference)
-        await recharge(user?.email, trans.amount);
+        const data = await setReference(reference)
+        if(data){
+          await recharge(user?.email, trans.amount);
 
         await setTransaction(trans);
+        }
       
       // } else {
       //   const trans: transactionTypes = {

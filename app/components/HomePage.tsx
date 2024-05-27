@@ -65,16 +65,17 @@ const refStatus = ref!
   const fetchLoggedUser = async () => {
 
     const data = await getLoggedUser();
+
     
     if(reference)
-
-    setLoading(true);
-
-    const refStatus = await checkRefs()
-
-
-
-    if (data && !refStatus && reference) {
+      
+      setLoading(true);
+      
+      const refStatus = await checkRefs()
+      
+      
+      
+      if (data && refStatus === false && reference) {
       setUser(data);
       const response = await verifyPayment(data, reference);
 
