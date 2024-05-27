@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import { fetchNotifications, getLoggedUser } from "@/lib/data";
+import { fetchNotifications, getLoggedUser, setReference } from "@/lib/data";
 import FundWallet from "../components/FundWallet";
 import Pay from "../pay/components/Pay";
 import { userDataTypes } from "@/lib/types";
@@ -15,6 +15,7 @@ const RechargePage = () => {
     username: "",
     balance: "",
   });
+
 
   const handleCount = async () => {
     const response = await fetchNotifications();

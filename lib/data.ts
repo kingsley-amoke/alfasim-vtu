@@ -431,6 +431,7 @@ export const setReference = async (reference: string) => {
         },
       ])
       .select();
+      
     return { data, error };
   } catch (error) {
     if (isDynamicServerError(error)) {
@@ -684,11 +685,14 @@ export const verifyPayment = async (
         };
 
         const data = await setReference(reference)
-        if(data){
-          await recharge(user?.email, trans.amount);
+
+        if(data?.data === null) return
+
+        await recharge(user?.email, trans.amount);
 
         await setTransaction(trans);
-        }
+        
+
       
       // } else {
       //   const trans: transactionTypes = {
