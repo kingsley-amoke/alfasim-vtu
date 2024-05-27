@@ -43,7 +43,7 @@ const ElectricityPage = () => {
       <div>
         <Navbar count={unreadNotification} user={user} />
       </div>
-      <div className="flex w-full ">
+      <div className="flex w-full mt-20 md:mt-0">
         <div className="grow h-full w-full mt-5">
           <SubscribeElectricity user={user}/>
         </div>

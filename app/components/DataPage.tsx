@@ -45,7 +45,7 @@ const DataPage = ({ plans }: { plans: dataPlanTypes }) => {
         <Navbar user={user} count={unreadNotification} />
       </div>
 
-      <div className="grow h-full w-full mt-5">
+      <div className="grow h-full w-full mt-20 md:mt-0">
         <BuyData plans={plans} user={user}/>
       </div>
       <div>

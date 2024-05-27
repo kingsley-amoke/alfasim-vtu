@@ -52,7 +52,7 @@ const NotificationPage = ({
   return (
     <>
       <Navbar count={count} user={user} />
-      <div>
+      <div className="mt-20 md:mt-0">
         <Table>
           <TableCaption>All Notifications</TableCaption>
           <TableHeader>

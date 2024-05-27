@@ -44,7 +44,7 @@ const AirtimePage = () => {
       <div>
         <Navbar user={user} count={unreadNotification} />
       </div>
-      <div className="flex w-full ">
+      <div className="flex w-full mt-20 md:mt-0">
         <div className="grow h-full w-full mt-5">
           <BuyAirtime user={user}/>
         </div>

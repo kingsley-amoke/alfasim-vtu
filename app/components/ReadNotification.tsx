@@ -7,7 +7,7 @@ const ReadNotification = async ({ id }: { id: number }) => {
 
   const [notification] = response!;
   return (
-    <div className="flex flex-col justify-center items-center">
+    <div className="flex flex-col justify-center items-center mt-20 md:mt-0">
       <h1 className="dark:bg-black py-10 md:py-20 w-full text-center">
         {notification.title}
       </h1>
