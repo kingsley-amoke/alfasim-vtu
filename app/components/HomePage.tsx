@@ -70,7 +70,7 @@ const refStatus = ref!
 
 
 
-    if (data && refStatus) {
+    if (data && !refStatus) {
       setUser(data);
       const response = await verifyPayment(data, reference);
 
