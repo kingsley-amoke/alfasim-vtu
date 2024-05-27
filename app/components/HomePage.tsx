@@ -63,8 +63,12 @@ const refStatus = ref!
   }
 
   const fetchLoggedUser = async () => {
-    setLoading(true);
+
     const data = await getLoggedUser();
+    
+    if(reference)
+
+    setLoading(true);
 
     const refStatus = await checkRefs()
 
