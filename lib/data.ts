@@ -418,6 +418,28 @@ try {
 }
 }
 
+
+// create reference 
+export const setReference = async (reference: string) => {
+  try {
+    const { data, error } = await serverClient()
+      .from("refs")
+      .insert([
+        {
+          ref: reference,
+          
+        },
+      ])
+      .select();
+    return { data, error };
+  } catch (error) {
+    if (isDynamicServerError(error)) {
+      throw error;
+    }
+    console.log(error);
+  }
+};
+
 //paystack integration
 
 const secretKey: string = process.env.NEXT_PUBLIC_PAYSTACK_SECRET_KEY as string;
@@ -640,13 +662,9 @@ export const buyAirtime = async (data: {
 
 export const verifyPayment = async (
   user: userDataTypes,
-  reference: string  | null,
+  reference: string,
 ) => {
-  const payRefArray: string[] = [];
-  if (reference) {
-    if (payRefArray.includes(reference)) {
-    } else {
-      payRefArray.push(reference);
+     
       const response = await verifyPaystackTransaction(reference);
       if (response.data.status === "success") {
         const trans: transactionTypes = {
@@ -665,30 +683,31 @@ export const verifyPayment = async (
           transactionId: response.data.id,
         };
 
+        await setReference(reference)
         await recharge(user?.email, trans.amount);
 
         await setTransaction(trans);
       
-      } else {
-        const trans: transactionTypes = {
-          email: user.email,
-          purpose: "wallet",
-          amount: (response.data.amount / 100).toString(),
-          status: response.data.status,
-          network: response.data.channel,
-          planSize: response.data.currency,
-          previousBalance: user?.balance,
-          newBalance: user?.balance,
-          phone: reference,
-          transactionId: response.data.id,
-        };
+      // } else {
+      //   const trans: transactionTypes = {
+      //     email: user.email,
+      //     purpose: "wallet",
+      //     amount: (response.data.amount / 100).toString(),
+      //     status: response.data.status,
+      //     network: response.data.channel,
+      //     planSize: response.data.currency,
+      //     previousBalance: user?.balance,
+      //     newBalance: user?.balance,
+      //     phone: reference,
+      //     transactionId: response.data.id,
+      //   };
 
-        await setTransaction(trans);
+      //   await setTransaction(trans);
        
-      }
+      // }
     }
     
-  }
+  
 
   return 'finished'
 };
