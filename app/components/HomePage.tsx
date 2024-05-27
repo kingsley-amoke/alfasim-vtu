@@ -20,7 +20,6 @@ import { transactionTypes, userDataTypes } from "@/lib/types";
 import { LoadingSkeleton } from "./Skeleton";
 
 const HomePage = () => {
-
   const searchParams = useSearchParams();
   const dialogRef = useRef<null | HTMLDialogElement>(null);
   const showDialog = searchParams.get("showDialog");
@@ -47,44 +46,37 @@ const HomePage = () => {
     setUnreadNotification(unreadNotifications.length);
   };
 
-
-  const checkRefs = async() => {
-    const refs = await fetchRefs()
-    const ref = refs?.map(ref => {
-      if(ref.ref === reference){
-        return true
+  const checkRefs = async () => {
+    const refs = await fetchRefs();
+    const ref = refs?.map((ref) => {
+      if (ref.ref === reference) {
+        return true;
       }
-    return false
-  })
+      return false;
+    });
 
-const refStatus = ref!
+    const refStatus = ref!;
 
-   return refStatus[0]
-  }
+    return refStatus[0];
+  };
 
   const fetchLoggedUser = async () => {
-
     const data = await getLoggedUser();
 
-    
-    if(reference)
-      
-      setLoading(true);
-      
-      const refStatus = await checkRefs()
-      
-      
-      
-      if (data && refStatus === false && reference) {
-      setUser(data);
+    if (data) setUser(data);
+
+    if (reference) setLoading(true);
+
+    const refStatus = await checkRefs();
+
+    if (data && refStatus === false && reference) {
       const response = await verifyPayment(data, reference);
 
       response === "finished" && setLoading(false);
     }
 
-    setLoading(false)
+    setLoading(false);
   };
-
 
   const closeDialog = () => {
     dialogRef.current?.close();
