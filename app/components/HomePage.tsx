@@ -77,9 +77,10 @@ const refStatus = ref!
       
       if (data && refStatus === false && reference) {
       setUser(data);
-      const response = await verifyPayment(data, reference);
+      setLoading(false);
+      await verifyPayment(data, reference);
 
-      response === "finished" && setLoading(false);
+      
     }
   };
 
