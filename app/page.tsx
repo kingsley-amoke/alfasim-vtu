@@ -1,3 +1,4 @@
+
 import Footer from "./components/Footer";
 import Hero from "./components/Hero";
 import Navbar from "./components/Navbar";
@@ -5,6 +6,8 @@ import Pricing from "./components/Pricing";
 import Services from "./components/Services";
 
 export default async function page() {
+
+
 	return (
 		<>
 			<header>

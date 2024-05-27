@@ -6,6 +6,7 @@ import Navbar from "../components/Navbar";
 import Dashboard from "../components/Dashboard";
 import {
   fetchNotifications,
+  fetchRefs,
   getLoggedUser,
   recharge,
   setTransaction,
@@ -19,7 +20,6 @@ import { transactionTypes, userDataTypes } from "@/lib/types";
 import { LoadingSkeleton } from "./Skeleton";
 
 const HomePage = () => {
-  const router = useRouter();
 
   const searchParams = useSearchParams();
   const dialogRef = useRef<null | HTMLDialogElement>(null);
@@ -47,17 +47,37 @@ const HomePage = () => {
     setUnreadNotification(unreadNotifications.length);
   };
 
+
+  const checkRefs = async() => {
+    const refs = await fetchRefs()
+    const ref = refs?.map(ref => {
+      if(ref.ref === reference){
+        return true
+      }
+    return false
+  })
+
+const refStatus = ref!
+
+   return refStatus[0]
+  }
+
   const fetchLoggedUser = async () => {
     setLoading(true);
     const data = await getLoggedUser();
 
-    if (data) {
+    const refStatus = await checkRefs()
+
+
+
+    if (data && refStatus) {
       setUser(data);
       const response = await verifyPayment(data, reference);
 
       response === "finished" && setLoading(false);
     }
   };
+
 
   const closeDialog = () => {
     dialogRef.current?.close();

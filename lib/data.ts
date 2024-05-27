@@ -8,6 +8,7 @@ import {
   PaystackParams,
   VerifyParams,
   notificationTypes,
+  refsTypes,
   transactionTypes,
   userDataTypes,
 } from "./types";
@@ -382,6 +383,8 @@ export const fetchAirtimeHistory = async (email: string) => {
       return;
     }
 
+  
+
     return transaction;
   } catch (error) {
     if (isDynamicServerError(error)) {
@@ -390,6 +393,30 @@ export const fetchAirtimeHistory = async (email: string) => {
     console.log(error);
   }
 };
+
+//fetch references
+
+export const fetchRefs = async () => {
+try {
+  const { data: references, error } = await serverClient()
+      .from("refs")
+      .select("*")
+
+      if (error) {
+        console.log(error);
+        return;
+      }
+
+      let refs: refsTypes[] = references!
+      return refs
+  
+} catch (error) {
+  if (isDynamicServerError(error)) {
+    throw error;
+  }
+  console.log(error);
+}
+}
 
 //paystack integration
 

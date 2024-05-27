@@ -132,6 +132,12 @@ export interface DBTransactionTypes{
   transaction_id: string
 }
 
+export interface refsTypes{
+  id: number,
+  created_at: string,
+  ref: string
+}
+
 export interface PaystackParams {
   amount: number;
   email: string;
