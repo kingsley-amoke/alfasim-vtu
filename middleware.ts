@@ -14,18 +14,18 @@ const user = await serverClient().auth.getUser()
 
 
 if(user.data.user !== null && pathname == '/'){
-    return NextResponse.redirect('https://alfasimdata.vercel.app/dashboard?showDialog=y')
+    return NextResponse.redirect('https://alfasimdata.com.ng/dashboard?showDialog=y')
 }
 if(user.data.user !== null && pathname == '/login'){
-    return NextResponse.redirect('https://alfasimdata.vercel.app/dashboard?showDialog=y')
+    return NextResponse.redirect('https://alfasimdata.com.ng/dashboard?showDialog=y')
 }
 
 if(user.data.user !== null && pathname == '/register'){
-    return NextResponse.redirect('https://alfasimdata.vercel.app/dashboard?showDialog=y')
+    return NextResponse.redirect('https://alfasimdata.com.ng/dashboard?showDialog=y')
 }
 
 if(user.data.user === null && loggedInPaths.includes(pathname)){
-    return NextResponse.redirect('https://alfasimdata.vercel.app/login')
+    return NextResponse.redirect('https://alfasimdata.com.ng/login')
 }
 
     

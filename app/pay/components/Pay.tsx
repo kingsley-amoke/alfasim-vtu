@@ -18,7 +18,7 @@ export default function Pay({ user }: { user: userDataTypes }) {
       amount: amount,
       email: email,
       currency: "NGN",
-      callback_url: 'https://alfasimdata.vercel.app/dashboard',
+      callback_url: 'https://alfasimdata.com.ng/dashboard',
       channels: ["bank_transfer", "card", "ussd", "bank"],
     });
     setSubmitting(false);
