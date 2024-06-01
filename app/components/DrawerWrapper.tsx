@@ -128,7 +128,7 @@ const DrawerWrapper = ({
               </div>
               { user?.is_admin ?
                 (<div className="flex justify-center items-center">
-                <div className="flex justify-center items-center text-white border border-white py-2 px-3 w-1/2 rounded-md dark">
+                <div className="flex justify-center items-center text-white border border-white py-2 px-3 w-1/2 rounded-md dark hover:bg-teal-500">
                   <Link href={'/admin'}>
                     Admin
                   </Link>
