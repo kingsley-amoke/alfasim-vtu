@@ -16,6 +16,25 @@ import { headers } from "next/headers";
 import { isDynamicServerError } from "next/dist/client/components/hooks-server-context";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
+
+//fetch all users
+
+export const fetchAllUsers = async () => {
+  try {
+    const { data } = await serverClient()
+     .from("users")
+     .select("email, username, balance, referrals, referral_bonus, is_admin");
+
+    return data;
+  } catch (error) {
+    if (isDynamicServerError(error)) {
+      throw error;
+    }
+    console.log(error);
+  }
+};
+
+
 //fetches one user by username
 
 export const fetchUser = async (email: string | undefined) => {
@@ -131,6 +150,7 @@ export const getLoggedUser = async () => {
       const user = {
         email: data[0].email,
         username: data[0].username,
+        is_admin: data[0].is_admin,
         balance: data[0].balance,
         referrals: data[0].referrals,
         referral_bonus: data[0].referral_bonus,

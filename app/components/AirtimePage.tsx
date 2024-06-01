@@ -12,6 +12,7 @@ const AirtimePage = () => {
     email: '',
     username: "",
     balance: "",
+    is_admin: false
   });
 
   const handleCount = async () => {
