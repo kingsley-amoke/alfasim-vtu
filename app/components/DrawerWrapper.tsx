@@ -126,6 +126,13 @@ const DrawerWrapper = ({
                 </div>
                 <hr />
               </div>
+                <div className="flex justify-center items-center">
+                <div className="text-white border border-white py-2 px-3 w-1/2 rounded-md dark">
+                  <Link href={'/admin'}>
+                    Admin
+                  </Link>
+                </div>
+                </div>
               <div>
                 <ul className="flex flex-col gap-5 py-10">
                   {sidebarLInks.map((item) => (

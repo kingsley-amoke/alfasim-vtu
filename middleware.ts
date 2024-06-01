@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 import { loggedInPaths } from "./lib/shared";
 import { serverClient } from "./lib/serverConnection";
+import { fetchUser, getLoggedUser } from "./lib/data";
 
 export default async function middleware(req: NextRequest){
 
@@ -9,26 +10,32 @@ const {pathname} = req.nextUrl
 
 
 
-const user = await serverClient().auth.getUser()
+const {data:{user}} = await serverClient().auth.getUser()
+
+const userData = await fetchUser(user?.email)
+
+const loggedUser = userData![0]
 
 
-
-if(user.data.user !== null && pathname == '/'){
+if(user && pathname == '/'){
     return NextResponse.redirect('https://alfasimdata.com.ng/dashboard?showDialog=y')
 }
-if(user.data.user !== null && pathname == '/login'){
+if(user && pathname == '/login'){
     return NextResponse.redirect('https://alfasimdata.com.ng/dashboard?showDialog=y')
 }
 
-if(user.data.user !== null && pathname == '/register'){
+if(user && pathname == '/register'){
     return NextResponse.redirect('https://alfasimdata.com.ng/dashboard?showDialog=y')
 }
 
-if(user.data.user === null && loggedInPaths.includes(pathname)){
+if(!user && loggedInPaths.includes(pathname)){
     return NextResponse.redirect('https://alfasimdata.com.ng/login')
 }
 
-    
+if(!loggedUser.is_admin && pathname == '/admin'){
+    return NextResponse.redirect('http://localhost:3000/dashboard')
+}
+
 }
 
 export const config = {

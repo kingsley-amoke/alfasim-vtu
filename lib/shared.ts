@@ -21,5 +21,6 @@ export const loggedInPaths = [
   "/notifications",
   "/transactions",
   "/electricity",
+  "/admin"
 ];
 
