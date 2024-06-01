@@ -33,7 +33,7 @@ if(!user && loggedInPaths.includes(pathname)){
 }
 
 if(!loggedUser.is_admin && pathname == '/admin'){
-    return NextResponse.redirect('http://localhost:3000/dashboard')
+    return NextResponse.redirect('https://alfasimdata.com.ng/dashboard')
 }
 
 }
