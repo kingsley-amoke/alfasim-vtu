@@ -30,6 +30,7 @@ const HomePage = () => {
     email: "",
     username: "",
     balance: "",
+    is_admin: false,
   });
 
   const [loading, setLoading] = useState(false);

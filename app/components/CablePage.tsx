@@ -13,6 +13,7 @@ const CablePage = () => {
     email:'',
     username: "",
     balance: "",
+    is_admin: false
    
   });
 

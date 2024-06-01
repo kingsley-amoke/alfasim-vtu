@@ -15,6 +15,7 @@ const DataPage = ({ plans }: { plans: dataPlanTypes }) => {
     email: '',
     username: "",
     balance: "",
+    is_admin: false
   });
 
   const handleCount = async () => {

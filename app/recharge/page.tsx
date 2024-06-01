@@ -14,6 +14,7 @@ const RechargePage = () => {
     email: '',
     username: "",
     balance: "",
+    is_admin: false
   });
 
 
