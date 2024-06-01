@@ -86,27 +86,27 @@ const AdminPage = () => {
   return (
     <>
       <Navbar user={user} count={unreadNotification} />
-      <div className="h-screen">
+      <div className=" mt-32 md:mt-0 md:h-screen">
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Username</TableHead>
+              <TableHead className="hidden md:flex">Username</TableHead>
               <TableHead>Email</TableHead>
-              <TableHead>Balance</TableHead>
+              <TableHead className="hidden md:flex">Balance</TableHead>
               <TableHead>Action</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {users?.map((user) => (
               <TableRow key={user.username}>
-                <TableCell>{user.username}</TableCell>
+                <TableCell className="hidden md:flex">{user.username}</TableCell>
                 <TableCell>{user.email}</TableCell>
-                <TableCell>{user.balance}</TableCell>
+                <TableCell className="hidden md:flex">{user.balance}</TableCell>
                 <TableCell>
                     {loading ? "Please wait..." :(
                   <Dialog>
                     <DialogTrigger asChild>
-                      <Button variant="outline">Fund Wallet</Button>
+                      <Button variant="outline" className="w-32">Fund Wallet</Button>
                     </DialogTrigger>
                     <DialogContent>
                       <DialogHeader>
