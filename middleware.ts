@@ -12,9 +12,9 @@ const {pathname} = req.nextUrl
 
 const {data:{user}} = await serverClient().auth.getUser()
 
-const loggedUser = await fetchUser(user?.email)
+const userData = await fetchUser(user?.email)!
 
-
+const loggedUser = userData![0]
 
 
 if(user && pathname == '/'){
@@ -32,7 +32,7 @@ if(!user && loggedInPaths.includes(pathname)){
     return NextResponse.redirect('https://alfasimdata.com.ng/login')
 }
 
-if(loggedUser && !loggedUser[0].is_admin && pathname == '/admin'){
+if(!loggedUser?.is_admin && pathname == '/admin'){
     return NextResponse.redirect('https://alfasimdata.com.ng/dashboard')
 }
 
