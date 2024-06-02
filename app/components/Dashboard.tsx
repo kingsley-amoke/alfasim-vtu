@@ -84,7 +84,7 @@ const Dashboard = ({
             cable subscription, electricity subscription, bulk sms. Convert
             airtime to money.
           </p>
-          <p className="mt-10">{`Referral link: alfasimdata.com/register?referral=${user?.username}`}</p>
+          <p className="mt-10">{`Referral link: alfasimdata.com.ng/register?referral=${user?.username}`}</p>
         </div>
         <Button links="recharge">Fund Wallet</Button>
       </section>
