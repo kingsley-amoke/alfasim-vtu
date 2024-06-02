@@ -10,25 +10,25 @@ const {pathname} = req.nextUrl
 
 
 
-const data = await serverClient().auth.getUser()
+const {data:{user}} = await serverClient().auth.getUser()
 
-const loggedUser = await fetchUser(data.data.user?.email)
-
-
+const loggedUser = await fetchUser(user?.email)
 
 
-if(data.data.user && pathname == '/'){
+
+
+if(user && pathname == '/'){
     return NextResponse.redirect('https://alfasimdata.com.ng/dashboard?showDialog=y')
 }
-if(data.data.user && pathname == '/login'){
-    return NextResponse.redirect('https://alfasimdata.com.ng/dashboard?showDialog=y')
-}
-
-if(data.data.user && pathname == '/register'){
+if(user && pathname == '/login'){
     return NextResponse.redirect('https://alfasimdata.com.ng/dashboard?showDialog=y')
 }
 
-if(!data.data.user && loggedInPaths.includes(pathname)){
+if(user && pathname == '/register'){
+    return NextResponse.redirect('https://alfasimdata.com.ng/dashboard?showDialog=y')
+}
+
+if(!user && loggedInPaths.includes(pathname)){
     return NextResponse.redirect('https://alfasimdata.com.ng/login')
 }
 
