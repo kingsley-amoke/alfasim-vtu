@@ -12,9 +12,9 @@ const {pathname} = req.nextUrl
 
 const {data:{user}} = await serverClient().auth.getUser()
 
-const userData = await fetchUser(user?.email)!
+const userData = await fetchUser(user?.email)
 
-const loggedUser = userData![0]
+const loggedUser = userData[0]
 
 
 if(user && pathname == '/'){

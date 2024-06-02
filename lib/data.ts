@@ -708,7 +708,9 @@ export const verifyPayment = async (
 
         if(data?.data === null) return
 
-        await recharge(user?.email, trans.amount);
+        const rechargeAmount = (parseInt(trans.amount) - 50).toString()
+
+        await recharge(user?.email, rechargeAmount);
 
         await setTransaction(trans);
         
