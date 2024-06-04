@@ -9,7 +9,7 @@ const FloatingWhatsapp = () => {
     <div>
       <Delayed waitBeforeShow={2000}>
 
-      <FloatingWhatsApp phoneNumber="+2348051525123" accountName="Alfasim" messageDelay={5} avatar="./logo.jpg"/>
+      <FloatingWhatsApp phoneNumber="+2348051525123" accountName="Alfasim" messageDelay={5} avatar="./logo.jpg" darkMode={true} statusMessage="Contact us now" chatMessage="Welcome to alfasim data. \n How can we help you today. " allowClickAway={true} allowEsc={true}/>
       </Delayed>
     </div>
   );
