@@ -37,7 +37,7 @@ const AdminPage = () => {
   const router = useRouter();
 
   const [unreadNotification, setUnreadNotification] = useState<number>(0);
-  const [user, setUser] = useState<userDataTypes>();
+  const [admin, setAdmin] = useState<userDataTypes>();
   const [users, setUsers] = useState<userDataTypes[]>();
 
   const [amount, setAmount] = useState("");
@@ -46,7 +46,7 @@ const AdminPage = () => {
   const fetchLoggedUser = async () => {
     const data = await getLoggedUser();
 
-    data && setUser(data);
+    data && setAdmin(data);
   };
 
   const fetchUsers = async () => {
@@ -67,9 +67,9 @@ const AdminPage = () => {
     setUnreadNotification(count);
   };
 
-  const fundUserWallet = async () => {
+  const fundUserWallet = async (user : userDataTypes) => {
     setLoading(true);
-    const data = await recharge(user?.email, amount);
+    const data = await recharge(user.email, amount);
 
     if (data?.data) {
       setLoading(false);
@@ -85,7 +85,7 @@ const AdminPage = () => {
   }, []);
   return (
     <>
-      <Navbar user={user} count={unreadNotification} />
+      <Navbar user={admin} count={unreadNotification} />
       <div className=" mt-32 md:mt-0 md:h-screen">
         <Table>
           <TableHeader>
@@ -116,7 +116,7 @@ const AdminPage = () => {
                       <DialogFooter className="mt-10">
                         <Button
                           className="border dark:border dark:border-white hover:teal-800"
-                          onClick={() => fundUserWallet()}
+                          onClick={() => fundUserWallet(user)}
                         >
                           Confirm
                         </Button>
