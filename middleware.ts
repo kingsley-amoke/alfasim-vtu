@@ -14,6 +14,8 @@ const {data:{user}} = await serverClient().auth.getUser()
 
 const userData = await fetchUser(user?.email)
 
+console.log(userData)
+
 if(!userData) {
     return NextResponse.redirect('https://www.alfasimdata.com.ng/login')
 }
@@ -21,18 +23,18 @@ if(!userData) {
 const loggedUser = userData[0]
 
 
-if(user && pathname == '/'){
+if(loggedUser && pathname == '/'){
     return NextResponse.redirect('https://www.alfasimdata.com.ng/dashboard?showDialog=y')
 }
-if(user && pathname == '/login'){
-    return NextResponse.redirect('https://www.alfasimdata.com.ng/dashboard?showDialog=y')
-}
-
-if(user && pathname == '/register'){
+if(loggedUser && pathname == '/login'){
     return NextResponse.redirect('https://www.alfasimdata.com.ng/dashboard?showDialog=y')
 }
 
-if(!user && loggedInPaths.includes(pathname)){
+if(loggedUser && pathname == '/register'){
+    return NextResponse.redirect('https://www.alfasimdata.com.ng/dashboard?showDialog=y')
+}
+
+if(!loggedUser && loggedInPaths.includes(pathname)){
     return NextResponse.redirect('https://www.alfasimdata.com.ng/login')
 }
 
