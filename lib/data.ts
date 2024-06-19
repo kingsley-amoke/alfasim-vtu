@@ -23,7 +23,7 @@ export const fetchAllUsers = async () => {
   try {
     const { data } = await serverClient()
      .from("users")
-     .select("email, username, balance, referrals, referral_bonus, is_admin");
+     .select("email, username, balance, referrals, referee, referral_bonus, is_admin");
 
     return data;
   } catch (error) {

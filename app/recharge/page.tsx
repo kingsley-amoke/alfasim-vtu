@@ -14,6 +14,7 @@ const RechargePage = () => {
     email: '',
     username: "",
     balance: "",
+    referee:'',
     is_admin: false
   });
 

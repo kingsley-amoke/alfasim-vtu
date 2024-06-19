@@ -13,6 +13,7 @@ const ElectricityPage = () => {
     email:'',
     username: "",
     balance: "",
+    referee:'',
     is_admin: false
 
   });
