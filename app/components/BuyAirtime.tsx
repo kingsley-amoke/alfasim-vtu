@@ -67,7 +67,7 @@ const BuyAirtime = ({ user }: { user: userDataTypes }) => {
     if(!user || !phone || !amount || !network) return
 
 
-    if(parseInt(user?.balance) <  parseInt(amountToPay)) {
+    if(parseInt(user?.balance) <  parseInt(amountToPay) || !user.balance) {
       
       toast.error("Insufficient Balance");
       return

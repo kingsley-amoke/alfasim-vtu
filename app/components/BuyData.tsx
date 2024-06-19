@@ -523,7 +523,7 @@ const BuyData = ({
     if(!selectedPlan || !user) return
   
 
-    if(parseInt(user?.balance) <  parseInt(selectedPlan?.plan_amount)) {
+    if(parseInt(user?.balance) <  parseInt(selectedPlan?.plan_amount)|| !user.balance) {
       
       toast.error("Insufficient Balance");
       return
