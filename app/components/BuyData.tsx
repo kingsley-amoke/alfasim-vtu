@@ -10,7 +10,7 @@ import {
   transactionTypes,
   userDataTypes,
 } from "@/lib/types";
-import { buyData, deductBalance, getDataPlans, setTransaction } from "@/lib/data";
+import { buyData, deductBalance, getDataPlans, handleCommission, setTransaction } from "@/lib/data";
 import toast from "react-hot-toast";
 import { useRouter, useSearchParams } from "next/navigation";
 import Modal from "./Modal";
@@ -520,7 +520,6 @@ const BuyData = ({
   const handleSubmitForm = async () => {
 
 
-
     if(!selectedPlan || !user) return
   
 
@@ -529,6 +528,13 @@ const BuyData = ({
       toast.error("Insufficient Balance");
       return
     }
+
+
+    const integer = Math.trunc(parseInt(selectedPlan?.plan.slice(0, -2)));
+
+  const commission =  selectedPlan?.plan.slice(-2) === "MB"
+? 0
+: integer * 1
 
     setLoading(true);
     const dataInfo = {
@@ -585,6 +591,8 @@ const BuyData = ({
       console.log(transacrion);
 
       await deductBalance(user?.email, selectedPlan?.plan_amount);
+
+      await handleCommission(data.email, commission)
       
       toast.success("Successfull");
       router.replace("/dashboard");

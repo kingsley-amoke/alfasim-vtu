@@ -21,7 +21,7 @@ import ConfirmationPopUp from "./ConfirmationPopUp";
 import { LoadingSkeleton } from "./Skeleton";
 import { boolean } from "zod";
 
-const BuyData = ({ user }: { user: userDataTypes }) => {
+const BuyAirtime = ({ user }: { user: userDataTypes }) => {
   const inputStyle =
     "outline-none border border-teal-800 dark:border-white p-2 rounded-sm w-full";
 
@@ -260,4 +260,4 @@ const BuyData = ({ user }: { user: userDataTypes }) => {
   );
 };
 
-export default BuyData;
+export default BuyAirtime;

@@ -41,7 +41,7 @@ export const fetchUser = async (email: string | undefined) => {
   try {
     const { data } = await serverClient()
       .from("users")
-      .select("email, username, balance, referrals, referral_bonus, is_admin")
+      .select("email, username, balance, referrals, referee, referral_bonus, is_admin")
       .eq("email", email);
 
     return data;
@@ -154,6 +154,7 @@ export const getLoggedUser = async () => {
         balance: data[0].balance,
         referrals: data[0].referrals,
         referral_bonus: data[0].referral_bonus,
+        referee: data[0].referee,
       };
 
       return user;
@@ -166,11 +167,45 @@ export const getLoggedUser = async () => {
   }
 };
 
+export const handleCommission = async(email:string|undefined, commission:number) => {
+
+  try{
+  const userData = await fetchUser(email);
+
+  const { referee } = userData![0];
+
+  const refereeData = await fetchUser(referee)
+
+  const {referral_bonus} = refereeData![0]
+
+  let newBonus = parseInt(referral_bonus) + commission;
+
+  const { data, error } = await serverClient()
+  .from("users")
+  .update({ referral_bonus: newBonus, })
+  .eq("email", referee)
+  .select();
+} catch (error) {
+if (isDynamicServerError(error)) {
+  throw error;
+}
+console.log(error);
+}
+}
+
 //referral program implementation
-export const handleReferral = async (username: string) => {
+export const handleReferral = async (username: string, userEmail:string) => {
   let email = username + "@gmail.com";
 
   try {
+
+    await serverClient()
+      .from("users")
+      .update({ referee: email })
+      .eq("email", userEmail)
+      .select();
+
+
     const userData = await fetchUser(email);
 
     const { referrals, referral_bonus } = userData![0];
@@ -634,6 +669,7 @@ export const buyData = async (data: {
       return response.json();
     })
     .then((data) => {
+      
       return data;
     })
     .catch((error) => {

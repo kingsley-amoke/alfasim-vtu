@@ -28,6 +28,7 @@ export interface userDataTypes {
   balance: string;
   referrals?: string;
   referral_bonus?: string;
+  referee:string;
   is_admin: boolean;
 }
 

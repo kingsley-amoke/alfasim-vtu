@@ -15,6 +15,7 @@ const DataPage = ({ plans }: { plans: dataPlanTypes }) => {
     email: '',
     username: "",
     balance: "",
+    referee:'',
     is_admin: false
   });
 

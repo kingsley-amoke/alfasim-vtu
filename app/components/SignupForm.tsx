@@ -109,7 +109,7 @@ const SignupForm = () => {
         refresh_token: refresh_token,
       });
 
-      referral && (await handleReferral(referral));
+      referral && (await handleReferral(referral, userEmail));
 
 
       router.push("/dashboard?showDialog=y");
