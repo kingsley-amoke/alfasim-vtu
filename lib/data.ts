@@ -208,14 +208,13 @@ export const handleReferral = async (username: string, userEmail:string) => {
 
     const userData = await fetchUser(email);
 
-    const { referrals, referral_bonus } = userData![0];
+    const { referrals } = userData![0];
 
-    let newBonus = parseInt(referral_bonus) + 100;
     let newReferral = parseInt(referrals) + 1;
 
     const { data, error } = await serverClient()
       .from("users")
-      .update({ referral_bonus: newBonus, referrals: newReferral })
+      .update({referrals: newReferral })
       .eq("email", email)
       .select();
   } catch (error) {
