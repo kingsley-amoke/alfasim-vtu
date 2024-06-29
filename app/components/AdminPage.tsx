@@ -49,7 +49,7 @@ const AdminPage = () => {
     <>
       <Navbar user={admin} count={unreadNotification} />
       <div className=" mt-32 md:mt-0 md:h-screen">
-        <div className="w-full flex md:justify-end">
+        <div className="w-full flex md:justify-end my-5">
           <Search placeholder="Search users...." />
         </div>
         <Suspense key={query + currentPage} fallback={<Skeleton />}>
