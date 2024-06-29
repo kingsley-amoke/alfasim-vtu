@@ -24,13 +24,19 @@ import { useUserStore, useUsersStore } from "@/lib/store";
 const HomePage = () => {
   const searchParams = useSearchParams();
   const { setUsers } = useUsersStore();
-  const { setUser } = useUserStore();
 
   const dialogRef = useRef<null | HTMLDialogElement>(null);
   const showDialog = searchParams.get("showDialog");
   const reference = searchParams.get("trxref");
 
   const [unreadNotification, setUnreadNotification] = useState(0);
+  const [user, setUser] = useState<userDataTypes>({
+    email: '',
+    username: "",
+    balance: "",
+    referee:'',
+    is_admin: false
+  })
 
   const [loading, setLoading] = useState(false);
 
@@ -106,7 +112,7 @@ const HomePage = () => {
   return (
     <>
       <Modal
-        
+        title={`Welcome ${user.username}`}
         closeDialog={closeDialog}
         showDialog={showDialog}
         dialogRef={dialogRef}
@@ -130,7 +136,7 @@ const HomePage = () => {
       </Modal>
       <div>
         <div>
-          <Navbar count={unreadNotification} />
+          <Navbar user={user} count={unreadNotification} />
         </div>
         <div className="flex w-full ">
           {loading ? (
@@ -140,7 +146,7 @@ const HomePage = () => {
             </div>
           ) : (
             <div className=" grow h-full w-full">
-              <Dashboard count={unreadNotification} />
+              <Dashboard user={user} count={unreadNotification} />
             </div>
           )}
         </div>

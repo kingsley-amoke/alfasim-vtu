@@ -16,11 +16,9 @@ import DrawerWrapper from "./DrawerWrapper";
 import { userDataTypes } from "@/lib/types";
 import { useUserStore } from "@/lib/store";
 
-const Navbar = ({ count }: { count?: number; user?: userDataTypes }) => {
+const Navbar = ({user, count }: { count?: number; user?: userDataTypes }) => {
   const path = usePathname();
   const router = useRouter();
-
-  const {user} = useUserStore()
 
   const handleLogout = async () => {
 

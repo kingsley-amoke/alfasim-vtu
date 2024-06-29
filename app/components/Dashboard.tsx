@@ -24,13 +24,14 @@ import { useUserStore } from "@/lib/store";
 
 const Dashboard = ({
 	count,
+  user
 }: {
 	count: number;
+  user: userDataTypes;
 }) => {
 	const router = useRouter();
 	const redeemRef = useRef<HTMLButtonElement>(null!);
 
-  const {user} = useUserStore()
 
 	const handleNotification = async () => {
 		router.push("/notifications");
