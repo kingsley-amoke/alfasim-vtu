@@ -39,6 +39,9 @@ const PaginationPage = ({
     router.push(`/admin?page=${Number(currentPage) - 1}&per_page=${per_page}`);
   };
 
+  console.log(hasNextPage)
+  console.log(!hasNextPage)
+
   return (
     <Pagination>
       <PaginationContent className="flex flex-row">
