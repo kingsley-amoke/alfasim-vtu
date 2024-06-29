@@ -65,7 +65,7 @@ const AdminPage = () => {
           <Search placeholder="Search users...." />
         </div>
         <Suspense key={query + currentPage} fallback={<Skeleton />}>
-          <UserList data={users} query={query} currentPage={currentPage} per_page={per_page} />
+          <UserList query={query} currentPage={currentPage} per_page={per_page} />
   <PaginationPage users={users} currentPage={currentPage} per_page={per_page}/>
         </Suspense>
       </div>
