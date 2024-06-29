@@ -78,7 +78,7 @@ const UserList = ({query, currentPage, per_page}: {query:string, currentPage:str
       useLayoutEffect(() => {
         handleSearchUser();
         
-      },[query, currentPage])
+      },[query])
 
 
   return (
