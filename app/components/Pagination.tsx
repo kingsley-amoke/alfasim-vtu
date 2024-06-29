@@ -10,11 +10,14 @@ import {
 import { useUsersStore } from "@/lib/store";
 import Button from "./Button";
 import { useRouter } from "next/navigation";
+import { userDataTypes } from "@/lib/types";
 
 const PaginationPage = ({
+  users,
   currentPage,
   per_page,
 }: {
+  users:userDataTypes[];
   currentPage: string;
   per_page: string;
 }) => {
@@ -38,9 +41,6 @@ const PaginationPage = ({
   const handlePreviousPage = () => {
     router.push(`/admin?page=${Number(currentPage) - 1}&per_page=${per_page}`);
   };
-
-  console.log(hasNextPage)
-  console.log(!hasNextPage)
 
   return (
     <Pagination>

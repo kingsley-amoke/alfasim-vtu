@@ -23,10 +23,9 @@ import {
   import { Input } from "@/lib/ui/input";
 import { useRouter } from 'next/navigation';
 import { userDataTypes } from '@/lib/types';
-import { fetchAllUsers, recharge } from '@/lib/data';
-import { useUserStore, useUsersStore } from '@/lib/store';
+import { recharge } from '@/lib/data';
 
-const UserList = ({query, currentPage, per_page}: {query:string, currentPage:string, per_page:string}) => {
+const UserList = ({data, query, currentPage, per_page}: {data: userDataTypes[], query:string, currentPage:string, per_page:string}) => {
 
     const router = useRouter();
     const [users, setUsers] = useState<userDataTypes[]>([]);
@@ -35,8 +34,6 @@ const UserList = ({query, currentPage, per_page}: {query:string, currentPage:str
 
 
     const handleSearchUser = async() => {
-
-      const data = await fetchAllUsers();
 
       if(query === "") {
         const filteredUsers = data!
