@@ -32,21 +32,19 @@ const UserList = ({query, currentPage, per_page}: {query:string, currentPage:str
     const [users, setUsers] = useState<userDataTypes[]>([]);
     const [amount, setAmount] = useState("");
 
-    const {users: data} = useUsersStore()
 
 
+    const handleSearchUser = async() => {
 
-    const handleSearchUser = () => {
-
-      console.log(data)
+      const data = await fetchAllUsers();
 
       if(query === "") {
-        const filteredUsers = data
+        const filteredUsers = data!
         filterUsersByBalance(filteredUsers)
       }
       else {
       
-        const filteredUsers = data.filter(user => user.username.toLowerCase().includes(query.toLowerCase()))
+        const filteredUsers = data?.filter(user => user.username.toLowerCase().includes(query.toLowerCase()))!
         filterUsersByBalance(filteredUsers)
       }
 
