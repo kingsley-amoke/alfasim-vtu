@@ -26,11 +26,18 @@ const AdminPage = () => {
   
   
   const [unreadNotification, setUnreadNotification] = useState<number>(0);
-  const {user:admin} = useUserStore()
+  const [user, setUser] = useState<userDataTypes>({
+    email: '',
+    username: "",
+    balance: "",
+    referee:'',
+    is_admin: true,
+  })
 
 
   const handleCount = async () => {
     const response = await fetchNotifications();
+    const user = await getLoggedUser();
 
     let notifications = response!;
 
@@ -38,6 +45,8 @@ const AdminPage = () => {
       (notification) => notification.read === false
     );
     const count = unreadNotifications.length;
+
+    setUser(user!);
 
     setUnreadNotification(count);
   };
@@ -47,7 +56,7 @@ const AdminPage = () => {
   }, []);
   return (
     <>
-      <Navbar user={admin} count={unreadNotification} />
+      <Navbar user={user} count={unreadNotification} />
       <div className=" mt-32 md:mt-0 md:h-screen">
         <div className="w-full flex md:justify-end my-5">
           <Search placeholder="Search users...." />
