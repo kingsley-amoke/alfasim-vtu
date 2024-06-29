@@ -28,6 +28,9 @@ const PaginationPage = ({
   const hasNextPage = end < users.length;
   const hasPreviousPage = start > 0;
 
+  const disabledPrev = !hasPreviousPage ? 'bg-gray-500' : ' bg-teal-800'
+  const disabledNext = !hasNextPage ? 'bg-gray-500' : ' bg-teal-800'
+
   const handleNextPage = () => {
     router.push(`/admin?page=${Number(currentPage) + 1}&per_page=${per_page}`);
   };
@@ -41,7 +44,7 @@ const PaginationPage = ({
       <PaginationContent className="flex flex-row">
         <PaginationItem>
           <button
-            className="flex bg-teal-800 text-white mr-5 py-2 px-3 justify-center items-center"
+            className={ ` ${disabledPrev} flex text-white mr-5 py-2 px-5 justify-center items-center rounded-md`}
             disabled={!hasPreviousPage}
             onClick={() => handlePreviousPage()}
           >
@@ -53,7 +56,7 @@ const PaginationPage = ({
         </PaginationItem>
         <PaginationItem>
           <button
-            className="flex bg-teal-800 text-white ml-5 py-2 px-3 justify-center items-center"
+            className={` ${disabledNext} flex bg-teal-800 text-white ml-5 py-2 px-5 justify-center items-center rounded-md`}
             disabled={!hasNextPage}
             onClick={() => handleNextPage()}
           >
