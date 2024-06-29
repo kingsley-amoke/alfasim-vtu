@@ -105,7 +105,7 @@ const HomePage = () => {
   return (
     <>
       <Modal
-        title={`Welcome ${user.username}`}
+        
         closeDialog={closeDialog}
         showDialog={showDialog}
         dialogRef={dialogRef}

@@ -3,8 +3,11 @@
 import React, { useRef, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { modalProps } from "@/lib/types";
+import { useUserStore } from "@/lib/store";
 
-const Modal = ({ title, children, showDialog, dialogRef, closeDialog }: modalProps) => {
+const Modal = ({children, showDialog, dialogRef, closeDialog }: modalProps) => {
+
+	const {user} = useUserStore()
 
 	
 
@@ -16,7 +19,7 @@ const Modal = ({ title, children, showDialog, dialogRef, closeDialog }: modalPro
 			>
 				<div className="w-[500px] max-w-full h-full dark:bg-black bg-gray-200 flex flex-col">
 					<div className="flex justify-between mb-4 pt-5 px-5 h-full">
-						<h1 className=" text-xl md:text-2xl">{title}</h1>
+						<h1 className=" text-xl md:text-2xl">Welcome { user.username}</h1>
 						<button
 							onClick={closeDialog}
 							className="flex justify-center items-center mb-2 py-1 px-2 cursor-pointer border-none rounded w-6 md:w-8 h-6 md:h-8 font-bold bg-red-600 dark:bg-black text-white dark:border dark:rounded-full"

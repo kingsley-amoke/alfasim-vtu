@@ -87,7 +87,7 @@ export enum PlanType {
 }
 
 export interface modalProps {
-  title: string;
+  title?: string;
   onClose?: () => void;
   onOk?: () => void;
   closeDialog: () => void;
