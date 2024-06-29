@@ -18,18 +18,19 @@ import { useRouter } from "next/navigation";
 import FAQ from "./FAQ";
 import Notification from "./Notification";
 import { userDataTypes } from "@/lib/types";
+import { useUserStore } from "@/lib/store";
 
 
 
 const Dashboard = ({
-	user,
 	count,
 }: {
-	user: userDataTypes
 	count: number;
 }) => {
 	const router = useRouter();
 	const redeemRef = useRef<HTMLButtonElement>(null!);
+
+  const {user} = useUserStore()
 
 	const handleNotification = async () => {
 		router.push("/notifications");

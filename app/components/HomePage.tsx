@@ -5,6 +5,7 @@ import React, { useEffect, useRef, useState } from "react";
 import Navbar from "../components/Navbar";
 import Dashboard from "../components/Dashboard";
 import {
+  fetchAllUsers,
   fetchNotifications,
   fetchRefs,
   getLoggedUser,
@@ -18,21 +19,18 @@ import Footer from "./Footer";
 import { useRouter, useSearchParams } from "next/navigation";
 import { transactionTypes, userDataTypes } from "@/lib/types";
 import { LoadingSkeleton } from "./Skeleton";
+import { useUserStore, useUsersStore } from "@/lib/store";
 
 const HomePage = () => {
   const searchParams = useSearchParams();
+  const { setUsers } = useUsersStore();
+  const { setUser } = useUserStore();
+
   const dialogRef = useRef<null | HTMLDialogElement>(null);
   const showDialog = searchParams.get("showDialog");
   const reference = searchParams.get("trxref");
 
   const [unreadNotification, setUnreadNotification] = useState(0);
-  const [user, setUser] = useState<userDataTypes>({
-    email: "",
-    username: "",
-    balance: "",
-    referee: "",
-    is_admin: false,
-  });
 
   const [loading, setLoading] = useState(false);
 
@@ -66,6 +64,11 @@ const HomePage = () => {
     const data = await getLoggedUser();
 
     if (data) setUser(data);
+
+    const res = await fetchAllUsers();
+    const users = res!;
+
+    setUsers(users);
 
     if (reference) setLoading(true);
 
@@ -126,7 +129,7 @@ const HomePage = () => {
       </Modal>
       <div>
         <div>
-          <Navbar count={unreadNotification} user={user} />
+          <Navbar count={unreadNotification} />
         </div>
         <div className="flex w-full ">
           {loading ? (
@@ -136,7 +139,7 @@ const HomePage = () => {
             </div>
           ) : (
             <div className=" grow h-full w-full">
-              <Dashboard user={user} count={unreadNotification} />
+              <Dashboard count={unreadNotification} />
             </div>
           )}
         </div>
