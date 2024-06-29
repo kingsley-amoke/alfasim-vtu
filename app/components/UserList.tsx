@@ -31,10 +31,12 @@ const UserList = ({query, currentPage, per_page}: { query:string, currentPage:st
     const router = useRouter();
     const [users, setUsers] = useState<userDataTypes[]>([]);
     const [amount, setAmount] = useState("");
+    const [loading, setLoading] = useState(false);
 
 
 
     const handleSearchUser = async() => {
+      setLoading(true);
 
       const data = await fetchAllUsers()
 
@@ -60,6 +62,7 @@ const UserList = ({query, currentPage, per_page}: { query:string, currentPage:st
 
     const entries = richUsers.slice(start, end)
     setUsers(entries);
+    setLoading(false);
   };
 
 
@@ -95,9 +98,15 @@ const UserList = ({query, currentPage, per_page}: { query:string, currentPage:st
               <TableHead>Action</TableHead>
             </TableRow>
           </TableHeader>
+          {
+            loading ? <Skeleton /> :(
+
+           
           <TableBody>
-            {users?.map((user) => (
-              <TableRow key={user.username}>
+           
+              
+              {users?.map((user) => (
+                <TableRow key={user.username}>
                 <TableCell className="hidden md:flex">
                   {user.username}
                 </TableCell>
@@ -108,21 +117,21 @@ const UserList = ({query, currentPage, per_page}: { query:string, currentPage:st
                     <Dialog>
                       <DialogTrigger asChild>
                         <Button variant="outline" className="w-32">
-                          Fund Wallet
+                        Fund Wallet
                         </Button>
                       </DialogTrigger>
                       <DialogContent>
-                        <DialogHeader>
+                      <DialogHeader>
                           <DialogTitle>Enter Amount</DialogTitle>
-                        </DialogHeader>
+                          </DialogHeader>
                         <Input onChange={(e) => setAmount(e.target.value)} />
                         <DialogFooter className="mt-10">
                           <Button
                             className="border dark:border dark:border-white hover:teal-800"
                             onClick={() => fundUserWallet(user)}
-                          >
+                            >
                             Confirm
-                          </Button>
+                            </Button>
                         </DialogFooter>
                       </DialogContent>
                     </Dialog>
@@ -131,6 +140,8 @@ const UserList = ({query, currentPage, per_page}: { query:string, currentPage:st
               </TableRow>
             ))}
           </TableBody>
+           )
+          }
         </Table>
 
   )

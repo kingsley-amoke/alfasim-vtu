@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useLayoutEffect, useState } from "react";
 
 import {
   Pagination,
@@ -13,15 +13,16 @@ import { useRouter } from "next/navigation";
 import { userDataTypes } from "@/lib/types";
 
 const PaginationPage = ({
-  users,
+
   currentPage,
   per_page,
 }: {
-  users:userDataTypes[];
+  
   currentPage: string;
   per_page: string;
 }) => {
   const router = useRouter();
+  const [users, setUsers] = useState<userDataTypes[]>([])
 
   const start = (Number(currentPage) - 1) * Number(per_page);
   const end = start + Number(per_page);
@@ -39,6 +40,17 @@ const PaginationPage = ({
   const handlePreviousPage = () => {
     router.push(`/admin?page=${Number(currentPage) - 1}&per_page=${per_page}`);
   };
+
+  useLayoutEffect(() => {
+    const fetchUsers = async() => {
+      const response = await fetchUsers();
+      const data = response!
+      setUsers(data);
+      
+    }
+    fetchUsers();
+
+  },[])
 
   return (
     <Pagination>
