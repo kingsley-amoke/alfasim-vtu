@@ -57,7 +57,7 @@ const PaginationPage = ({
         </PaginationItem>
         <PaginationItem>
           <button
-            className={` ${disabledNext} flex bg-teal-800 text-white ml-5 py-2 px-5 justify-center items-center rounded-md`}
+            className={` ${disabledNext} flex text-white ml-5 py-2 px-5 justify-center items-center rounded-md`}
             disabled={!hasNextPage}
             onClick={() => handleNextPage()}
           >

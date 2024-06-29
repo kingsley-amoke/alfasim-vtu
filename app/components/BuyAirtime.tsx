@@ -127,7 +127,7 @@ const BuyAirtime = ({ user }: { user: userDataTypes }) => {
 
     if (response.Status === "successful") {
       toast.success("Successfull");
-      router.replace("/dashboard");
+     
       setLoading(false);
 
       //create a transaction
@@ -148,6 +148,7 @@ const BuyAirtime = ({ user }: { user: userDataTypes }) => {
       await createDataTransaction(data);
 
       await deductBalance(user?.email, amountToPay);
+      router.replace("/dashboard");
     } else {
       if (response.Status !== "failed") {
         toast.error(response.Status);

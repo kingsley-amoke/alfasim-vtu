@@ -557,7 +557,7 @@ const BuyData = ({
 
     if (response.Status === "successful") {
       toast.success("Successfull");
-      router.replace("/dashboard");
+      
       setLoading(false);
 
       //create a transaction
@@ -582,6 +582,8 @@ const BuyData = ({
       await deductBalance(user?.email, selectedPlan?.plan_amount);
 
       await handleCommission(data.email, commission);
+
+      router.replace("/dashboard");
     } else {
       if (response.Status !== "failed") {
         toast.error(response.Status);
