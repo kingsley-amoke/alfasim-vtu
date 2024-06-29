@@ -26,13 +26,13 @@ const PaginationPage = ({currentPage, per_page}: {currentPage:string, per_page:s
   return (
     <Pagination>
       <PaginationContent className="flex flex-row">
-          <Button className="flex bg-teal-800 text-white mr-5" onClick={() =>router.push(`/admin?page=${Number(currentPage) - 1}&per_page=${per_page}`)} disabled={!hasPreviousPage}>
+          <Button className="flex bg-teal-800 text-white mr-5" onClick={() =>router.push(`/?page=${Number(currentPage) - 1}&per_page=${per_page}`)} disabled={!hasPreviousPage}>
             Prev
           </Button>
         <PaginationItem>
           {currentPage}/{Math.ceil(10 / Number(per_page))}
         </PaginationItem>
-        <Button className="flex bg-teal-800 text-white ml-5" onClick={()=>{router.push(`/admin?page=${Number(currentPage) + 1}&per_page=${per_page}`)}} disabled={!hasNextPage}>
+        <Button className="flex bg-teal-800 text-white ml-5" onClick={()=>{router.push(`/?page=${Number(currentPage) + 1}&per_page=${per_page}`)}} disabled={!hasNextPage}>
             Next
           </Button>
       </PaginationContent>
