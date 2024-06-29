@@ -34,11 +34,13 @@ const AdminPage = () => {
     referee:'',
     is_admin: true,
   })
+  const [users, setUsers] = useState<userDataTypes[]>([])
 
 
   const handleCount = async () => {
     const response = await fetchNotifications();
     const user = await getLoggedUser();
+    const users = await fetchAllUsers()
 
     let notifications = response!;
 
@@ -48,6 +50,7 @@ const AdminPage = () => {
     const count = unreadNotifications.length;
 
     setUser(user!);
+    setUsers(users!);
     setUnreadNotification(count);
   };
 
@@ -63,7 +66,7 @@ const AdminPage = () => {
         </div>
         <Suspense key={query + currentPage} fallback={<Skeleton />}>
           <UserList query={query} currentPage={currentPage} per_page={per_page} />
-  <PaginationPage currentPage={currentPage} per_page={per_page}/>
+  <PaginationPage users={users} currentPage={currentPage} per_page={per_page}/>
         </Suspense>
       </div>
 
