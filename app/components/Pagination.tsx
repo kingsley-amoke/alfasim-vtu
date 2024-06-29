@@ -23,8 +23,6 @@ const PaginationPage = ({
 }) => {
   const router = useRouter();
 
-  const { users } = useUsersStore();
-
   const start = (Number(currentPage) - 1) * Number(per_page);
   const end = start + Number(per_page);
 
