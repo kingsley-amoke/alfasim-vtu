@@ -1,3 +1,4 @@
+
 "use client";
 
 import {
@@ -53,10 +54,11 @@ const AdminPage = () => {
         </div>
         <Suspense key={query + currentPage} fallback={<Skeleton />}>
           <UserList query={query} currentPage={currentPage} per_page={per_page} />
+  <PaginationPage currentPage={currentPage} per_page={per_page}/>
         </Suspense>
       </div>
 
-      <PaginationPage currentPage={currentPage} per_page={per_page}/>
+    
       <Footer />
     </>
   );
