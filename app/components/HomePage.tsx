@@ -68,6 +68,7 @@ const HomePage = () => {
     const res = await fetchAllUsers();
     const users = res!;
 
+
     setUsers(users);
 
     if (reference) setLoading(true);

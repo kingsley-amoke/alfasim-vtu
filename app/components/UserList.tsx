@@ -38,6 +38,8 @@ const UserList = ({query, currentPage, per_page}: {query:string, currentPage:str
 
     const handleSearchUser = () => {
 
+      console.log(data)
+
       if(query === "") {
         const filteredUsers = data
         filterUsersByBalance(filteredUsers)
@@ -54,7 +56,12 @@ const UserList = ({query, currentPage, per_page}: {query:string, currentPage:str
     const richUsers = users.sort(
       (a, b) => parseInt(b.balance) - parseInt(a.balance)
     )
-    setUsers(richUsers);
+
+    const start = (Number(currentPage) - 1) * (Number(per_page))
+    const end = start + (Number(per_page))
+
+    const entries = richUsers.slice(start, end)
+    setUsers(entries);
   };
 
 
@@ -69,16 +76,13 @@ const UserList = ({query, currentPage, per_page}: {query:string, currentPage:str
         }
       };
 
-      const start = (Number(currentPage) - 1) * (Number(per_page))
-      const end = start + (Number(per_page))
-
-      const entries = users.slice(start, end)
+    
   
 
       useLayoutEffect(() => {
         handleSearchUser();
         
-      },[query])
+      },[query, currentPage])
 
 
   return (
@@ -93,7 +97,7 @@ const UserList = ({query, currentPage, per_page}: {query:string, currentPage:str
             </TableRow>
           </TableHeader>
           <TableBody>
-            {entries?.map((user) => (
+            {users?.map((user) => (
               <TableRow key={user.username}>
                 <TableCell className="hidden md:flex">
                   {user.username}
