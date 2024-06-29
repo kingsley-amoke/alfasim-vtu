@@ -14,7 +14,6 @@ const {data:{user}} = await serverClient().auth.getUser()
 
 const userData = await fetchUser(user?.email)
 
-console.log(userData)
 
 if(!userData) {
     return NextResponse.redirect('https://www.alfasimdata.com.ng/login')

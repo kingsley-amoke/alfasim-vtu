@@ -23,7 +23,32 @@ export const fetchAllUsers = async () => {
   try {
     const { data } = await serverClient()
      .from("users")
-     .select("email, username, balance, referrals, referee, referral_bonus, is_admin");
+     .select("email, username, balance, referrals, referee, referral_bonus, is_admin")
+
+    return data;
+  } catch (error) {
+    if (isDynamicServerError(error)) {
+      throw error;
+    }
+    console.log(error);
+  }
+};
+
+//fetch user in pages
+
+export const fetchUsersByPage = async (page: string) => {
+
+  const minValue = Number(page + '0')
+  const maxValue = Number(page + '9')
+
+
+
+  console.log(minValue, maxValue)
+  try {
+    const { data } = await serverClient()
+     .from("users")
+     .select("email, username, balance, referrals, referee, referral_bonus, is_admin")
+     .range(minValue, maxValue)
 
     return data;
   } catch (error) {
