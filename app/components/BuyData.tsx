@@ -10,7 +10,13 @@ import {
   transactionTypes,
   userDataTypes,
 } from "@/lib/types";
-import { buyData, deductBalance, getDataPlans, handleCommission, setTransaction } from "@/lib/data";
+import {
+  buyData,
+  deductBalance,
+  getDataPlans,
+  handleCommission,
+  setTransaction,
+} from "@/lib/data";
 import toast from "react-hot-toast";
 import { useRouter, useSearchParams } from "next/navigation";
 import Modal from "./Modal";
@@ -89,9 +95,8 @@ const BuyData = ({
   const alfasimMtnSME: Plan[] = [];
 
   const unitGBSME = 260 + 5;
-  
-  mtnSME.forEach((plan) => {
 
+  mtnSME.forEach((plan) => {
     const integer = Math.trunc(parseInt(plan.plan.slice(0, -2)));
 
     alfasimMtnSME.push({
@@ -112,9 +117,8 @@ const BuyData = ({
   const alfasimMtnSME2: Plan[] = [];
 
   const unitGBSME2 = 260 + 5;
-  
-  mtnSME2.forEach((plan) => {
 
+  mtnSME2.forEach((plan) => {
     const integer = Math.trunc(parseInt(plan.plan.slice(0, -2)));
 
     alfasimMtnSME2.push({
@@ -126,29 +130,29 @@ const BuyData = ({
       month_validate: plan.month_validate,
       plan: plan.plan,
       plan_amount:
-      plan.plan.slice(-2) === "MB"
+        plan.plan.slice(-2) === "MB"
           ? (parseInt(plan.plan_amount) + 5).toString()
           : (integer * unitGBSME2).toString(),
     });
   });
-
 
   const mtnGifting = mtnPlans.filter((plan) => plan.plan_type === "GIFTING");
 
   const alfasimMtnGifting: Plan[] = [];
 
   const unitGBGifting = 575 + 5;
-  
-  mtnGifting.forEach((plan) => {
 
+  mtnGifting.forEach((plan) => {
     const integer = Math.trunc(parseInt(plan.plan.slice(0, -2)));
 
-    const decimalPart = plan.plan.split('.')[1][0]
-    
+    const decimalPart = plan.plan.split(".")[1][0];
 
-    const amount = plan.plan.slice(-2) === "MB"
-    ? (parseInt(plan.plan_amount) + 5).toString() : decimalPart === '5' ? ((integer * unitGBGifting ) + (unitGBGifting  / 2)).toString()
-    : (integer * unitGBGifting ).toString()
+    const amount =
+      plan.plan.slice(-2) === "MB"
+        ? (parseInt(plan.plan_amount) + 5).toString()
+        : decimalPart === "5"
+        ? (integer * unitGBGifting + unitGBGifting / 2).toString()
+        : (integer * unitGBGifting).toString();
 
     alfasimMtnGifting.push({
       id: plan.id,
@@ -158,7 +162,7 @@ const BuyData = ({
       plan_network: plan.plan_network,
       month_validate: plan.month_validate,
       plan: plan.plan,
-      plan_amount: amount
+      plan_amount: amount,
     });
   });
 
@@ -169,9 +173,8 @@ const BuyData = ({
   const alfasimMtnCorporateGifting: Plan[] = [];
 
   const unitGBCorporateGifting = 265 + 5;
-  
-  mtnCorporateGifting.forEach((plan) => {
 
+  mtnCorporateGifting.forEach((plan) => {
     const integer = Math.trunc(parseInt(plan.plan.slice(0, -2)));
 
     alfasimMtnCorporateGifting.push({
@@ -189,7 +192,6 @@ const BuyData = ({
     });
   });
 
-
   const mtnCorporateGifting2 = mtnPlans.filter(
     (plan) => plan.plan_type === "CORPORATE GIFTING2"
   );
@@ -197,9 +199,8 @@ const BuyData = ({
   const alfasimMtnCorporateGifting2: Plan[] = [];
 
   const unitGBCorporateGifting2 = 265 + 5;
-  
-  mtnCorporateGifting2.forEach((plan) => {
 
+  mtnCorporateGifting2.forEach((plan) => {
     const integer = Math.trunc(parseInt(plan.plan.slice(0, -2)));
 
     alfasimMtnCorporateGifting2.push({
@@ -217,7 +218,6 @@ const BuyData = ({
     });
   });
 
-
   const mtnDataCoupons = mtnPlans.filter(
     (plan) => plan.plan_type === "DATA COUPONS"
   );
@@ -225,9 +225,8 @@ const BuyData = ({
   const alfasimMtnDataCoupons: Plan[] = [];
 
   const unitGBDataCoupons = 245 + 5;
-  
-  mtnDataCoupons.forEach((plan) => {
 
+  mtnDataCoupons.forEach((plan) => {
     const integer = Math.trunc(parseInt(plan.plan.slice(0, -2)));
 
     alfasimMtnDataCoupons.push({
@@ -252,9 +251,8 @@ const BuyData = ({
   const alfasimGloGifting: Plan[] = [];
 
   const unitGBGloGifting = 180 + 10;
-  
-  gloGifting.forEach((plan) => {
 
+  gloGifting.forEach((plan) => {
     const integer = Math.trunc(parseInt(plan.plan.slice(0, -2)));
 
     alfasimGloGifting.push({
@@ -272,7 +270,6 @@ const BuyData = ({
     });
   });
 
-  
   const gloCorporateGifting = gloPlans.filter(
     (plan) => plan.plan_type === "CORPORATE GIFTING"
   );
@@ -280,9 +277,8 @@ const BuyData = ({
   const alfasimGloCorporateGifting: Plan[] = [];
 
   const unitGBGloCorporateGifting = 230 + 10;
-  
-  gloCorporateGifting.forEach((plan) => {
 
+  gloCorporateGifting.forEach((plan) => {
     const integer = Math.trunc(parseInt(plan.plan.slice(0, -2)));
 
     alfasimGloCorporateGifting.push({
@@ -294,12 +290,11 @@ const BuyData = ({
       month_validate: plan.month_validate,
       plan: plan.plan,
       plan_amount:
-      plan.plan.slice(-2) === "MB"
+        plan.plan.slice(-2) === "MB"
           ? (parseInt(plan.plan_amount) + 5).toString()
           : (integer * unitGBGloCorporateGifting).toString(),
     });
   });
-
 
   //etisalat plans by type
 
@@ -310,9 +305,8 @@ const BuyData = ({
   const alfasimEtisalatGifting: Plan[] = [];
 
   const unitGBEtisalatGifting = 225 + 10;
-  
-  etisalatGifting.forEach((plan) => {
 
+  etisalatGifting.forEach((plan) => {
     const integer = Math.trunc(parseInt(plan.plan.slice(0, -2)));
 
     alfasimEtisalatGifting.push({
@@ -337,17 +331,21 @@ const BuyData = ({
   const alfasimEtisalatCorporateGifting: Plan[] = [];
 
   const unitGBEtisalatCorporateGifting = 145 + 10;
-  
-  etisalatCorporateGifting.forEach((plan) => {
 
+  etisalatCorporateGifting.forEach((plan) => {
     const integer = Math.trunc(parseInt(plan.plan.slice(0, -2)));
 
-    const decimalPart = plan.plan.split('.')[1][0]
-    
+    const decimalPart = plan.plan.split(".")[1][0];
 
-    const amount = plan.plan.slice(-2) === "MB"
-    ? (parseInt(plan.plan_amount) + 5).toString() : decimalPart === '5' ? ((integer * unitGBEtisalatCorporateGifting ) + (unitGBEtisalatCorporateGifting  / 2)).toString()
-    : (integer * unitGBEtisalatCorporateGifting ).toString()
+    const amount =
+      plan.plan.slice(-2) === "MB"
+        ? (parseInt(plan.plan_amount) + 5).toString()
+        : decimalPart === "5"
+        ? (
+            integer * unitGBEtisalatCorporateGifting +
+            unitGBEtisalatCorporateGifting / 2
+          ).toString()
+        : (integer * unitGBEtisalatCorporateGifting).toString();
 
     alfasimEtisalatCorporateGifting.push({
       id: plan.id,
@@ -357,10 +355,9 @@ const BuyData = ({
       plan_network: plan.plan_network,
       month_validate: plan.month_validate,
       plan: plan.plan,
-      plan_amount: amount
+      plan_amount: amount,
     });
   });
-
 
   //airtel plans by type
 
@@ -371,19 +368,18 @@ const BuyData = ({
   const alfasimAirtelGifting: Plan[] = [];
 
   const unitGBAirtelGifting = 485 + 10;
-  
+
   airtelGifting.forEach((plan) => {
-
-
     const integer = Math.trunc(parseInt(plan.plan.slice(0, -2)));
 
-    const decimalPart = plan.plan.split('.')[1][0]
-    
+    const decimalPart = plan.plan.split(".")[1][0];
 
-    const amount = plan.plan.slice(-2) === "MB"
-    ? (parseInt(plan.plan_amount) + 5).toString() : decimalPart === '5' ? ((integer * unitGBAirtelGifting) + (unitGBAirtelGifting / 2)).toString()
-    : (integer * unitGBAirtelGifting).toString()
-
+    const amount =
+      plan.plan.slice(-2) === "MB"
+        ? (parseInt(plan.plan_amount) + 5).toString()
+        : decimalPart === "5"
+        ? (integer * unitGBAirtelGifting + unitGBAirtelGifting / 2).toString()
+        : (integer * unitGBAirtelGifting).toString();
 
     alfasimAirtelGifting.push({
       id: plan.id,
@@ -393,10 +389,9 @@ const BuyData = ({
       plan_network: plan.plan_network,
       month_validate: plan.month_validate,
       plan: plan.plan,
-      plan_amount: amount
+      plan_amount: amount,
     });
   });
-
 
   const airtelCorporateGifting = airtelPlans.filter(
     (plan) => plan.plan_type === "CORPORATE GIFTING"
@@ -405,16 +400,14 @@ const BuyData = ({
   const alfasimAirtelCorporateGifting: Plan[] = [];
 
   const unitGBAirtelCoporateGifting = 275 + 10;
-  
+
   airtelCorporateGifting.forEach((plan) => {
-
-
     const integer = Math.trunc(parseInt(plan.plan.slice(0, -2)));
-   
 
-    const amount = plan.plan.slice(-2) === "MB"
-    ? (parseInt(plan.plan_amount) + 5).toString() 
-    : (integer * unitGBAirtelCoporateGifting).toString()
+    const amount =
+      plan.plan.slice(-2) === "MB"
+        ? (parseInt(plan.plan_amount) + 5).toString()
+        : (integer * unitGBAirtelCoporateGifting).toString();
 
     alfasimAirtelCorporateGifting.push({
       id: plan.id,
@@ -424,10 +417,9 @@ const BuyData = ({
       plan_network: plan.plan_network,
       month_validate: plan.month_validate,
       plan: plan.plan,
-      plan_amount: amount
+      plan_amount: amount,
     });
   });
-
 
   const networkStyle =
     "w-full md:w-1/3 p-2 flex justify-between items-center border border-teal-800 text-sm bg-white";
@@ -518,23 +510,19 @@ const BuyData = ({
   };
 
   const handleSubmitForm = async () => {
+    if (!selectedPlan || !user) return;
 
-
-    if(!selectedPlan || !user) return
-  
-
-    if(parseInt(user?.balance) <  parseInt(selectedPlan?.plan_amount)|| !user.balance) {
-      
+    if (
+      parseInt(user?.balance) < parseInt(selectedPlan?.plan_amount) ||
+      !user.balance
+    ) {
       toast.error("Insufficient Balance");
-      return
+      return;
     }
-
 
     const integer = Math.trunc(parseInt(selectedPlan?.plan.slice(0, -2)));
 
-  const commission =  selectedPlan?.plan.slice(-2) === "MB"
-? 0
-: integer * 1
+    const commission = selectedPlan?.plan.slice(-2) === "MB" ? 0 : integer * 1;
 
     setLoading(true);
     const dataInfo = {
@@ -544,34 +532,34 @@ const BuyData = ({
       Ported_number: true,
     };
 
-    console.log(dataInfo);
-
     const response = await buyData(dataInfo);
 
-    if(response.error){
+    if (response.error) {
       const data: transactionTypes = {
         email: user?.email,
         amount: selectedPlan?.plan_amount,
         purpose: "data",
-        status: 'failed',
-        transactionId: 'failed',
+        status: "failed",
+        transactionId: "failed",
         phone: phone,
         network: currentNetwork,
         planSize: selectedPlan.plan,
         previousBalance: user.balance,
-        newBalance: user.balance 
+        newBalance: user.balance,
       };
 
       const transaction = await createDataTransaction(data);
       console.log(transaction);
-      toast.error('Network error, Try again later')
+      toast.error("Network error, Try again later");
       setLoading(false);
-      return
+      return;
     }
-   
-    if (response.Status === 'successful') {
 
-      console.log(response);
+    if (response.Status === "successful") {
+      toast.success("Successfull");
+      router.replace("/dashboard");
+      setLoading(false);
+
       //create a transaction
 
       const data: transactionTypes = {
@@ -584,24 +572,25 @@ const BuyData = ({
         network: currentNetwork,
         planSize: selectedPlan.plan,
         previousBalance: user.balance,
-        newBalance: (parseInt(user.balance) - parseInt(selectedPlan?.plan_amount)).toString(),
+        newBalance: (
+          parseInt(user.balance) - parseInt(selectedPlan?.plan_amount)
+        ).toString(),
       };
-      
-      const transacrion = await createDataTransaction(data);
-      console.log(transacrion);
+
+      await createDataTransaction(data);
 
       await deductBalance(user?.email, selectedPlan?.plan_amount);
 
-      await handleCommission(data.email, commission)
-      
-      toast.success("Successfull");
-      router.replace("/dashboard");
-      setLoading(false);
-    }else{
-      if(response.Status !== "failed"){
+      await handleCommission(data.email, commission);
+    } else {
+      if (response.Status !== "failed") {
+        toast.error(response.Status);
+        setLoading(false);
         await deductBalance(user?.email, selectedPlan?.plan_amount);
       }
-      
+
+      toast.error(response.Status);
+      setLoading(false);
 
       const data: transactionTypes = {
         email: user?.email,
@@ -613,13 +602,15 @@ const BuyData = ({
         network: currentNetwork,
         planSize: selectedPlan.plan,
         previousBalance: user.balance,
-        newBalance: response.Status === "failed" ? user.balance : (parseInt(user.balance) - parseInt(selectedPlan?.plan_amount)).toString()
+        newBalance:
+          response.Status === "failed"
+            ? user.balance
+            : (
+                parseInt(user.balance) - parseInt(selectedPlan?.plan_amount)
+              ).toString(),
       };
 
-      const transaction = await createDataTransaction(data);
-      console.log(transaction);
-      toast.error(response.Status)
-      setLoading(false);
+      await createDataTransaction(data);
     }
   };
 
@@ -727,7 +718,7 @@ const BuyData = ({
             {loading ? "Submitting" : "Buy Data"}
           </button> */}
 
-          <AlertDialog >
+            <AlertDialog>
               <AlertDialogTrigger asChild>
                 <Button
                   variant="outline"
@@ -765,7 +756,7 @@ const BuyData = ({
                   </AlertDialogAction>
                 </AlertDialogFooter>
               </AlertDialogContent>
-            </AlertDialog>  
+            </AlertDialog>
           </form>
         ) : (
           <div className="h-full w-full flex flex-col gap-5 py-20 p justify-center items-center bg-teal-800/20 dark:bg-black/20 ">

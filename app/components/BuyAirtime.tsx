@@ -1,7 +1,12 @@
 "use client";
 
 import { buyAirtime, deductBalance, setTransaction } from "@/lib/data";
-import { Plan, alertPropsTypes, transactionTypes, userDataTypes } from "@/lib/types";
+import {
+  Plan,
+  alertPropsTypes,
+  transactionTypes,
+  userDataTypes,
+} from "@/lib/types";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -63,18 +68,15 @@ const BuyAirtime = ({ user }: { user: userDataTypes }) => {
   };
 
   const handleSubmitForm = async () => {
+    if (!user || !phone || !amount || !network) return;
 
-    if(!user || !phone || !amount || !network) return
-
-
-    if(parseInt(user?.balance) <  parseInt(amountToPay) || !user.balance) {
-      
+    if (parseInt(user?.balance) < parseInt(amountToPay) || !user.balance) {
       toast.error("Insufficient Balance");
-      return
+      return;
     }
 
     setLoading(true);
-  
+
     const airtimeInfo = {
       network: network,
       amount: amount,
@@ -83,52 +85,50 @@ const BuyAirtime = ({ user }: { user: userDataTypes }) => {
       airtime_type: "VTU",
     };
 
-    console.log(airtimeInfo);
-
     const response = await buyAirtime(airtimeInfo);
 
-    console.log(response)
+    let networkName = "";
 
-    let networkName = ''
-      
-    switch(network) {
-      case '1':
-        networkName =  'MTN'
+    switch (network) {
+      case "1":
+        networkName = "MTN";
         break;
-      case '2':
-        networkName = 'Glo'
+      case "2":
+        networkName = "Glo";
         break;
-      case '3':
-        networkName = '9mobile'
+      case "3":
+        networkName = "9mobile";
         break;
-      case '4':
-        networkName = 'Airtel'
+      case "4":
+        networkName = "Airtel";
         break;
     }
 
-   
-    if(response.error){
+    if (response.error) {
+      toast.error("Network Error, Try again later");
+      setLoading(false);
+
       const data: transactionTypes = {
         email: user?.email,
         amount: amountToPay,
         purpose: "airtime",
-        status: 'failed',
-        transactionId: 'failed',
+        status: "failed",
+        transactionId: "failed",
         phone: phone,
         network: networkName,
         planSize: amount,
         previousBalance: user.balance,
-        newBalance: user.balance
+        newBalance: user.balance,
       };
 
-      const transaction = await createDataTransaction(data);
-      console.log(transaction);
-      toast.error('Network Error, Try again later')
-      setLoading(false);
-      return
+      await createDataTransaction(data);
+      return;
     }
 
-    if (response.Status === 'successful') {
+    if (response.Status === "successful") {
+      toast.success("Successfull");
+      router.replace("/dashboard");
+      setLoading(false);
 
       //create a transaction
 
@@ -144,21 +144,20 @@ const BuyAirtime = ({ user }: { user: userDataTypes }) => {
         previousBalance: user.balance,
         newBalance: (parseInt(user.balance) - parseInt(amountToPay)).toString(),
       };
-      
-      const transacrion = await createDataTransaction(data);
-      console.log(transacrion);
+
+      await createDataTransaction(data);
 
       await deductBalance(user?.email, amountToPay);
-      
-      toast.success("Successfull");
-      router.replace("/dashboard");
-      setLoading(false);
-    }else{
-      
-      if(response.Status !== "failed"){
+    } else {
+      if (response.Status !== "failed") {
+        toast.error(response.Status);
+        setLoading(false);
+
         await deductBalance(user?.email, amountToPay);
       }
 
+      toast.error(response.Status);
+      setLoading(false);
 
       const data: transactionTypes = {
         email: user?.email,
@@ -170,88 +169,85 @@ const BuyAirtime = ({ user }: { user: userDataTypes }) => {
         network: network,
         planSize: amount,
         previousBalance: user.balance,
-        newBalance: response.results[0].Status === "failed" ? user.balance : (parseInt(user.balance) - parseInt(amountToPay)).toString()
+        newBalance:
+          response.results[0].Status === "failed"
+            ? user.balance
+            : (parseInt(user.balance) - parseInt(amountToPay)).toString(),
       };
 
-      const transaction = await createDataTransaction(data);
-      console.log(transaction);
-      toast.error(response.Status)
-      setLoading(false);
+      await createDataTransaction(data);
     }
     setLoading(false);
   };
 
-  const info:alertPropsTypes = {
-    buttonProps:{
-    
-      title: 'Buy Airtime',
-      loading: loading
-
+  const info: alertPropsTypes = {
+    buttonProps: {
+      title: "Buy Airtime",
+      loading: loading,
     },
     headerProps: {
       title: `Hi ${user?.username}`,
       description: `Are you sure that you want to buy NGN${amount} worth NGN
-      ${amountToPay} for ${phone}`
+      ${amountToPay} for ${phone}`,
     },
-    onCancel:onCancelSubmit,
-    onConfirm: handleSubmitForm
-
-  }
+    onCancel: onCancelSubmit,
+    onConfirm: handleSubmitForm,
+  };
 
   return (
     <div className="flex flex-col justify-start items-center h-screen md:ml-10 md:mr-5 pt-9">
-      {!loading?(<form className="w-full border border-teal-800 dark:border-white dark:bg-black flex flex-col gap-2 p-5 mt-5 pt-20 bg-gray-200">
-        <label htmlFor="network">Network*</label>
-        <select
-          name="network"
-          id="network"
-          className={inputStyle}
-          onChange={(e) => setNetwork(e.target.value)}
-        >
-          <option value="default">-----</option>
-          {networks.map((network) => (
-            <option value={network.id} key={network.id}>
-              {network.name}
-            </option>
-          ))}
-        </select>
-        <label htmlFor="phonenumber">Phone Number*</label>
-        <input
-          type="text"
-          name="phonenumber"
-          placeholder="09030220200"
-          className={inputStyle}
-          onChange={(e) => setPhone(e.target.value)}
-        />
-        <label htmlFor="amount">Amount (NGN)*</label>
-        <input
-          type="text"
-          name="amount"
-          value={amount}
-          placeholder="1000"
-          className={inputStyle}
-          onChange={(e) => {
-            handleAmount(e.target.value);
-          }}
-        />
-        <label htmlFor="amount-to-pay">Amount To Pay*</label>
-        <input
-          type="text"
-          name="amount-to-pay"
-          className={inputStyle}
-          value={amountToPay}
-          disabled
-          onChange={(e) => setAmountToPay(e.target.value)}
-        />
+      {!loading ? (
+        <form className="w-full border border-teal-800 dark:border-white dark:bg-black flex flex-col gap-2 p-5 mt-5 pt-20 bg-gray-200">
+          <label htmlFor="network">Network*</label>
+          <select
+            name="network"
+            id="network"
+            className={inputStyle}
+            onChange={(e) => setNetwork(e.target.value)}
+          >
+            <option value="default">-----</option>
+            {networks.map((network) => (
+              <option value={network.id} key={network.id}>
+                {network.name}
+              </option>
+            ))}
+          </select>
+          <label htmlFor="phonenumber">Phone Number*</label>
+          <input
+            type="text"
+            name="phonenumber"
+            placeholder="09030220200"
+            className={inputStyle}
+            onChange={(e) => setPhone(e.target.value)}
+          />
+          <label htmlFor="amount">Amount (NGN)*</label>
+          <input
+            type="text"
+            name="amount"
+            value={amount}
+            placeholder="1000"
+            className={inputStyle}
+            onChange={(e) => {
+              handleAmount(e.target.value);
+            }}
+          />
+          <label htmlFor="amount-to-pay">Amount To Pay*</label>
+          <input
+            type="text"
+            name="amount-to-pay"
+            className={inputStyle}
+            value={amountToPay}
+            disabled
+            onChange={(e) => setAmountToPay(e.target.value)}
+          />
 
-       <ConfirmationPopUp info={info}/>
-      </form>
-      ):
-      (
+          <ConfirmationPopUp info={info} />
+        </form>
+      ) : (
         <div className="h-full w-full flex flex-col gap-5 py-20 p justify-center items-center bg-teal-800/20 dark:bg-black/20 ">
-            <p className="font-bold text-3xl px-10">Processing please wait!!</p>
-            <LoadingSkeleton />
-          </div>
+          <p className="font-bold text-3xl px-10">Processing please wait!!</p>
+          <LoadingSkeleton />
+        </div>
       )}
       <div className="w-1/2 md:w-1/5 border border-teal-800 dark:border-white py-2 md:py-5 px-5 md:px-10  bg-teal-800 dark:bg-black  text-white rounded-md  text-center absolute top-[8.5rem] md:top-[8rem]">
         Buy Airtime

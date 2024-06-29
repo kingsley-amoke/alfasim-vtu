@@ -53,7 +53,7 @@ const PaginationPage = ({
           </button>
         </PaginationItem>
         <PaginationItem>
-          {currentPage}/{Math.ceil(10 / Number(per_page))}
+          {currentPage}/{Math.ceil(users.length / Number(per_page))}
         </PaginationItem>
         <PaginationItem>
           <button
