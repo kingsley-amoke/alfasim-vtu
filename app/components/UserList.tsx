@@ -24,25 +24,17 @@ import {
 import { useRouter } from 'next/navigation';
 import { userDataTypes } from '@/lib/types';
 import { fetchAllUsers, recharge } from '@/lib/data';
+import { useUserStore, useUsersStore } from '@/lib/store';
 
 const UserList = ({query, currentPage, per_page}: {query:string, currentPage:string, per_page:string}) => {
 
     const router = useRouter();
-
-    const [data, setData] = useState<userDataTypes[]>([]);
     const [users, setUsers] = useState<userDataTypes[]>([]);
     const [amount, setAmount] = useState("");
 
+    const {users: data} = useUsersStore()
 
 
-    const fetchUsers = async() => {
-        const res = await fetchAllUsers()
-        if(!res) return
-
-        setData(res)
-
-       
-    }
 
     const handleSearchUser = () => {
 
@@ -88,9 +80,6 @@ const UserList = ({query, currentPage, per_page}: {query:string, currentPage:str
         
       },[query])
 
-      useEffect(() => {
-        fetchUsers();
-      },[])
 
   return (
 

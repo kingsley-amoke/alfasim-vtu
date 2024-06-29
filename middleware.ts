@@ -2,15 +2,15 @@ import { NextRequest, NextResponse } from "next/server";
 
 import { loggedInPaths } from "./lib/shared";
 import { serverClient } from "./lib/serverConnection";
-import { fetchUser, getLoggedUser } from "./lib/data";
+import { fetchAllUsers, fetchUser, getLoggedUser } from "./lib/data";
+import { useUserStore, useUsersStore } from "./lib/store";
 
 export default async function middleware(req: NextRequest){
 
 const {pathname} = req.nextUrl
 
-
-
 const {data:{user}} = await serverClient().auth.getUser()
+
 
 const userData = await fetchUser(user?.email)
 

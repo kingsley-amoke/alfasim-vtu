@@ -14,22 +14,19 @@ import UserList from "./UserList";
 import { Skeleton } from "./Skeleton";
 import { useSearchParams } from "next/navigation";
 import PaginationPage from "./Pagination";
+import { useUserStore } from "@/lib/store";
 
 const AdminPage = () => {
   const searchParams = useSearchParams();
-
+  
   const query = searchParams.get("query") || "";
   const currentPage = searchParams.get("page") || "1";
   const per_page = searchParams.get("per_page") || "7"
-
+  
+  
   const [unreadNotification, setUnreadNotification] = useState<number>(0);
-  const [admin, setAdmin] = useState<userDataTypes>();
+  const {user:admin} = useUserStore()
 
-  const fetchLoggedUser = async () => {
-    const data = await getLoggedUser();
-
-    data && setAdmin(data);
-  };
 
   const handleCount = async () => {
     const response = await fetchNotifications();
@@ -45,7 +42,6 @@ const AdminPage = () => {
   };
 
   useEffect(() => {
-    fetchLoggedUser();
     handleCount();
   }, []);
   return (
