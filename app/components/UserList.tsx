@@ -24,12 +24,14 @@ import {
 import { useRouter } from 'next/navigation';
 import { userDataTypes } from '@/lib/types';
 import { recharge } from '@/lib/data';
+import { Skeleton } from './Skeleton';
 
 const UserList = ({data, query, currentPage, per_page}: {data: userDataTypes[], query:string, currentPage:string, per_page:string}) => {
 
     const router = useRouter();
     const [users, setUsers] = useState<userDataTypes[]>([]);
     const [amount, setAmount] = useState("");
+    const [loading, setLoading] = useState(true);
 
 
 
@@ -76,11 +78,14 @@ const UserList = ({data, query, currentPage, per_page}: {data: userDataTypes[], 
 
       useLayoutEffect(() => {
         handleSearchUser();
+        setLoading(false);
         
       },[query, currentPage])
 
 
-  return (
+  return loading ? (
+    <Skeleton />
+  ): ( 
 
               <Table>
           <TableHeader>
