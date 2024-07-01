@@ -108,11 +108,6 @@ export const recharge = async (email: string | undefined, amount: string) => {
 export const deductBalance = async (user:transactionTypes
 ) => {
   try {
-    // const userData = await fetchUser(email);
-
-    // const { balance } = userData![0];
-
-    // const newBalance = parseInt(balance) - parseInt(amount);
 
     const newBalance = user.newBalance!
     const email = user.email!
@@ -476,19 +471,20 @@ export const fetchAirtimeHistory = async (email: string) => {
 
 //fetch references
 
-export const fetchRefs = async () => {
+export const fetchRefs = async (reference:string) => {
 try {
   const { data: references, error } = await serverClient()
       .from("refs")
-      .select("*")
+      .select("ref")
+      .eq("ref", reference)
 
       if (error) {
         console.log(error);
         return;
       }
 
-      let refs: refsTypes[] = references!
-      return refs
+      let ref = references!
+      return ref
   
 } catch (error) {
   if (isDynamicServerError(error)) {
@@ -810,5 +806,24 @@ export const handleBuyData = async(data:transactionTypes, commission:number, ref
   handleCommission(data, commission, referee, referral_bonus);
 
   setTransaction(data)
+
+}
+
+export const handleBuyAirtime = async(data:transactionTypes)=> {
+  deductBalance(data);
+
+  setTransaction(data)
+}
+
+
+export const handleFundWallet = async (user:userDataTypes, reference:string) => {
+  const refs = await fetchRefs(reference);
+
+  if(!refs) return
+
+  if (refs?.length > 0) return
+
+  verifyPayment(user, reference)
+
 
 }

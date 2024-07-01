@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 
 import Navbar from "../components/Navbar";
 import Dashboard from "../components/Dashboard";
@@ -9,6 +9,7 @@ import {
   fetchNotifications,
   fetchRefs,
   getLoggedUser,
+  handleFundWallet,
   recharge,
   setTransaction,
   verifyPayment,
@@ -58,19 +59,20 @@ const HomePage = () => {
     setUsers(users);
   };
 
-  const checkRefs = async () => {
-    const refs = await fetchRefs();
-    const ref = refs?.map((ref) => {
-      if (ref.ref === reference) {
-        return true;
-      }
-      return false;
-    });
+  // const checkRefs = async () => {
+  //   if (!reference) return 
+  //   const refs = await fetchRefs(reference);
+  //   const ref = refs?.map((ref) => {
+  //     if (ref.ref === reference) {
+  //       return true;
+  //     }
+  //     return false;
+  //   });
 
-    const refStatus = ref!;
+  //   const refStatus = ref!;
 
-    return refStatus[0];
-  };
+  //   return refStatus[0];
+  // };
 
   const fetchLoggedUser = async () => {
     const data = await getLoggedUser();
@@ -83,15 +85,19 @@ const HomePage = () => {
 
       setLoading(true);
 
-    const refStatus = await checkRefs();
+      handleFundWallet(data, reference).then(() =>{
+        setLoading(false);
+      })
 
-    if (!refStatus) {
-      verifyPayment(data, reference);
+  //   const refStatus = await checkRefs();
 
-      setLoading(false);
-    }
+  //   if (!refStatus) {
+  //     verifyPayment(data, reference);
 
-    setLoading(false);
+  //     setLoading(false);
+  //   }
+
+  //   setLoading(false);
   };
 
   const closeDialog = () => {
@@ -103,7 +109,6 @@ const HomePage = () => {
   };
 
   useEffect(() => {
-    fetchLoggedUser();
     handleCount();
 
     if (showDialog === "y") {
@@ -111,7 +116,11 @@ const HomePage = () => {
     } else {
       dialogRef.current?.close();
     }
-  }, [reference]);
+  }, []);
+
+  useLayoutEffect(() => {
+    fetchLoggedUser();
+  }, [reference])
 
   return (
     <>

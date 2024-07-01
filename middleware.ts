@@ -2,14 +2,68 @@ import { NextRequest, NextResponse } from "next/server";
 
 import { loggedInPaths } from "./lib/shared";
 import { serverClient } from "./lib/serverConnection";
-import { fetchAllUsers, fetchUser, getLoggedUser } from "./lib/data";
-import { useUserStore, useUsersStore } from "./lib/store";
+import { fetchUser} from "./lib/data";
+import { createServerClient, type CookieOptions  } from "@supabase/ssr";
 
-export default async function middleware(req: NextRequest){
+export default async function middleware(request: NextRequest){
 
-const {pathname} = req.nextUrl
+const {pathname} = request.nextUrl
 
-const {data:{user}} = await serverClient().auth.getUser()
+let response = NextResponse.next({
+    request: {
+      headers: request.headers,
+    },
+  });
+
+  const supabase = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        get(name: string) {
+          return request.cookies.get(name)?.value;
+        },
+        set(name: string, value: string, options: CookieOptions) {
+          request.cookies.set({
+            name,
+            value,
+            ...options,
+          });
+          response = NextResponse.next({
+            request: {
+              headers: request.headers,
+            },
+          });
+          response.cookies.set({
+            name,
+            value,
+            ...options,
+          });
+        },
+        remove(name: string, options: CookieOptions) {
+          request.cookies.set({
+            name,
+            value: '',
+            ...options,
+          });
+          response = NextResponse.next({
+            request: {
+              headers: request.headers,
+            },
+          });
+          response.cookies.set({
+            name,
+            value: '',
+            ...options,
+          });
+        },
+      },
+    },
+  );
+
+const {data:{user}} = await supabase.auth.getUser();
+
+// const {data:{user}} = await serverClient().auth.getUser()
 
 
 const userData = await fetchUser(user?.email)

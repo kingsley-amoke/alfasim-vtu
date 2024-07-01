@@ -1,23 +1,13 @@
 "use client";
 
-import { buyAirtime, deductBalance, setTransaction } from "@/lib/data";
+import { buyAirtime, deductBalance, handleBuyAirtime, setTransaction } from "@/lib/data";
 import {
   Plan,
   alertPropsTypes,
   transactionTypes,
   userDataTypes,
 } from "@/lib/types";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/lib/ui/alert-dialog";
+
 import { Button } from "@/lib/ui/button";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
@@ -140,10 +130,10 @@ const BuyAirtime = ({ user }: { user: userDataTypes }) => {
         newBalance: (parseInt(user.balance) - parseInt(amountToPay)).toString(),
       };
 
-      setTransaction(data)
+      handleBuyAirtime(data).then(() =>{
 
-      deductBalance(data);
-      router.push("/dashboard");
+        router.push("/dashboard");
+      })
     } else {
       if (response.Status !== "failed") {
         const data: transactionTypes = {

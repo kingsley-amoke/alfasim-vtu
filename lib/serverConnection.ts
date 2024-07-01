@@ -1,6 +1,7 @@
 import { cookies } from "next/headers";
 
 import { createServerClient, type CookieOptions } from "@supabase/ssr";
+import { NextResponse, NextRequest } from "next/server";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
@@ -17,6 +18,7 @@ export const serverClient = () => {
           get(name: string) {
             return cookieStore.get(name)?.value
           },
+          
         },
       }
     )
