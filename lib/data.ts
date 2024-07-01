@@ -799,3 +799,15 @@ export const verifyPayment = async (
 
   return 'finished'
 };
+
+//handle data proccessing
+
+export const handleBuyData = (data:transactionTypes, commission:number) => {
+
+  deductBalance(data.email, data.amount);
+
+  handleCommission(data.email, commission);
+
+  setTransaction(data)
+
+}

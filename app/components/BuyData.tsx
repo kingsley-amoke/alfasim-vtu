@@ -14,6 +14,7 @@ import {
   buyData,
   deductBalance,
   getDataPlans,
+  handleBuyData,
   handleCommission,
   setTransaction,
 } from "@/lib/data";
@@ -504,10 +505,6 @@ const BuyData = ({
     setLoading(false);
   };
 
-  const createDataTransaction = async (data: transactionTypes) => {
-    const response = await setTransaction(data);
-    return response;
-  };
 
   const handleSubmitForm = async () => {
     if (!selectedPlan || !user) return;
@@ -548,8 +545,7 @@ const BuyData = ({
         newBalance: user.balance,
       };
 
-      const transaction = await createDataTransaction(data);
-      console.log(transaction);
+   setTransaction(data);
       toast.error("Network error, Try again later");
       setLoading(false);
       return;
@@ -577,18 +573,20 @@ const BuyData = ({
         ).toString(),
       };
 
-      await createDataTransaction(data);
+      handleBuyData(data, commission)
 
-      await deductBalance(user?.email, selectedPlan?.plan_amount);
+      // await createDataTransaction(data);
 
-      await handleCommission(data.email, commission);
+      // await deductBalance(user?.email, selectedPlan?.plan_amount);
+
+      // await handleCommission(data.email, commission);
 
       router.replace("/dashboard");
     } else {
       if (response.Status !== "failed") {
         toast.error(response.Status);
         setLoading(false);
-        await deductBalance(user?.email, selectedPlan?.plan_amount);
+        deductBalance(user?.email, selectedPlan?.plan_amount);
       }
 
       toast.error(response.Status);
@@ -612,7 +610,7 @@ const BuyData = ({
               ).toString(),
       };
 
-      await createDataTransaction(data);
+      setTransaction(data);
     }
   };
 
