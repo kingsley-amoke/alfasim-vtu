@@ -148,7 +148,7 @@ const BuyAirtime = ({ user }: { user: userDataTypes }) => {
       await createDataTransaction(data);
 
       await deductBalance(user?.email, amountToPay);
-      router.replace("/dashboard");
+      router.push("/dashboard");
     } else {
       if (response.Status !== "failed") {
         toast.error(response.Status);

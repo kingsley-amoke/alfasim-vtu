@@ -13,6 +13,7 @@ import {
 import {
   buyData,
   deductBalance,
+  handleBuyData,
   handleCommission,
   setTransaction,
 } from "@/lib/data";
@@ -571,20 +572,37 @@ const BuyData = ({
         ).toString(),
       };
 
-      // handleBuyData(data, commission)
+      handleBuyData(data, commission, user?.referee, user?.referral_bonus!).then(() => {
 
-      setTransaction(data);
+        router.push("/dashboard");
+      })
 
-      deductBalance(data.email, data.amount);
+      // setTransaction(data);
 
-      handleCommission(data.email, commission);
+      // deductBalance(data.email, data.amount);
 
-      router.replace("/dashboard");
+      // handleCommission(data.email, commission);
+
     } else {
       if (response.Status !== "failed") {
         toast.error(response.Status);
+
+        const data: transactionTypes = {
+          email: user?.email,
+          amount: selectedPlan?.plan_amount,
+          purpose: "data",
+          status: response.Status,
+          transactionId: response.ident,
+          phone: phone,
+          network: currentNetwork,
+          planSize: selectedPlan.plan,
+          previousBalance: user.balance,
+          newBalance: (
+            parseInt(user.balance) - parseInt(selectedPlan?.plan_amount)
+          ).toString(),
+        };
         setLoading(false);
-        deductBalance(user?.email, selectedPlan?.plan_amount);
+        deductBalance(data);
       }
 
       toast.error(response.Status);

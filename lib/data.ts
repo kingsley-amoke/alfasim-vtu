@@ -105,16 +105,17 @@ export const recharge = async (email: string | undefined, amount: string) => {
 
 //deducts from user balance
 
-export const deductBalance = async (
-  email: string | undefined,
-  amount: string
+export const deductBalance = async (user:transactionTypes
 ) => {
   try {
-    const userData = await fetchUser(email);
+    // const userData = await fetchUser(email);
 
-    const { balance } = userData![0];
+    // const { balance } = userData![0];
 
-    const newBalance = parseInt(balance) - parseInt(amount);
+    // const newBalance = parseInt(balance) - parseInt(amount);
+
+    const newBalance = user.newBalance!
+    const email = user.email!
 
     const { data, error } = await serverClient()
       .from("users")
@@ -192,16 +193,16 @@ export const getLoggedUser = async () => {
   }
 };
 
-export const handleCommission = async(email:string|undefined, commission:number) => {
+export const handleCommission = async(user:transactionTypes, commission:number, referee:string, referral_bonus:string) => {
 
   try{
-  const userData = await fetchUser(email);
+  // const userData = await fetchUser(email);
 
-  const { referee } = userData![0];
+  // const { referee } = userData![0];
 
-  const refereeData = await fetchUser(referee)
+  // const refereeData = await fetchUser(referee)
 
-  const {referral_bonus} = refereeData![0]
+  // const {referral_bonus} = refereeData![0]
 
   let newBonus = parseInt(referral_bonus) + commission;
 
@@ -800,14 +801,14 @@ export const verifyPayment = async (
   return 'finished'
 };
 
-// //handle data proccessing
+//handle data proccessing
 
-// export const handleBuyData = (data:transactionTypes, commission:number) => {
+export const handleBuyData = async(data:transactionTypes, commission:number, referee: string, referral_bonus: string) => {
 
-//   deductBalance(data.email, data.amount);
+  deductBalance(data);
 
-//   handleCommission(data.email, commission);
+  handleCommission(data, commission, referee, referral_bonus);
 
-//   setTransaction(data)
+  setTransaction(data)
 
-// }
+}
