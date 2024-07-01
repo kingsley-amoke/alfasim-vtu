@@ -13,8 +13,6 @@ import {
 import {
   buyData,
   deductBalance,
-  getDataPlans,
-  handleBuyData,
   handleCommission,
   setTransaction,
 } from "@/lib/data";
@@ -573,7 +571,7 @@ const BuyData = ({
         ).toString(),
       };
 
-      handleBuyData(data, commission)
+      // handleBuyData(data, commission)
 
       setTransaction(data);
 
