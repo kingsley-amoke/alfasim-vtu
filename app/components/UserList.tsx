@@ -66,15 +66,12 @@ const UserList = ({query, currentPage, per_page}: { query:string, currentPage:st
   };
 
 
-    const fundUserWallet = async (user: userDataTypes) => {
+    const fundUserWallet = (user: userDataTypes) => {
 
-        const data = await recharge(user.email, amount);
-    
-        if (data?.data) {
+        recharge(user.email, amount);
     
           toast.success("Recharge successful");
           router.push("/dashboard");
-        }
       };
 
     

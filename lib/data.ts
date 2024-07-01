@@ -205,7 +205,7 @@ export const handleCommission = async(email:string|undefined, commission:number)
 
   let newBonus = parseInt(referral_bonus) + commission;
 
-  const { data, error } = await serverClient()
+  serverClient()
   .from("users")
   .update({ referral_bonus: newBonus, })
   .eq("email", referee)
@@ -224,7 +224,7 @@ export const handleReferral = async (username: string, userEmail:string) => {
 
   try {
 
-    await serverClient()
+    serverClient()
       .from("users")
       .update({ referee: email })
       .eq("email", userEmail)
@@ -237,7 +237,7 @@ export const handleReferral = async (username: string, userEmail:string) => {
 
     let newReferral = parseInt(referrals) + 1;
 
-    const { data, error } = await serverClient()
+    serverClient()
       .from("users")
       .update({referrals: newReferral })
       .eq("email", email)
@@ -255,7 +255,7 @@ export const handleReferral = async (username: string, userEmail:string) => {
 export const redeemBonus = async (username: string, referral_bonus: string) => {
   let email = username + "@gmail.com";
   try {
-    await recharge(email, referral_bonus);
+    recharge(email, referral_bonus);
 
     const { data, error } = await serverClient()
       .from("users")
@@ -322,19 +322,19 @@ export const fetchOneNotification = async (id: number) => {
 //handle read notifications
 export const readNotifications = async (id: number) => {
   try {
-    const { data, error } = await serverClient()
+    serverClient()
       .from("notifications")
       .update({ read: true })
       .eq("id", id);
 
-    let notifications: notificationTypes[] = data!;
+    // let notifications: notificationTypes[] = data!;
 
-    if (error) {
-      console.log(error);
-      return;
-    }
+    // if (error) {
+    //   console.log(error);
+    //   return;
+    // }
 
-    return notifications;
+    // return notifications;
   } catch (error) {
     if (isDynamicServerError(error)) {
       throw error;
@@ -770,9 +770,9 @@ export const verifyPayment = async (
 
         const rechargeAmount = (parseInt(trans.amount) - 50).toString()
 
-        await recharge(user?.email, rechargeAmount);
+        recharge(user?.email, rechargeAmount);
 
-        await setTransaction(trans);
+        setTransaction(trans);
         
 
       

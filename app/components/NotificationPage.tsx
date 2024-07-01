@@ -24,7 +24,7 @@ const NotificationPage = ({
   const router = useRouter();
 
   const readNotification = async (id: number) => {
-    await readNotifications(id);
+    readNotifications(id);
     router.push(`/notifications/${id}`);
   };
 

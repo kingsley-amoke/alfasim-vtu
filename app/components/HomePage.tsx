@@ -50,6 +50,12 @@ const HomePage = () => {
     );
 
     setUnreadNotification(unreadNotifications.length);
+
+    const res = await fetchAllUsers();
+    const users = res!;
+
+
+    setUsers(users);
   };
 
   const checkRefs = async () => {
@@ -69,22 +75,20 @@ const HomePage = () => {
   const fetchLoggedUser = async () => {
     const data = await getLoggedUser();
 
-    if (data) setUser(data);
+    if (!data) return
+    
+    setUser(data);
 
-    const res = await fetchAllUsers();
-    const users = res!;
+    if (!reference) return
 
-
-    setUsers(users);
-
-    if (reference) setLoading(true);
+      setLoading(true);
 
     const refStatus = await checkRefs();
 
-    if (data && refStatus === false && reference) {
-      const response = await verifyPayment(data, reference);
+    if (!refStatus) {
+      verifyPayment(data, reference);
 
-      response === "finished" && setLoading(false);
+      setLoading(false);
     }
 
     setLoading(false);
@@ -107,7 +111,7 @@ const HomePage = () => {
     } else {
       dialogRef.current?.close();
     }
-  }, []);
+  }, [reference]);
 
   return (
     <>
