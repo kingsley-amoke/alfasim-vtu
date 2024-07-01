@@ -575,11 +575,11 @@ const BuyData = ({
 
       handleBuyData(data, commission)
 
-      // await createDataTransaction(data);
+      setTransaction(data);
 
-      // await deductBalance(user?.email, selectedPlan?.plan_amount);
+      deductBalance(data.email, data.amount);
 
-      // await handleCommission(data.email, commission);
+      handleCommission(data.email, commission);
 
       router.replace("/dashboard");
     } else {

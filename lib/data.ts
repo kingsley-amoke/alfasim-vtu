@@ -800,14 +800,14 @@ export const verifyPayment = async (
   return 'finished'
 };
 
-//handle data proccessing
+// //handle data proccessing
 
-export const handleBuyData = (data:transactionTypes, commission:number) => {
+// export const handleBuyData = (data:transactionTypes, commission:number) => {
 
-  deductBalance(data.email, data.amount);
+//   deductBalance(data.email, data.amount);
 
-  handleCommission(data.email, commission);
+//   handleCommission(data.email, commission);
 
-  setTransaction(data)
+//   setTransaction(data)
 
-}
+// }
