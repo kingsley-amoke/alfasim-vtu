@@ -62,11 +62,6 @@ const BuyAirtime = ({ user }: { user: userDataTypes }) => {
     setLoading(false);
   };
 
-  const createDataTransaction = async (data: transactionTypes) => {
-    const response = await setTransaction(data);
-    return response;
-  };
-
   const handleSubmitForm = async () => {
     if (!user || !phone || !amount || !network) return;
 
@@ -121,7 +116,7 @@ const BuyAirtime = ({ user }: { user: userDataTypes }) => {
         newBalance: user.balance,
       };
 
-      await createDataTransaction(data);
+      setTransaction(data);
       return;
     }
 
@@ -145,9 +140,9 @@ const BuyAirtime = ({ user }: { user: userDataTypes }) => {
         newBalance: (parseInt(user.balance) - parseInt(amountToPay)).toString(),
       };
 
-      await createDataTransaction(data)
+      setTransaction(data)
 
-      await deductBalance(data);
+      deductBalance(data);
       router.push("/dashboard");
     } else {
       if (response.Status !== "failed") {
@@ -166,7 +161,7 @@ const BuyAirtime = ({ user }: { user: userDataTypes }) => {
         toast.error(response.Status);
         setLoading(false);
 
-        await deductBalance(data);
+        deductBalance(data);
       }
 
       toast.error(response.Status);
@@ -188,7 +183,7 @@ const BuyAirtime = ({ user }: { user: userDataTypes }) => {
             : (parseInt(user.balance) - parseInt(amountToPay)).toString(),
       };
 
-      await createDataTransaction(data);
+      setTransaction(data);
     }
     setLoading(false);
   };
