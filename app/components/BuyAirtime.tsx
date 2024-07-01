@@ -145,16 +145,28 @@ const BuyAirtime = ({ user }: { user: userDataTypes }) => {
         newBalance: (parseInt(user.balance) - parseInt(amountToPay)).toString(),
       };
 
-      await createDataTransaction(data);
+      await createDataTransaction(data)
 
-      await deductBalance(user?.email, amountToPay);
+      await deductBalance(data);
       router.push("/dashboard");
     } else {
       if (response.Status !== "failed") {
+        const data: transactionTypes = {
+          email: user?.email,
+          amount: amountToPay,
+          purpose: "airtime",
+          status: response.Status,
+          transactionId: response.ident,
+          phone: phone,
+          network: networkName,
+          planSize: amount,
+          previousBalance: user.balance,
+          newBalance: (parseInt(user.balance) - parseInt(amountToPay)).toString(),
+        };
         toast.error(response.Status);
         setLoading(false);
 
-        await deductBalance(user?.email, amountToPay);
+        await deductBalance(data);
       }
 
       toast.error(response.Status);
