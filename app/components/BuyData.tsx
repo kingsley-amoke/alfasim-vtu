@@ -521,13 +521,13 @@ const BuyData = ({
 
     const commission = selectedPlan?.plan.slice(-2) === "MB" ? 0 : integer * 1;
 
-    setLoading(true);
     const dataInfo = {
       network: selectedPlan?.network.toString()!,
       plan: selectedPlan?.id.toString()!,
       mobile_number: phone,
       Ported_number: true,
     };
+    setLoading(true);
 
     const response = await buyData(dataInfo);
 
