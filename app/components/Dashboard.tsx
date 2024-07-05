@@ -194,7 +194,7 @@ const Dashboard = ({
         <Link href="/" className="w-full md:w-1/4">
           <ServiceCard
             ServiceIcon={FaNairaSign}
-            title="Airtime 2 Cash"
+            title="Sell Airtime"
             styles={cardStyles}
           />
         </Link>
