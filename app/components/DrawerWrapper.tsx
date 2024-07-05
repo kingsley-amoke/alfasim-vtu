@@ -47,7 +47,7 @@ import { userDataTypes } from "@/lib/types";
     },
     {
       link: "/convert-airtime",
-      title: "Airtime 2 Cash",
+      title: "Sell Airtime",
       icon: BiHome,
     },
     {
@@ -81,7 +81,7 @@ import { userDataTypes } from "@/lib/types";
       icon: BiSolidWalletAlt,
     },
     {
-      link: "/fund-wallet",
+      link: "/recharge",
       title: "Fund Wallet",
       icon: BiWalletAlt,
     },
