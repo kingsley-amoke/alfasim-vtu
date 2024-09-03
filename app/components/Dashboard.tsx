@@ -1,76 +1,131 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Button from "./Button";
 import { BiMoney, BiWallet } from "react-icons/bi";
 import { BsPersonCheck } from "react-icons/bs";
 import ServiceCard from "./ServiceCard";
-import { FaCcVisa, FaPhoneVolume, FaSignal } from "react-icons/fa";
+import { FaCcVisa, FaLess, FaPhoneVolume, FaSignal } from "react-icons/fa";
 import { FaNairaSign } from "react-icons/fa6";
 import { LuRadioReceiver } from "react-icons/lu";
 import { FcElectricity } from "react-icons/fc";
 import { RiCoupon2Fill } from "react-icons/ri";
-import {GoGift} from "react-icons/go"
-import {MdMoney, MdOutline4GPlusMobiledata} from "react-icons/md"
+import { GoGift } from "react-icons/go";
+import { MdMoney, MdOutline4GPlusMobiledata } from "react-icons/md";
 import Link from "next/link";
 
-import { redeemBonus } from "@/lib/data";
+import {
+  fetchUserAccount,
+  getCustomerAccount,
+  postUserAccounts,
+  redeemBonus,
+} from "@/lib/data";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import FAQ from "./FAQ";
 import Notification from "./Notification";
-import { userDataTypes } from "@/lib/types";
-import { useUserStore } from "@/lib/store";
+import { AccountType, userDataTypes } from "@/lib/types";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/lib/ui/alert-dialog";
+import { Input } from "@/lib/ui/input";
 
+const Dashboard = ({ count, user }: { count: number; user: any }) => {
+  const router = useRouter();
+  const redeemRef = useRef<HTMLButtonElement>(null!);
 
+  const [userAccounts, setUserAccounts] = useState<AccountType[]>([]);
+  const [bvn, setBvn] = useState("");
+  const [loading, setLoading] = useState(false);
 
-const Dashboard = ({
-	count,
-  user
-}: {
-	count: number;
-  user: userDataTypes;
-}) => {
-	const router = useRouter();
-	const redeemRef = useRef<HTMLButtonElement>(null!);
+  const handleNotification = async () => {
+    router.push("/notifications");
+  };
 
+  const handleRedeem = async () => {
+    redeemRef.current.disabled = true;
 
-	const handleNotification = async () => {
-		router.push("/notifications");
-	};
+    if (user.referral_bonus) {
+      if (user?.referral_bonus === "0") {
+        toast.error("No bonus this time, refer people to earn!");
+        return;
+      }
 
-	const handleRedeem = async () => {
-		redeemRef.current.disabled = true;
+      const response = await redeemBonus(user.username, user.referral_bonus);
 
-    if(user.referral_bonus){
-      
-		if (user?.referral_bonus === "0") {
-			toast.error("No bonus this time, refer people to earn!");
-			return;
-		}
+      response?.error && toast.error("An error occured");
 
+      toast.success("Bonus has been added to your wallet");
 
-		const response = await redeemBonus(user.username, user.referral_bonus);
-
-		response?.error && toast.error("An error occured");
-
-		toast.success("Bonus has been added to your wallet");
-
-		router.refresh;
+      router.refresh;
     }
-	};
+  };
 
-	const statsStyle =
+  const requestAccount = async () => {
+    const contractCode = process.env
+      .NEXT_PUBLIC_MONNIFY_CONTRACT_CODE as string;
+    const customerName = user.first_name + " " + user.last_name;
+
+    const config = {
+      accountReference: user.username,
+      accountName: "Alfasimdata Reserved Account",
+      currencyCode: "NGN",
+      contractCode: contractCode,
+      customerEmail: user?.email,
+      bvn: bvn,
+      customerName: customerName,
+      getAllAvailableBanks: true,
+    };
+    setLoading(true);
+    const data = await getCustomerAccount(config);
+
+    if (!data) {
+      setLoading(false);
+      toast.error("Failed to request account, please try again later");
+      return;
+    }
+
+    const userAccounts: AccountType = {
+      account_name: data.accountName,
+      account_reference: data.accountReference,
+      accounts: data.accounts,
+      bvn: data.bvn,
+      currency: data.currencyCode,
+      customer_email: data.customerEmail,
+      customer_name: data.customerName,
+    };
+    postUserAccounts(userAccounts);
+    toast.success("Account request submitted successfully");
+    setLoading(false);
+  };
+
+  const getAccounts = async () => {
+    const accounts = await fetchUserAccount(user?.email);
+
+    accounts && setUserAccounts(accounts);
+  };
+
+  const statsStyle =
     "w-full md:w-1/3 flex justify-between md:justify-center px-5 mr-5 md:mr-0 items-center py-4 md:gap-10 cursor-pointer";
 
   const cardStyles =
     "h-full w-full rounded-lg p-5 flex flex-wrap flex-col justify-center gap-2 cursor-pointer hover:shadow-teal-300 hover:shadow-lg border border-white bg-teal-800 dark:bg-black text-white";
 
+  useEffect(() => {
+    getAccounts();
+  }, [user.email]);
   return (
     <div className="mt-20 md:mt-0">
       <section className="flex bg-teal-800 dark:bg-black text-white flex-col md:flex-row gap-5 md:gap-32 justify-between items-center px-2 md:px-10 pt-5 pb-10 md:py-20">
         <div>
           <div className="flex w-full justify-between items-center">
-
-          <h5 className="capitalize">{`Hi ${user?.username}!`}</h5>
+            <h5 className="capitalize">{`Hi ${user?.username}!`}</h5>
             <div
               className="md:hidden cursor-pointer"
               onClick={handleNotification}
@@ -79,7 +134,9 @@ const Dashboard = ({
             </div>
           </div>
           <div className="w-full flex justify-between items-center">
-            <h2 className="mb-5 text-xl md:text-3xl font-bold">WELCOME TO ALFASIM DATA</h2>
+            <h2 className="mb-5 text-xl md:text-3xl font-bold">
+              WELCOME TO ALFASIM DATA
+            </h2>
           </div>
           <p>
             We offer the most affordable and cheapest data, airtime, <br />
@@ -88,8 +145,80 @@ const Dashboard = ({
           </p>
           <p className="mt-10">{`Referral link: alfasimdata.com.ng/register?referral=${user?.username}`}</p>
         </div>
-        <Button links="recharge">Fund Wallet</Button>
+        <div className="flex flex-col md:flex-row gap-5">
+          <Button links="recharge">Fund Wallet</Button>
+          {userAccounts.length < 1 && (
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <button
+                  className="dark:text-white py-2 px-3 border border-white rounded-md"
+                  onClick={() => setLoading(true)}
+                >
+                  {loading ? "Requesting..." : " Request Account"}
+                </button>
+              </AlertDialogTrigger>
+              <AlertDialogContent className="bg-gray-200">
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Hello {user?.username}!!</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    You are about to request for a reserved account from
+                    alfasimdata.
+                    <br />
+                    You can use this account to fund your wallet at your
+                    convienence. If you wish to continue, please provide your
+                    BVN below.
+                    <Input
+                      className="mt-32 border-slate-400 outline-none"
+                      placeholder="Enter your bvn here..."
+                      autoFocus
+                      onChange={(e) => setBvn(e.target.value)}
+                    />
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter className="flex flex-col gap-5 md:flex-row md:justify-evenly md:items-center">
+                  <AlertDialogCancel
+                    className="mt-5"
+                    onClick={() => setLoading(false)}
+                  >
+                    Cancel
+                  </AlertDialogCancel>
+                  <AlertDialogAction
+                    onClick={requestAccount}
+                    className="border rounded-md cursor-pointer bg-teal-800 hover:border-white text-white"
+                  >
+                    Continue
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+            // <button
+            //   className="dark:text-white py-2 px-3 border border-white rounded-md"
+            //   onClick={requestAccount}
+            // >
+            //   {loading ? "Please wait..." : "Request account"}
+            // </button>
+          )}
+        </div>
       </section>
+      {userAccounts?.map((accountInfo, index) => (
+        <section className="my-10 px-5 w-full" key={index}>
+          <h3 className="font-bold text-3xl text-center mb-12">
+            Dedicated Accounts
+          </h3>
+          <div className="mx-auto w-full flex flex-wrap gap-10 justify-center md:justify-start">
+            {accountInfo?.accounts?.map((account) => (
+              <div
+                key={account.accountNumber}
+                className="dark:text-white border border-teal-800 p-10"
+              >
+                <p>Bank: {account.bankName}</p>
+                <h4>Account Name: {account.accountName}</h4>
+                <p>Account Number: {account.accountNumber}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+      ))}
       <section className=" dark:border  dark:border-white mx-2 md:mx-10 my-10 shadow-sm shadow-slate-600 rounded-md md:rounded-none">
         <p className="font-bold text-lg uppercase my-3 pt-3 ml-10">
           Transaction statistics
@@ -129,14 +258,15 @@ const Dashboard = ({
                 <p>Bonus</p>
                 {user?.referral_bonus && <p>{`NGN ${user?.referral_bonus}`}</p>}
               </div>
-             {user?.referral_bonus && 
-              <button
-              className="py-1 px-2 text-[12px] md:text-[8px] font-bold shadow-sm shadow-black rounded-lg hover:bg-teal-500 border bg-teal-800 text-white"
-              onClick={handleRedeem}
-              ref={redeemRef}
-            >
-              Redeem
-            </button>}
+              {user?.referral_bonus && (
+                <button
+                  className="py-1 px-2 text-[12px] md:text-[8px] font-bold shadow-sm shadow-black rounded-lg hover:bg-teal-500 border bg-teal-800 text-white"
+                  onClick={handleRedeem}
+                  ref={redeemRef}
+                >
+                  Redeem
+                </button>
+              )}
             </div>
           </div>
           <div

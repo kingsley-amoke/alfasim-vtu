@@ -1,6 +1,14 @@
+"use client";
+
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
 import Button from "./Button";
+import {
+  fetchUserAccount,
+  getCustomerAccount,
+  postUserAccounts,
+} from "@/lib/data";
+import { AccountType } from "@/lib/types";
 
 const Hero = () => {
   return (
@@ -9,6 +17,7 @@ const Hero = () => {
         <h2 className="uppercase font-bold md:text-5xl">
           Welcome to Alfasim Data
         </h2>
+
         <p className="md:text-2xl">
           We offer the most affordable and cheapest data, airtime, cable
           subscription, electricity subscription, bulk sms. Convert airtime to
@@ -20,10 +29,10 @@ const Hero = () => {
           src="/hero.png"
           alt="hero"
           width={400}
-          height={400} 
+          height={400}
           className="md:w-[700px]"
-          />
-        </div>
+        />
+      </div>
       <div className="md:hidden h-full w-full flex flex-col gap-5 mt-5">
         <Button links="login">Login</Button>
 

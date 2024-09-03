@@ -8,6 +8,7 @@ import {
   fetchAllUsers,
   fetchNotifications,
   fetchRefs,
+  fetchUserAccount,
   getLoggedUser,
   handleFundWallet,
   recharge,
@@ -18,7 +19,7 @@ import {
 import Modal from "./Modal";
 import Footer from "./Footer";
 import { useRouter, useSearchParams } from "next/navigation";
-import { transactionTypes, userDataTypes } from "@/lib/types";
+import { AccountType, transactionTypes, userDataTypes } from "@/lib/types";
 import { LoadingSkeleton } from "./Skeleton";
 import { useUserStore, useUsersStore } from "@/lib/store";
 
@@ -32,12 +33,12 @@ const HomePage = () => {
 
   const [unreadNotification, setUnreadNotification] = useState(0);
   const [user, setUser] = useState<userDataTypes>({
-    email: '',
+    email: "",
     username: "",
     balance: "",
-    referee:'',
-    is_admin: false
-  })
+    referee: "",
+    is_admin: false,
+  });
 
   const [loading, setLoading] = useState(false);
 
@@ -55,12 +56,11 @@ const HomePage = () => {
     const res = await fetchAllUsers();
     const users = res!;
 
-
     setUsers(users);
   };
 
   // const checkRefs = async () => {
-  //   if (!reference) return 
+  //   if (!reference) return
   //   const refs = await fetchRefs(reference);
   //   const ref = refs?.map((ref) => {
   //     if (ref.ref === reference) {
@@ -77,27 +77,27 @@ const HomePage = () => {
   const fetchLoggedUser = async () => {
     const data = await getLoggedUser();
 
-    if (!data) return
-    
+    if (!data) return;
+
     setUser(data);
 
-    if (!reference) return
+    if (!reference) return;
 
-      setLoading(true);
+    setLoading(true);
 
-      handleFundWallet(data, reference).then(() =>{
-        setLoading(false);
-      })
+    handleFundWallet(data, reference).then(() => {
+      setLoading(false);
+    });
 
-  //   const refStatus = await checkRefs();
+    //   const refStatus = await checkRefs();
 
-  //   if (!refStatus) {
-  //     verifyPayment(data, reference);
+    //   if (!refStatus) {
+    //     verifyPayment(data, reference);
 
-  //     setLoading(false);
-  //   }
+    //     setLoading(false);
+    //   }
 
-  //   setLoading(false);
+    //   setLoading(false);
   };
 
   const closeDialog = () => {
@@ -120,7 +120,7 @@ const HomePage = () => {
 
   useLayoutEffect(() => {
     fetchLoggedUser();
-  }, [reference])
+  }, [reference]);
 
   return (
     <>

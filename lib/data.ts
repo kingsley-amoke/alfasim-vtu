@@ -4,6 +4,7 @@ import axios from "axios";
 
 import { serverClient } from "./serverConnection";
 import {
+  AccountType,
   DBTransactionTypes,
   PaystackParams,
   VerifyParams,
@@ -16,14 +17,18 @@ import { headers } from "next/headers";
 import { isDynamicServerError } from "next/dist/client/components/hooks-server-context";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
+const monnifyUrl = process.env.NEXT_PUBLIC_MONNIFY_BASEURL as string;
+
+const monnifyApiKey = process.env.NEXT_PUBLIC_MONNIFY_APIKEY as string;
+
+const monnifySecretKey = process.env.NEXT_PUBLIC_MONNIFY_SECRETKEY as string;
+const monnifyEncodedKey = btoa(monnifyApiKey + ":" + monnifySecretKey);
 
 //fetch all users
 
 export const fetchAllUsers = async () => {
   try {
-    const { data } = await serverClient()
-     .from("users")
-     .select("email, username, balance, referrals, referee, referral_bonus, is_admin")
+    const { data } = await serverClient().from("users").select();
 
     return data;
   } catch (error) {
@@ -37,18 +42,15 @@ export const fetchAllUsers = async () => {
 //fetch user in pages
 
 export const fetchUsersByPage = async (page: string) => {
+  const minValue = Number(page + "0");
+  const maxValue = Number(page + "9");
 
-  const minValue = Number(page + '0')
-  const maxValue = Number(page + '9')
-
-
-
-  console.log(minValue, maxValue)
+  console.log(minValue, maxValue);
   try {
     const { data } = await serverClient()
-     .from("users")
-     .select("email, username, balance, referrals, referee, referral_bonus, is_admin")
-     .range(minValue, maxValue)
+      .from("users")
+      .select()
+      .range(minValue, maxValue);
 
     return data;
   } catch (error) {
@@ -59,14 +61,13 @@ export const fetchUsersByPage = async (page: string) => {
   }
 };
 
-
 //fetches one user by username
 
 export const fetchUser = async (email: string | undefined) => {
   try {
     const { data } = await serverClient()
       .from("users")
-      .select("email, username, balance, referrals, referee, referral_bonus, is_admin")
+      .select()
       .eq("email", email);
 
     return data;
@@ -105,12 +106,10 @@ export const recharge = async (email: string | undefined, amount: string) => {
 
 //deducts from user balance
 
-export const deductBalance = async (user:transactionTypes
-) => {
+export const deductBalance = async (user: transactionTypes) => {
   try {
-
-    const newBalance = user.newBalance!
-    const email = user.email!
+    const newBalance = user.newBalance!;
+    const email = user.email!;
 
     const { data, error } = await serverClient()
       .from("users")
@@ -168,16 +167,7 @@ export const getLoggedUser = async () => {
     const data = await fetchUser(user?.email);
 
     if (data) {
-      const user = {
-        email: data[0].email,
-        username: data[0].username,
-        is_admin: data[0].is_admin,
-        balance: data[0].balance,
-        referrals: data[0].referrals,
-        referral_bonus: data[0].referral_bonus,
-        referee: data[0].referee,
-      };
-
+      const user = data[0];
       return user;
     }
   } catch (error) {
@@ -188,44 +178,46 @@ export const getLoggedUser = async () => {
   }
 };
 
-export const handleCommission = async(user:transactionTypes, commission:number, referee:string, referral_bonus:string) => {
+export const handleCommission = async (
+  user: transactionTypes,
+  commission: number,
+  referee: string,
+  referral_bonus: string
+) => {
+  try {
+    // const userData = await fetchUser(email);
 
-  try{
-  // const userData = await fetchUser(email);
+    // const { referee } = userData![0];
 
-  // const { referee } = userData![0];
+    // const refereeData = await fetchUser(referee)
 
-  // const refereeData = await fetchUser(referee)
+    // const {referral_bonus} = refereeData![0]
 
-  // const {referral_bonus} = refereeData![0]
+    let newBonus = parseInt(referral_bonus) + commission;
 
-  let newBonus = parseInt(referral_bonus) + commission;
-
-  serverClient()
-  .from("users")
-  .update({ referral_bonus: newBonus, })
-  .eq("email", referee)
-  .select();
-} catch (error) {
-if (isDynamicServerError(error)) {
-  throw error;
-}
-console.log(error);
-}
-}
+    serverClient()
+      .from("users")
+      .update({ referral_bonus: newBonus })
+      .eq("email", referee)
+      .select();
+  } catch (error) {
+    if (isDynamicServerError(error)) {
+      throw error;
+    }
+    console.log(error);
+  }
+};
 
 //referral program implementation
-export const handleReferral = async (username: string, userEmail:string) => {
+export const handleReferral = async (username: string, userEmail: string) => {
   let email = username + "@gmail.com";
 
   try {
-
     serverClient()
       .from("users")
       .update({ referee: email })
       .eq("email", userEmail)
       .select();
-
 
     const userData = await fetchUser(email);
 
@@ -235,7 +227,7 @@ export const handleReferral = async (username: string, userEmail:string) => {
 
     serverClient()
       .from("users")
-      .update({referrals: newReferral })
+      .update({ referrals: newReferral })
       .eq("email", email)
       .select();
   } catch (error) {
@@ -318,10 +310,7 @@ export const fetchOneNotification = async (id: number) => {
 //handle read notifications
 export const readNotifications = async (id: number) => {
   try {
-    serverClient()
-      .from("notifications")
-      .update({ read: true })
-      .eq("id", id);
+    serverClient().from("notifications").update({ read: true }).eq("id", id);
 
     // let notifications: notificationTypes[] = data!;
 
@@ -458,8 +447,6 @@ export const fetchAirtimeHistory = async (email: string) => {
       return;
     }
 
-  
-
     return transaction;
   } catch (error) {
     if (isDynamicServerError(error)) {
@@ -471,31 +458,29 @@ export const fetchAirtimeHistory = async (email: string) => {
 
 //fetch references
 
-export const fetchRefs = async (reference:string) => {
-try {
-  const { data: references, error } = await serverClient()
+export const fetchRefs = async (reference: string) => {
+  try {
+    const { data: references, error } = await serverClient()
       .from("refs")
       .select("ref")
-      .eq("ref", reference)
+      .eq("ref", reference);
 
-      if (error) {
-        console.log(error);
-        return;
-      }
+    if (error) {
+      console.log(error);
+      return;
+    }
 
-      let ref = references!
-      return ref
-  
-} catch (error) {
-  if (isDynamicServerError(error)) {
-    throw error;
+    let ref = references!;
+    return ref;
+  } catch (error) {
+    if (isDynamicServerError(error)) {
+      throw error;
+    }
+    console.log(error);
   }
-  console.log(error);
-}
-}
+};
 
-
-// create reference 
+// create reference
 export const setReference = async (reference: string) => {
   try {
     const { data, error } = await serverClient()
@@ -503,11 +488,10 @@ export const setReference = async (reference: string) => {
       .insert([
         {
           ref: reference,
-          
         },
       ])
       .select();
-      
+
     return { data, error };
   } catch (error) {
     if (isDynamicServerError(error)) {
@@ -690,7 +674,6 @@ export const buyData = async (data: {
       return response.json();
     })
     .then((data) => {
-      
       return data;
     })
     .catch((error) => {
@@ -738,92 +721,164 @@ export const buyAirtime = async (data: {
   return response;
 };
 
-export const verifyPayment = async (
-  user: userDataTypes,
-  reference: string,
-) => {
-     
-      const response = await verifyPaystackTransaction(reference);
-      if (response.data.status === "success") {
-        const trans: transactionTypes = {
-          email: user.email,
-          purpose: "wallet",
-          amount: (response.data.amount / 100).toString(),
-          status: response.data.status,
-          network: response.data.channel,
-          planSize: response.data.currency,
-          previousBalance: user?.balance,
-          newBalance: (
-            response.data.amount / 100 +
-            parseInt(user?.balance)
-          ).toString(),
-          phone: reference,
-          transactionId: response.data.id,
-        };
+export const verifyPayment = async (user: userDataTypes, reference: string) => {
+  const response = await verifyPaystackTransaction(reference);
+  if (response.data.status === "success") {
+    const trans: transactionTypes = {
+      email: user.email,
+      purpose: "wallet",
+      amount: (response.data.amount / 100).toString(),
+      status: response.data.status,
+      network: response.data.channel,
+      planSize: response.data.currency,
+      previousBalance: user?.balance,
+      newBalance: (
+        response.data.amount / 100 +
+        parseInt(user?.balance)
+      ).toString(),
+      phone: reference,
+      transactionId: response.data.id,
+    };
 
-        const data = await setReference(reference)
+    const data = await setReference(reference);
 
-        if(data?.data === null) return
+    if (data?.data === null) return;
 
-        const rechargeAmount = (parseInt(trans.amount) - 50).toString()
+    const rechargeAmount = (parseInt(trans.amount) - 50).toString();
 
-        recharge(user?.email, rechargeAmount);
+    recharge(user?.email, rechargeAmount);
 
-        setTransaction(trans);
-        
+    setTransaction(trans);
 
-      
-      // } else {
-      //   const trans: transactionTypes = {
-      //     email: user.email,
-      //     purpose: "wallet",
-      //     amount: (response.data.amount / 100).toString(),
-      //     status: response.data.status,
-      //     network: response.data.channel,
-      //     planSize: response.data.currency,
-      //     previousBalance: user?.balance,
-      //     newBalance: user?.balance,
-      //     phone: reference,
-      //     transactionId: response.data.id,
-      //   };
+    // } else {
+    //   const trans: transactionTypes = {
+    //     email: user.email,
+    //     purpose: "wallet",
+    //     amount: (response.data.amount / 100).toString(),
+    //     status: response.data.status,
+    //     network: response.data.channel,
+    //     planSize: response.data.currency,
+    //     previousBalance: user?.balance,
+    //     newBalance: user?.balance,
+    //     phone: reference,
+    //     transactionId: response.data.id,
+    //   };
 
-      //   await setTransaction(trans);
-       
-      // }
-    }
-    
-  
+    //   await setTransaction(trans);
 
-  return 'finished'
+    // }
+  }
+
+  return "finished";
 };
 
 //handle data proccessing
 
-export const handleBuyData = async(data:transactionTypes, commission:number, referee: string, referral_bonus: string) => {
-
+export const handleBuyData = async (
+  data: transactionTypes,
+  commission: number,
+  referee: string,
+  referral_bonus: string
+) => {
   deductBalance(data);
 
   handleCommission(data, commission, referee, referral_bonus);
 
-  setTransaction(data)
+  setTransaction(data);
+};
 
-}
-
-export const handleBuyAirtime = async(data:transactionTypes)=> {
+export const handleBuyAirtime = async (data: transactionTypes) => {
   deductBalance(data);
 
-  setTransaction(data)
-}
+  setTransaction(data);
+};
 
-
-export const handleFundWallet = async (user:userDataTypes, reference:string) => {
+export const handleFundWallet = async (
+  user: userDataTypes,
+  reference: string
+) => {
   const refs = await fetchRefs(reference);
 
-  if(!refs) return
+  if (!refs) return;
 
-  if (refs?.length > 0) return
+  if (refs?.length > 0) return;
 
-  verifyPayment(user, reference)
+  verifyPayment(user, reference);
+};
 
+//monnify authorization
 
+const options = {
+  method: "POST",
+  headers: {
+    Authorization: `Basic ${monnifyEncodedKey}`,
+  },
+};
+
+//generate authorization token
+
+async function getToken() {
+  const response = await fetch(`${monnifyUrl}/api/v1/auth/login`, options);
+
+  const data = await response.json();
+  const token = data.responseBody?.accessToken;
+
+  return token;
 }
+
+//generate reserved account information
+
+export async function getCustomerAccount(config: any) {
+  const token = await getToken();
+
+  if (!token) {
+    throw new Error("Failed to get access token");
+  }
+
+  const response = await fetch(
+    `${monnifyUrl}/api/v2/bank-transfer/reserved-accounts`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(config),
+    }
+  );
+
+  const data = await response.json();
+  console.log(data);
+
+  return data.requestSuccessful ? data.responseBody : null;
+}
+
+//post account info to db
+
+export const postUserAccounts = async (accountInfo: AccountType) => {
+  try {
+    serverClient().from("accounts").insert([accountInfo]);
+  } catch (error) {
+    if (isDynamicServerError(error)) {
+      throw error;
+    }
+    console.log(error);
+  }
+};
+
+//fetch user reserved accounts
+export const fetchUserAccount = async (email: string) => {
+  try {
+    const { data } = await serverClient()
+      .from("accounts")
+      .select()
+      .eq("customer_email", email);
+
+    return data;
+  } catch (error) {
+    if (isDynamicServerError(error)) {
+      throw error;
+    }
+    console.log(error);
+  }
+};
