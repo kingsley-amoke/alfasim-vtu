@@ -22,27 +22,13 @@ import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import FAQ from "./FAQ";
 import Notification from "./Notification";
-import { AccountType, userDataTypes } from "@/lib/types";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/lib/ui/alert-dialog";
-import { Input } from "@/lib/ui/input";
+import { AccountType } from "@/lib/types";
 
 const Dashboard = ({ count, user }: { count: number; user: any }) => {
   const router = useRouter();
   const redeemRef = useRef<HTMLButtonElement>(null!);
 
   const [userAccounts, setUserAccounts] = useState<AccountType[]>([]);
-  const [bvn, setBvn] = useState("");
-  const [loading, setLoading] = useState(false);
 
   const handleNotification = async () => {
     router.push("/notifications");
@@ -70,6 +56,7 @@ const Dashboard = ({ count, user }: { count: number; user: any }) => {
   const requestAccount = async () => {
     const contractCode = process.env
       .NEXT_PUBLIC_MONNIFY_CONTRACT_CODE as string;
+    const bvn = process.env.NEXT_PUBLIC_BVN as string;
     const customerName = user.first_name + " " + user.last_name;
 
     const config = {
@@ -82,11 +69,10 @@ const Dashboard = ({ count, user }: { count: number; user: any }) => {
       customerName: customerName,
       getAllAvailableBanks: true,
     };
-    setLoading(true);
+
     const data = await getCustomerAccount(config);
 
     if (!data) {
-      setLoading(false);
       toast.error("Failed to request account, please try again later");
       return;
     }
@@ -102,7 +88,6 @@ const Dashboard = ({ count, user }: { count: number; user: any }) => {
     };
     postUserAccounts(userAccounts);
     toast.success("Account request submitted successfully");
-    setLoading(false);
   };
 
   const getAccounts = async () => {
@@ -147,57 +132,6 @@ const Dashboard = ({ count, user }: { count: number; user: any }) => {
         </div>
         <div className="flex flex-col md:flex-row gap-5">
           <Button links="recharge">Fund Wallet</Button>
-          {userAccounts.length < 1 && (
-            <AlertDialog>
-              <AlertDialogTrigger asChild>
-                <button
-                  className="dark:text-white py-2 px-3 border border-white rounded-md"
-                  onClick={() => setLoading(true)}
-                >
-                  {loading ? "Requesting..." : " Request Account"}
-                </button>
-              </AlertDialogTrigger>
-              <AlertDialogContent className="bg-gray-200">
-                <AlertDialogHeader>
-                  <AlertDialogTitle>Hello {user?.username}!!</AlertDialogTitle>
-                  <AlertDialogDescription>
-                    You are about to request for a reserved account from
-                    alfasimdata.
-                    <br />
-                    You can use this account to fund your wallet at your
-                    convienence. If you wish to continue, please provide your
-                    BVN below.
-                    <Input
-                      className="mt-32 border-slate-400 outline-none"
-                      placeholder="Enter your bvn here..."
-                      autoFocus
-                      onChange={(e) => setBvn(e.target.value)}
-                    />
-                  </AlertDialogDescription>
-                </AlertDialogHeader>
-                <AlertDialogFooter className="flex flex-col gap-5 md:flex-row md:justify-evenly md:items-center">
-                  <AlertDialogCancel
-                    className="mt-5"
-                    onClick={() => setLoading(false)}
-                  >
-                    Cancel
-                  </AlertDialogCancel>
-                  <AlertDialogAction
-                    onClick={requestAccount}
-                    className="border rounded-md cursor-pointer bg-teal-800 hover:border-white text-white"
-                  >
-                    Continue
-                  </AlertDialogAction>
-                </AlertDialogFooter>
-              </AlertDialogContent>
-            </AlertDialog>
-            // <button
-            //   className="dark:text-white py-2 px-3 border border-white rounded-md"
-            //   onClick={requestAccount}
-            // >
-            //   {loading ? "Please wait..." : "Request account"}
-            // </button>
-          )}
         </div>
       </section>
       {userAccounts?.map((accountInfo, index) => (
