@@ -1,8 +1,4 @@
-
-
-
 //array or authenticated paths
-
 
 export const loggedInPaths = [
   "/dashboard",
@@ -21,6 +17,5 @@ export const loggedInPaths = [
   "/notifications",
   "/transactions",
   "/electricity",
-  "/admin"
+  "/admin",
 ];
-

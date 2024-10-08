@@ -820,8 +820,11 @@ const options = {
 async function getToken() {
   const response = await fetch(`${monnifyUrl}/api/v1/auth/login`, options);
 
+  
+
   const data = await response.json();
   const token = data.responseBody?.accessToken;
+ 
 
   return token;
 }
@@ -830,6 +833,7 @@ async function getToken() {
 
 export async function getCustomerAccount(config: any) {
   const token = await getToken();
+
 
   if (!token) {
     throw new Error("Failed to get access token");
@@ -847,8 +851,9 @@ export async function getCustomerAccount(config: any) {
     }
   );
 
+  
   const data = await response.json();
-  console.log(data);
+// console.log(data)
 
   return data.requestSuccessful ? data.responseBody : null;
 }
@@ -857,12 +862,14 @@ export async function getCustomerAccount(config: any) {
 
 export const postUserAccounts = async (accountInfo: AccountType) => {
   try {
-    serverClient().from("accounts").insert([accountInfo]);
+    const { data, error } = await serverClient()
+      .from("accounts")
+      .insert([accountInfo])
+      .select();
   } catch (error) {
     if (isDynamicServerError(error)) {
       throw error;
     }
-    console.log(error);
   }
 };
 

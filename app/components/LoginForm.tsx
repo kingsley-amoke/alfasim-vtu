@@ -51,6 +51,7 @@ const LoginForm = () => {
 
       if (response.data.status === 400) {
         toast.error("Invalid email or password");
+        setIsSubmitting(false);
         return;
       }
 
@@ -61,18 +62,19 @@ const LoginForm = () => {
         access_token: access_token,
         refresh_token: refresh_token,
       });
-
+      setIsSubmitting(false);
       router.replace("/dashboard?showDialog=y");
       toast.success("Login successful");
     } catch (error) {
-      if(isDynamicServerError(error)){
-        throw error
-    }
+      if (isDynamicServerError(error)) {
+        setIsSubmitting(false);
+        throw error;
+      }
+      setIsSubmitting(false);
       console.log(error);
     }
     setIsSubmitting(false);
   };
-
 
   return (
     <Card>

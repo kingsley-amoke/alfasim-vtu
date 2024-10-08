@@ -1,10 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
-import Button from "./Button";
 import { BiMoney, BiWallet } from "react-icons/bi";
 import { BsPersonCheck } from "react-icons/bs";
 import ServiceCard from "./ServiceCard";
 import { FaCcVisa, FaLess, FaPhoneVolume, FaSignal } from "react-icons/fa";
-import { FaNairaSign } from "react-icons/fa6";
+import { FaLessThanEqual, FaNairaSign } from "react-icons/fa6";
 import { LuRadioReceiver } from "react-icons/lu";
 import { FcElectricity } from "react-icons/fc";
 import { RiCoupon2Fill } from "react-icons/ri";
@@ -23,12 +22,14 @@ import { useRouter } from "next/navigation";
 import FAQ from "./FAQ";
 import Notification from "./Notification";
 import { AccountType } from "@/lib/types";
+import { Button } from "@/lib/ui/button";
 
 const Dashboard = ({ count, user }: { count: number; user: any }) => {
   const router = useRouter();
   const redeemRef = useRef<HTMLButtonElement>(null!);
 
   const [userAccounts, setUserAccounts] = useState<AccountType[]>([]);
+  const [loading, setLoading] = useState(false);
 
   const handleNotification = async () => {
     router.push("/notifications");
@@ -57,7 +58,6 @@ const Dashboard = ({ count, user }: { count: number; user: any }) => {
     const contractCode = process.env
       .NEXT_PUBLIC_MONNIFY_CONTRACT_CODE as string;
     const bvn = process.env.NEXT_PUBLIC_BVN as string;
-    const customerName = user.first_name + " " + user.last_name;
 
     const config = {
       accountReference: user.username,
@@ -66,13 +66,16 @@ const Dashboard = ({ count, user }: { count: number; user: any }) => {
       contractCode: contractCode,
       customerEmail: user?.email,
       bvn: bvn,
-      customerName: customerName,
+      customerName: user?.first_name + " " + user?.last_name,
       getAllAvailableBanks: true,
     };
+
+    setLoading(true);
 
     const data = await getCustomerAccount(config);
 
     if (!data) {
+      setLoading(false);
       toast.error("Failed to request account, please try again later");
       return;
     }
@@ -87,6 +90,7 @@ const Dashboard = ({ count, user }: { count: number; user: any }) => {
       customer_name: data.customerName,
     };
     postUserAccounts(userAccounts);
+    setLoading(false);
     toast.success("Account request submitted successfully");
   };
 
@@ -104,7 +108,8 @@ const Dashboard = ({ count, user }: { count: number; user: any }) => {
 
   useEffect(() => {
     getAccounts();
-  }, [user.email]);
+    console.log(user?.last_name);
+  }, [user?.username]);
   return (
     <div className="mt-20 md:mt-0">
       <section className="flex bg-teal-800 dark:bg-black text-white flex-col md:flex-row gap-5 md:gap-32 justify-between items-center px-2 md:px-10 pt-5 pb-10 md:py-20">
@@ -131,7 +136,11 @@ const Dashboard = ({ count, user }: { count: number; user: any }) => {
           <p className="mt-10">{`Referral link: alfasimdata.com.ng/register?referral=${user?.username}`}</p>
         </div>
         <div className="flex flex-col md:flex-row gap-5">
-          <Button links="recharge">Fund Wallet</Button>
+          {user?.last_name && (
+            <Button className="border border-white" onClick={requestAccount}>
+              {loading ? "Requesting" : "Request Account"}
+            </Button>
+          )}
         </div>
       </section>
       {userAccounts?.map((accountInfo, index) => (

@@ -63,8 +63,7 @@ const SignupForm = () => {
       email: email,
       first_name: firstName,
       last_name: lastName,
-      phone: phone
-
+      phone: phone,
     };
 
     try {
@@ -75,7 +74,7 @@ const SignupForm = () => {
 
       if (response.data.status === 422) {
         toast.error("User already exist");
-
+        setIsSubmitting(false);
         return;
       }
       const {
@@ -110,15 +109,17 @@ const SignupForm = () => {
       });
 
       referral && (await handleReferral(referral, userEmail));
-
+      setIsSubmitting(false);
 
       router.push("/dashboard?showDialog=y");
 
       toast.success("Registeration successful");
     } catch (error) {
-      if(isDynamicServerError(error)){
-        throw error
-    }
+      if (isDynamicServerError(error)) {
+        setIsSubmitting(false);
+        throw error;
+      }
+      setIsSubmitting(false);
       console.log(error);
     }
     setIsSubmitting(false);
@@ -223,7 +224,6 @@ const SignupForm = () => {
         <p>Already have an account? Go to Login</p>
       </CardFooter>
     </Card>
-    
   );
 };
 
