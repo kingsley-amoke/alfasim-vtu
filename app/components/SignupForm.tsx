@@ -10,7 +10,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 
 import { connectToSupabase } from "@/lib/connection";
-import { createCustomer, handleReferral } from "@/lib/data";
+import { getLoggedUser, handleReferral } from "@/lib/data";
 import {
   Card,
   CardContent,
@@ -23,7 +23,6 @@ import { Input } from "@/lib/ui/input";
 import { Label } from "@/lib/ui/label";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { Checkbox } from "@/lib/ui/checkbox";
-import { serverClient } from "@/lib/serverConnection";
 import { isDynamicServerError } from "next/dist/client/components/hooks-server-context";
 
 const formSchema = z
@@ -59,27 +58,30 @@ const SignupForm = () => {
     setIsSubmitting(true);
     const { email, password, firstName, lastName, phone } = values;
 
-    const customer = {
-      email: email,
-      first_name: firstName,
-      last_name: lastName,
-      phone: phone,
-    };
+    // const customer = {
+    //   email: email,
+    //   first_name: firstName,
+    //   last_name: lastName,
+    //   phone: phone,
+    // };
 
     try {
+      console.log(email);
       const response = await axios.post("/api/auth/register", {
         email: email,
         password: password,
       });
+
+      console.log(response);
 
       if (response.data.status === 422) {
         toast.error("User already exist");
         setIsSubmitting(false);
         return;
       }
-      const {
-        data: { id },
-      } = await createCustomer(customer);
+      // const {
+      //   data: { id },
+      // } = await createCustomer(customer);
 
       const uuid = response.data.user.id!;
       const userEmail = response.data.user.email!;
@@ -95,7 +97,7 @@ const SignupForm = () => {
             balance: 0,
             first_name: firstName,
             last_name: lastName,
-            customer_id: id,
+            customer_id: uuid,
           },
         ])
         .select();
