@@ -19,3 +19,5 @@ export const loggedInPaths = [
   "/electricity",
   "/admin",
 ];
+
+export const loggedOutPaths = ["/login", "/register", "/"];
