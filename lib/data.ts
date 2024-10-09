@@ -820,11 +820,8 @@ const options = {
 async function getToken() {
   const response = await fetch(`${monnifyUrl}/api/v1/auth/login`, options);
 
-  
-
   const data = await response.json();
   const token = data.responseBody?.accessToken;
- 
 
   return token;
 }
@@ -833,7 +830,6 @@ async function getToken() {
 
 export async function getCustomerAccount(config: any) {
   const token = await getToken();
-
 
   if (!token) {
     throw new Error("Failed to get access token");
@@ -851,9 +847,8 @@ export async function getCustomerAccount(config: any) {
     }
   );
 
-  
   const data = await response.json();
-// console.log(data)
+  // console.log(data)
 
   return data.requestSuccessful ? data.responseBody : null;
 }
@@ -887,5 +882,71 @@ export const fetchUserAccount = async (email: string) => {
       throw error;
     }
     console.log(error);
+  }
+};
+
+//fetch reserved account transactions
+const fetchDeposit = async (reference: string) => {
+  try {
+    const { data, error } = await serverClient()
+      .from("deposits")
+      .select()
+      .eq("reference", reference);
+
+    return data;
+  } catch (error) {
+    if (isDynamicServerError(error)) {
+      throw error;
+    }
+  }
+};
+
+const updateDeposits = async (reference: string) => {
+  try {
+    const { data, error } = await serverClient()
+      .from("deposits")
+      .insert([{ reference }])
+      .select();
+  } catch (error) {
+    if (isDynamicServerError(error)) {
+      throw error;
+    }
+  }
+};
+
+export const fetchLastTransaction = async (reference: string) => {
+  const token = await getToken();
+
+  if (!token) {
+    throw new Error("Failed to get access token");
+  }
+
+  const response = await fetch(
+    `${monnifyUrl}/api/v1/bank-transfer/reserved-accounts/transactions?accountReference=${reference}&page=0&size=1`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  const data = await response.json();
+
+  if (data.requestSuccessful) {
+    const amount = data.responseBody.content[0].amount;
+    const trxRef = data.responseBody.content[0].transactionReference;
+    const res = await fetchDeposit(trxRef);
+    if (!res || res?.length < 1) {
+      recharge(`${reference}@gmail.com`, amount);
+      updateDeposits(trxRef);
+      return;
+    } else {
+      console.log("we got some record");
+      return;
+    }
+  } else {
+    return;
   }
 };

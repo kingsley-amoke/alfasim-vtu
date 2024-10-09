@@ -12,6 +12,7 @@ import { MdMoney, MdOutline4GPlusMobiledata } from "react-icons/md";
 import Link from "next/link";
 
 import {
+  fetchLastTransaction,
   fetchUserAccount,
   getCustomerAccount,
   postUserAccounts,
@@ -108,7 +109,7 @@ const Dashboard = ({ count, user }: { count: number; user: any }) => {
 
   useEffect(() => {
     getAccounts();
-    console.log(user?.last_name);
+    user?.username && fetchLastTransaction(user?.username);
   }, [user?.username]);
   return (
     <div className="mt-20 md:mt-0">
