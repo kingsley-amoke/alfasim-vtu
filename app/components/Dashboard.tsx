@@ -137,7 +137,7 @@ const Dashboard = ({ count, user }: { count: number; user: any }) => {
           <p className="mt-10">{`Referral link: alfasimdata.com.ng/register?referral=${user?.username}`}</p>
         </div>
         <div className="flex flex-col md:flex-row gap-5">
-          {user?.last_name && (
+          {user?.last_name && userAccounts?.length < 1 && (
             <Button className="border border-white" onClick={requestAccount}>
               {loading ? "Requesting" : "Request Account"}
             </Button>
