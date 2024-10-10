@@ -4,9 +4,8 @@ import { FaFacebook } from "react-icons/fa";
 import { LiaLinkedin } from "react-icons/lia";
 import Link from "next/link";
 
-
 const Footer = () => {
-	return (
+  return (
     <footer className="w-full ">
       <div className="w-full flex flex-col md:flex-row justify-evenly my-10 mx-2 md:ml-auto">
         <div className="w-full md:w-1/3 mx-2">
@@ -96,7 +95,7 @@ const Footer = () => {
       >
         <p>
           Copyright &copy; Designed and Developed by
-          <a href="https://kinsleyamoke.netlify.app"> Smoq Dev</a>
+          <a href="https://kinsleyamoke.com.ng"> Smoq Dev</a>
         </p>
       </div>
     </footer>
