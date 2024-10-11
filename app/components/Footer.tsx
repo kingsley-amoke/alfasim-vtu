@@ -46,7 +46,7 @@ const Footer = () => {
               <a href="#pricing">Pricing</a>
             </li>
             <li>
-              <a href="/login">Login</a>
+              <a href="/terms">Terms & Policy</a>
             </li>
           </ul>
         </div>

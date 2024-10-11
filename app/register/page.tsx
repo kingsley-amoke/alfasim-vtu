@@ -7,11 +7,7 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { setReference } from "@/lib/data";
 
-const page = async() => {
-
-  const response = await setReference('rfwyueyuy3')
-  console.log(response?.data !== null)
-
+const page = async () => {
   return (
     <>
       <Navbar />

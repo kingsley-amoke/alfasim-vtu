@@ -20,4 +20,4 @@ export const loggedInPaths = [
   "/admin",
 ];
 
-export const loggedOutPaths = ["/login", "/register", "/"];
+export const loggedOutPaths = ["/login", "/register", "/", "/terms"];
