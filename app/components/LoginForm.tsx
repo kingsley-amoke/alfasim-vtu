@@ -23,6 +23,7 @@ import { Checkbox } from "@/lib/ui/checkbox";
 import Link from "next/link";
 import { serverClient } from "@/lib/serverConnection";
 import { isDynamicServerError } from "next/dist/client/components/hooks-server-context";
+import { BsEye, BsEyeFill } from "react-icons/bs";
 
 const formSchema = z.object({
   email: z.string().email(),
@@ -34,6 +35,8 @@ const LoginForm = () => {
 
   const [issubmitting, setIsSubmitting] = useState(false);
   const [email, setEmail] = useState("");
+
+  const [show, setShow] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -102,20 +105,31 @@ const LoginForm = () => {
           )}
           <Label htmlFor="password">Password</Label>
           <Input
-            type="password"
+            type={show ? "text" : "password"}
             id="password"
-            className="px-2"
+            className="px-2 relative"
             placeholder="******"
             {...form.register("password")}
           />
-          <div className="flex items-center space-x-2">
-            <Checkbox id="terms" checked />
-            <label
-              htmlFor="terms"
-              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-            >
-              Remember me?
-            </label>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-2">
+              <Checkbox id="terms" onCheckedChange={() => setShow(!show)} />
+              <label
+                htmlFor="terms"
+                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+              >
+                Show Password?
+              </label>
+            </div>
+            <div className="flex items-center space-x-2">
+              <Checkbox id="terms" checked />
+              <label
+                htmlFor="terms"
+                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+              >
+                Remember me?
+              </label>
+            </div>
           </div>
 
           <Button
