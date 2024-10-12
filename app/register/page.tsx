@@ -5,7 +5,6 @@ import LoginForm from "../components/LoginForm";
 import SignupForm from "../components/SignupForm";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import { setReference } from "@/lib/data";
 
 const page = async () => {
   return (
