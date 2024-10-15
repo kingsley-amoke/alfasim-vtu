@@ -939,7 +939,7 @@ export const fetchLastTransaction = async (reference: string) => {
     const trxRef = data.responseBody.content[0].transactionReference;
     const res = await fetchDeposit(trxRef);
     if (!res || res?.length < 1) {
-      recharge(`${reference}@gmail.com`, amount);
+      recharge(`${reference}@gmail.com`, (parseInt(amount) - 50).toString());
       updateDeposits(trxRef);
       return;
     } else {
