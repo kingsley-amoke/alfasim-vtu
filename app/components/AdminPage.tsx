@@ -1,11 +1,6 @@
-
 "use client";
 
-import {
-  fetchAllUsers,
-  fetchNotifications,
-  getLoggedUser,
-} from "@/lib/data";
+import { fetchAllUsers, fetchNotifications, getLoggedUser } from "@/lib/data";
 import { userDataTypes } from "@/lib/types";
 import React, { Suspense, useEffect, useState } from "react";
 import Navbar from "./Navbar";
@@ -20,27 +15,25 @@ import { useUserStore } from "@/lib/store";
 
 const AdminPage = () => {
   const searchParams = useSearchParams();
-  
+
   const query = searchParams.get("query") || "";
   const currentPage = searchParams.get("page") || "1";
-  const per_page = searchParams.get("per_page") || "7"
-  
-  
+  const per_page = searchParams.get("per_page") || "15";
+
   const [unreadNotification, setUnreadNotification] = useState<number>(0);
   const [user, setUser] = useState<userDataTypes>({
-    email: '',
+    email: "",
     username: "",
     balance: "",
-    referee:'',
+    referee: "",
     is_admin: true,
-  })
-  const [users, setUsers] = useState<userDataTypes[]>([])
-
+  });
+  const [users, setUsers] = useState<userDataTypes[]>([]);
 
   const handleCount = async () => {
     const response = await fetchNotifications();
     const user = await getLoggedUser();
-    const users = await fetchAllUsers()
+    const users = await fetchAllUsers();
 
     let notifications = response!;
 
@@ -65,12 +58,19 @@ const AdminPage = () => {
           <Search placeholder="Search users...." />
         </div>
         <Suspense key={query + currentPage} fallback={<Skeleton />}>
-          <UserList query={query} currentPage={currentPage} per_page={per_page} />
-  <PaginationPage users={users} currentPage={currentPage} per_page={per_page}/>
+          <UserList
+            query={query}
+            currentPage={currentPage}
+            per_page={per_page}
+          />
+          <PaginationPage
+            users={users}
+            currentPage={currentPage}
+            per_page={per_page}
+          />
         </Suspense>
       </div>
 
-    
       <Footer />
     </>
   );

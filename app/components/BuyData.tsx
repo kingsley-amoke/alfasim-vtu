@@ -597,7 +597,7 @@ const BuyData = ({
           ).toString(),
         };
         setLoading(false);
-        deductBalance(data);
+        deductBalance(data.email!, data.newBalance!);
       }
 
       toast.error(response.Status);

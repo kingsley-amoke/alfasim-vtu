@@ -1,6 +1,11 @@
 "use client";
 
-import { buyAirtime, deductBalance, handleBuyAirtime, setTransaction } from "@/lib/data";
+import {
+  buyAirtime,
+  deductBalance,
+  handleBuyAirtime,
+  setTransaction,
+} from "@/lib/data";
 import {
   Plan,
   alertPropsTypes,
@@ -112,7 +117,7 @@ const BuyAirtime = ({ user }: { user: userDataTypes }) => {
 
     if (response.Status === "successful") {
       toast.success("Successfull");
-     
+
       setLoading(false);
 
       //create a transaction
@@ -130,10 +135,9 @@ const BuyAirtime = ({ user }: { user: userDataTypes }) => {
         newBalance: (parseInt(user.balance) - parseInt(amountToPay)).toString(),
       };
 
-      handleBuyAirtime(data).then(() =>{
-
+      handleBuyAirtime(data).then(() => {
         router.push("/dashboard");
-      })
+      });
     } else {
       if (response.Status !== "failed") {
         const data: transactionTypes = {
@@ -146,12 +150,14 @@ const BuyAirtime = ({ user }: { user: userDataTypes }) => {
           network: networkName,
           planSize: amount,
           previousBalance: user.balance,
-          newBalance: (parseInt(user.balance) - parseInt(amountToPay)).toString(),
+          newBalance: (
+            parseInt(user.balance) - parseInt(amountToPay)
+          ).toString(),
         };
         toast.error(response.Status);
         setLoading(false);
 
-        deductBalance(data);
+        deductBalance(data.email!, data.newBalance!);
       }
 
       toast.error(response.Status);

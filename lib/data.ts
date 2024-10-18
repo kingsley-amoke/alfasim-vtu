@@ -106,11 +106,8 @@ export const recharge = async (email: string | undefined, amount: string) => {
 
 //deducts from user balance
 
-export const deductBalance = async (user: transactionTypes) => {
+export const deductBalance = async (email: string, newBalance: string) => {
   try {
-    const newBalance = user.newBalance!;
-    const email = user.email!;
-
     const { data, error } = await serverClient()
       .from("users")
       .update({ balance: newBalance })
@@ -780,7 +777,7 @@ export const handleBuyData = async (
   referee: string,
   referral_bonus: string
 ) => {
-  deductBalance(data);
+  deductBalance(data.email!, data.newBalance!);
 
   handleCommission(data, commission, referee, referral_bonus);
 
@@ -788,7 +785,7 @@ export const handleBuyData = async (
 };
 
 export const handleBuyAirtime = async (data: transactionTypes) => {
-  deductBalance(data);
+  deductBalance(data.email!, data.newBalance!);
 
   setTransaction(data);
 };
