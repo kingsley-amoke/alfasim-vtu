@@ -12,7 +12,9 @@ const page = () => {
         <h2>Automated Method</h2>
         <p>Click the link below to send an automated data deletion request:</p>
         <p>
-          <a href="mailto:alfasimdata@gmail.com">Send Data Deletion Request</a>
+          <a href="mailto:alfasimdata@gmail.com" className="text-teal-500">
+            Send Data Deletion Request
+          </a>
         </p>
         <h2 className="py-10 text-2xl font-semibold">Manual Method</h2>{" "}
         <p>Follow these steps to delete your data manually:</p>
