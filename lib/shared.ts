@@ -21,3 +21,5 @@ export const loggedInPaths = [
 ];
 
 export const loggedOutPaths = ["/login", "/register", "/", "/terms"];
+
+export const adsfile = "/app-ads.txt";

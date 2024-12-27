@@ -1,7 +1,7 @@
 import { createServerClient, type CookieOptions } from "@supabase/ssr";
 import { NextURL } from "next/dist/server/web/next-url";
 import { NextRequest, NextResponse } from "next/server";
-import { loggedOutPaths } from "./lib/shared";
+import { adsfile, loggedOutPaths } from "./lib/shared";
 
 export default async function middleware(request: NextRequest) {
   const { pathname, origin } = request.nextUrl;
@@ -61,6 +61,12 @@ export default async function middleware(request: NextRequest) {
   const {
     data: { user },
   } = await supabase.auth.getUser();
+
+  if (pathname == adsfile) {
+    const adsFileUrl = new NextURL(adsfile, origin);
+
+    return NextResponse.redirect(adsFileUrl);
+  }
 
   if (!user) {
     if (!loggedOutPaths.includes(pathname)) {
