@@ -110,11 +110,12 @@ const ChangePassword = () => {
 const SendResetEmail = () => {
   const [issubmitting, setIsSubmitting] = useState(false);
 
-  const form = useForm<z.infer<typeof formSchema>>({
+  const { register, handleSubmit } = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
 
-  const handleSendEmail = async (values: z.infer<typeof formSchema>) => {
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    console.log("hi");
     setIsSubmitting(true);
     const { email } = values;
     const data = {
@@ -126,9 +127,9 @@ const SendResetEmail = () => {
 
       console.log(response);
     } catch (error) {
-      if(isDynamicServerError(error)){
-        throw error
-    }
+      if (isDynamicServerError(error)) {
+        throw error;
+      }
       console.log(error);
     }
     setIsSubmitting(false);
@@ -141,7 +142,7 @@ const SendResetEmail = () => {
       <Card>
         <CardContent className="space-y-2 pt-10">
           <form
-            onSubmit={form.handleSubmit(handleSendEmail)}
+            onSubmit={handleSubmit(onSubmit)}
             className="flex flex-col h-full w-full justify-center gap-5 p-3 text-black dark:text-white"
           >
             <Label htmlFor="email">Email</Label>
@@ -150,13 +151,13 @@ const SendResetEmail = () => {
               id="email"
               placeholder="example@gmail.com"
               className="px-2"
-              {...form.register("email")}
+              {...register("email")}
             />
 
             <Button
               type="submit"
-              disabled={issubmitting ? true : false}
-              variant={"outline"}
+              disabled={issubmitting}
+              // variant={"outline"}
               className={
                 !issubmitting ? "hover:bg-teal-800 hover:text-white" : ""
               }

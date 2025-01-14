@@ -20,6 +20,12 @@ export const loggedInPaths = [
   "/admin",
 ];
 
-export const loggedOutPaths = ["/login", "/register", "/", "/terms"];
+export const loggedOutPaths = [
+  "/login",
+  "/register",
+  "/",
+  "/terms",
+  "/reset-password",
+];
 
 export const adsfile = "/app-ads.txt";
