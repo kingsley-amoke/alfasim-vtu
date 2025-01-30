@@ -109,7 +109,6 @@ const Dashboard = ({ count, user }: { count: number; user: any }) => {
 
   useEffect(() => {
     getAccounts();
-    user?.username && fetchLastTransaction(user?.username);
   }, [user?.username]);
   return (
     <div className="mt-20 md:mt-0">

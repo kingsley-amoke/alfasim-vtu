@@ -59,21 +59,6 @@ const HomePage = () => {
     setUsers(users);
   };
 
-  // const checkRefs = async () => {
-  //   if (!reference) return
-  //   const refs = await fetchRefs(reference);
-  //   const ref = refs?.map((ref) => {
-  //     if (ref.ref === reference) {
-  //       return true;
-  //     }
-  //     return false;
-  //   });
-
-  //   const refStatus = ref!;
-
-  //   return refStatus[0];
-  // };
-
   const fetchLoggedUser = async () => {
     const data = await getLoggedUser();
 
@@ -88,16 +73,6 @@ const HomePage = () => {
     handleFundWallet(data, reference).then(() => {
       setLoading(false);
     });
-
-    //   const refStatus = await checkRefs();
-
-    //   if (!refStatus) {
-    //     verifyPayment(data, reference);
-
-    //     setLoading(false);
-    //   }
-
-    //   setLoading(false);
   };
 
   const closeDialog = () => {
