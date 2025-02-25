@@ -87,7 +87,7 @@ const BuyData = ({
   const mtnSME = mtnPlans.filter((plan) => plan.plan_type === "SME");
   const alfasimMtnSME: Plan[] = [];
 
-  const unitGBSME = 270;
+  const unitGBSME = 610;
 
   mtnSME.forEach((plan) => {
     const integer = Math.trunc(parseInt(plan.plan.slice(0, -2)));
