@@ -13,6 +13,7 @@ import {
 import {
   buyData,
   deductBalance,
+  getUnitPrice,
   handleBuyData,
   handleCommission,
   setTransaction,
@@ -87,7 +88,10 @@ const BuyData = ({
   const mtnSME = mtnPlans.filter((plan) => plan.plan_type === "SME");
   const alfasimMtnSME: Plan[] = [];
 
-  const unitGBSME = 610;
+  // const unitGBSME: number =
+  //   parseInt(mtnSME.find((sme) => sme.id == 7)!.plan_amount) + 10;
+
+  const unitGBSME: number = getUnitPrice(mtnSME, 7);
 
   mtnSME.forEach((plan) => {
     const integer = Math.trunc(parseInt(plan.plan.slice(0, -2)));
@@ -109,7 +113,7 @@ const BuyData = ({
   const mtnSME2 = mtnPlans.filter((plan) => plan.plan_type === "SME2");
   const alfasimMtnSME2: Plan[] = [];
 
-  const unitGBSME2 = 265;
+  const unitGBSME2: number = getUnitPrice(mtnSME, 7);
 
   mtnSME2.forEach((plan) => {
     const integer = Math.trunc(parseInt(plan.plan.slice(0, -2)));
@@ -269,7 +273,7 @@ const BuyData = ({
 
   const alfasimGloCorporateGifting: Plan[] = [];
 
-  const unitGBGloCorporateGifting = 275;
+  const unitGBGloCorporateGifting = getUnitPrice(gloCorporateGifting, 239);
 
   gloCorporateGifting.forEach((plan) => {
     const integer = Math.trunc(parseInt(plan.plan.slice(0, -2)));
