@@ -13,7 +13,6 @@ import {
 import {
   buyData,
   deductBalance,
-  getUnitPrice,
   handleBuyData,
   handleCommission,
   setTransaction,
@@ -34,6 +33,7 @@ import {
 } from "@/lib/ui/alert-dialog";
 import { Button } from "@/lib/ui/button";
 import { LoadingSkeleton } from "./Skeleton";
+import { getUnitPrice } from "@/lib/client_methods";
 
 const BuyData = ({
   plans,
