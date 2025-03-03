@@ -357,7 +357,7 @@ const BuyData = ({
   });
 
   //airtel plans by type
-
+/*
   const airtelGifting = airtelPlans.filter(
     (plan) => plan.plan_type === "GIFTING"
   );
@@ -388,7 +388,7 @@ const BuyData = ({
       plan: plan.plan,
       plan_amount: amount,
     });
-  });
+  });*/
 
   const airtelCorporateGifting = airtelPlans.filter(
     (plan) => plan.plan_type === "CORPORATE GIFTING"
@@ -396,7 +396,7 @@ const BuyData = ({
 
   const alfasimAirtelCorporateGifting: Plan[] = [];
 
-  const unitGBAirtelCoporateGifting = 560;
+  const unitGBAirtelCoporateGifting = getUnitPrice(airtelCorporateGifting, 311);;
 
   airtelCorporateGifting.forEach((plan) => {
     const integer = Math.trunc(parseInt(plan.plan.slice(0, -2)));
