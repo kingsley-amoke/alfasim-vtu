@@ -639,7 +639,7 @@ export const getDataPlans = async () => {
 
 export const buyData = async (data: dataBodyType) => {
   const response = await axios.post(`${serverUrl}/data/buy`, data);
-  console.log(response);
+  return response.data;
 };
 
 //buy airtime

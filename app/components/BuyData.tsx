@@ -323,7 +323,14 @@ const BuyData = ({
     setLoading(true);
     buyData(dataInfo)
       .then((data) => {
-        console.log("result" + data);
+        if (data.data) {
+          toast.success("Successful");
+          console.log("result" + data);
+        } else if (data.error) {
+          toast.error("Something went wrong");
+        } else {
+          toast.error("Insufficient balance");
+        }
       })
       .finally(() => setLoading(false));
 
