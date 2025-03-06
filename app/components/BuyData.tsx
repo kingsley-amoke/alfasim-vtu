@@ -5,6 +5,7 @@ import React, { FormEvent, useEffect, useRef, useState } from "react";
 import {
   Plan,
   PlanType,
+  dataBodyType,
   dataPlanTypes,
   planTypes,
   transactionTypes,
@@ -357,7 +358,7 @@ const BuyData = ({
   });
 
   //airtel plans by type
-/*
+  /*
   const airtelGifting = airtelPlans.filter(
     (plan) => plan.plan_type === "GIFTING"
   );
@@ -396,7 +397,7 @@ const BuyData = ({
 
   const alfasimAirtelCorporateGifting: Plan[] = [];
 
-  const unitGBAirtelCoporateGifting = getUnitPrice(airtelCorporateGifting, 311);;
+  const unitGBAirtelCoporateGifting = getUnitPrice(airtelCorporateGifting, 311);
 
   airtelCorporateGifting.forEach((plan) => {
     const integer = Math.trunc(parseInt(plan.plan.slice(0, -2)));
@@ -463,9 +464,6 @@ const BuyData = ({
           case "etisalat":
             setDataPlan(alfasimEtisalatGifting);
             break;
-          case "Airtel":
-            setDataPlan(alfasimAirtelGifting);
-            break;
         }
         break;
       case "CORPORATE GIFTING":
@@ -512,121 +510,121 @@ const BuyData = ({
       return;
     }
 
-    const integer = Math.trunc(parseInt(selectedPlan?.plan.slice(0, -2)));
+    // const integer = Math.trunc(parseInt(selectedPlan?.plan.slice(0, -2)));
 
-    const commission = selectedPlan?.plan.slice(-2) === "MB" ? 0 : integer * 1;
+    // const commission = selectedPlan?.plan.slice(-2) === "MB" ? 0 : integer * 1;
 
-    const dataInfo = {
+    const dataInfo: dataBodyType = {
       network: selectedPlan?.network.toString()!,
       plan: selectedPlan?.id.toString()!,
       mobile_number: phone,
-      Ported_number: true,
+      price: parseInt(selectedPlan?.plan_amount),
+      email: user.email,
     };
-    setLoading(true);
 
-    const response = await buyData(dataInfo);
+    buyData(dataInfo);
 
-    if (response.error) {
-      const data: transactionTypes = {
-        email: user?.email,
-        amount: selectedPlan?.plan_amount,
-        purpose: "data",
-        status: "failed",
-        transactionId: "failed",
-        phone: phone,
-        network: currentNetwork,
-        planSize: selectedPlan.plan,
-        previousBalance: user.balance,
-        newBalance: user.balance,
-      };
+    // if (response.error) {
+    //   const data: transactionTypes = {
+    //     email: user?.email,
+    //     amount: selectedPlan?.plan_amount,
+    //     purpose: "data",
+    //     status: "failed",
+    //     transactionId: "failed",
+    //     phone: phone,
+    //     network: currentNetwork,
+    //     planSize: selectedPlan.plan,
+    //     previousBalance: user.balance,
+    //     newBalance: user.balance,
+    //   };
 
-      setTransaction(data);
-      toast.error("Network error, Try again later");
-      setLoading(false);
-      return;
-    }
+    //   setTransaction(data);
+    //   toast.error("Network error, Try again later");
+    //   setLoading(false);
+    //   return;
+    // }
 
-    if (response.Status === "successful") {
-      toast.success("Successfull");
+    // if (response.Status === "successful") {
+    //   toast.success("Successfull");
 
-      setLoading(false);
+    //   setLoading(false);
 
-      //create a transaction
+    //   //create a transaction
 
-      const data: transactionTypes = {
-        email: user?.email,
-        amount: selectedPlan?.plan_amount,
-        purpose: "data",
-        status: response.Status,
-        transactionId: response.ident,
-        phone: phone,
-        network: currentNetwork,
-        planSize: selectedPlan.plan,
-        previousBalance: user.balance,
-        newBalance: (
-          parseInt(user.balance) - parseInt(selectedPlan?.plan_amount)
-        ).toString(),
-      };
+    //   const data: transactionTypes = {
+    //     email: user?.email,
+    //     amount: selectedPlan?.plan_amount,
+    //     purpose: "data",
+    //     status: response.Status,
+    //     transactionId: response.ident,
+    //     phone: phone,
+    //     network: currentNetwork,
+    //     planSize: selectedPlan.plan,
+    //     previousBalance: user.balance,
+    //     newBalance: (
+    //       parseInt(user.balance) - parseInt(selectedPlan?.plan_amount)
+    //     ).toString(),
+    //   };
 
-      handleBuyData(
-        data,
-        commission,
-        user?.referee,
-        user?.referral_bonus!
-      ).then(() => {
-        router.push("/dashboard");
-      });
+    // handleBuyData(
+    //   data,
+    //   commission,
+    //   user?.referee,
+    //   user?.referral_bonus!
+    // ).then(() => {
+    //   router.push("/dashboard");
+    // });
 
-      // setTransaction(data);
+    // setTransaction(data);
 
-      // deductBalance(data.email, data.amount);
+    // deductBalance(data.email, data.amount);
 
-      // handleCommission(data.email, commission);
-    } else {
-      if (response.Status !== "failed") {
-        toast.error(response.Status);
+    // handleCommission(data.email, commission);
+    // } else {
+    //   if (response.Status !== "failed") {
+    //     toast.error(response.Status);
 
-        const data: transactionTypes = {
-          email: user?.email,
-          amount: selectedPlan?.plan_amount,
-          purpose: "data",
-          status: response.Status,
-          transactionId: response.ident,
-          phone: phone,
-          network: currentNetwork,
-          planSize: selectedPlan.plan,
-          previousBalance: user.balance,
-          newBalance: (
-            parseInt(user.balance) - parseInt(selectedPlan?.plan_amount)
-          ).toString(),
-        };
-        setLoading(false);
-        deductBalance(data.email!, data.newBalance!);
-      }
+    //     const data: transactionTypes = {
+    //       email: user?.email,
+    //       amount: selectedPlan?.plan_amount,
+    //       purpose: "data",
+    //       status: response.Status,
+    //       transactionId: response.ident,
+    //       phone: phone,
+    //       network: currentNetwork,
+    //       planSize: selectedPlan.plan,
+    //       previousBalance: user.balance,
+    //       newBalance: (
+    //         parseInt(user.balance) - parseInt(selectedPlan?.plan_amount)
+    //       ).toString(),
+    //     };
+    //     setLoading(false);
+    //     deductBalance(data.email!, data.newBalance!);
+    //   }
 
-      toast.error(response.Status);
-      setLoading(false);
+    //   toast.error(response.Status);
+    //   setLoading(false);
 
-      const data: transactionTypes = {
-        email: user?.email,
-        amount: selectedPlan?.plan_amount,
-        purpose: "data",
-        status: response.Status,
-        transactionId: response.ident,
-        phone: phone,
-        network: currentNetwork,
-        planSize: selectedPlan.plan,
-        previousBalance: user.balance,
-        newBalance:
-          response.Status === "failed"
-            ? user.balance
-            : (
-                parseInt(user.balance) - parseInt(selectedPlan?.plan_amount)
-              ).toString(),
-      };
+    //   const data: transactionTypes = {
+    //     email: user?.email,
+    //     amount: selectedPlan?.plan_amount,
+    //     purpose: "data",
+    //     status: response.Status,
+    //     transactionId: response.ident,
+    //     phone: phone,
+    //     network: currentNetwork,
+    //     planSize: selectedPlan.plan,
+    //     previousBalance: user.balance,
+    //     newBalance:
+    //       response.Status === "failed"
+    //         ? user.balance
+    //         : (
+    //             parseInt(user.balance) - parseInt(selectedPlan?.plan_amount)
+    //           ).toString(),
+    //   };
 
-      setTransaction(data);
-    }
+    //   setTransaction(data);
+    // }
   };
 
   return (

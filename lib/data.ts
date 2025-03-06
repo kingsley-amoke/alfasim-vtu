@@ -9,6 +9,8 @@ import {
   PaystackParams,
   Plan,
   VerifyParams,
+  airtimeBodyType,
+  dataBodyType,
   notificationTypes,
   refsTypes,
   transactionTypes,
@@ -21,6 +23,8 @@ import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.share
 const monnifyUrl = process.env.NEXT_PUBLIC_MONNIFY_BASEURL as string;
 
 const monnifyApiKey = process.env.NEXT_PUBLIC_MONNIFY_APIKEY as string;
+
+const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL as string;
 
 const monnifySecretKey = process.env.NEXT_PUBLIC_MONNIFY_SECRETKEY as string;
 const monnifyEncodedKey = btoa(monnifyApiKey + ":" + monnifySecretKey);
@@ -646,77 +650,33 @@ export const getDataPlans = async () => {
 
 //buy data
 
-export const buyData = async (data: {
-  network: string;
-  plan: string;
-  mobile_number: string;
-  Ported_number: boolean;
-}) => {
-  const input = {
-    network: data.network,
-    mobile_number: data.mobile_number,
-    plan: data.plan,
-    Ported_number: true,
-  };
-
-  let response = await fetch(`${asbUrl}/data/`, {
-    method: "POST",
-    headers: getASBHeaders(),
-    body: JSON.stringify(input),
-  })
-    .then((response) => {
-      if (!response.ok) {
-        // throw new Error("Network response was not ok");
-        console.log(response);
-      }
-      return response.json();
-    })
-    .then((data) => {
-      return data;
-    })
-    .catch((error) => {
-      if (isDynamicServerError(error)) {
-        throw error;
-      }
-      console.error("There was a problem with your fetch operation:", error);
-    });
-
-  return response;
+export const buyData = async (data: dataBodyType) => {
+  axios.post(`${serverUrl}/data/buy`, JSON.stringify(data));
 };
 
 //buy airtime
 
-export const buyAirtime = async (data: {
-  network: string;
-  amount: string;
-  mobile_number: string;
-  Ported_number: boolean;
-  airtime_type: string;
-}) => {
-  const response = await fetch(`${asbUrl}/topup/`, {
-    method: "POST",
-    headers: getASBHeaders(),
-    body: JSON.stringify(data),
-  })
-    .then((response) => {
-      if (!response.ok) {
-        // throw new Error("Network response was not ok");
-      }
+export const buyAirtime = async (data: airtimeBodyType) => {
+  axios.post(`${serverUrl}/airtime/buy`, JSON.stringify(data));
+  //   .then((response) => {
+  //     if (!response.ok) {
+  //       // throw new Error("Network response was not ok");
+  //     }
 
-      return response.json();
-    })
-    .then((data) => {
-      // console.log(data.error)
-      return data;
-    })
-    .catch((error) => {
-      if (isDynamicServerError(error)) {
-        throw error;
-      }
-      console.error("There was a problem with your fetch operation:", error);
-    });
+  //     return response.json();
+  //   })
+  //   .then((data) => {
+  //     // console.log(data.error)
+  //     return data;
+  //   })
+  //   .catch((error) => {
+  //     if (isDynamicServerError(error)) {
+  //       throw error;
+  //     }
+  //     console.error("There was a problem with your fetch operation:", error);
+  //   });
 
-  return response;
+  // return response;
 };
 
 export const verifyPayment = async (user: userDataTypes, reference: string) => {

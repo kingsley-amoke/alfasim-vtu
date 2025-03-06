@@ -1,6 +1,22 @@
 import React, { ButtonHTMLAttributes, ReactNode } from "react";
 import { IconType } from "react-icons";
 
+export interface dataBodyType {
+  network: string;
+  mobile_number: string;
+  plan: string;
+  price: number;
+  email: string;
+}
+
+export interface airtimeBodyType {
+  network: string;
+  amount: string;
+  mobile_number: string;
+  price: number;
+  email: string;
+}
+
 export interface buttonTypes extends ButtonHTMLAttributes<HTMLButtonElement> {
   links?: string;
   children?: ReactNode;
