@@ -397,7 +397,7 @@ const BuyData = ({
 
   const alfasimAirtelCorporateGifting: Plan[] = [];
 
-  const unitGBAirtelCoporateGifting = getUnitPrice(airtelCorporateGifting, 311);
+  const unitGBAirtelCoporateGifting = getUnitPrice(airtelCorporateGifting, 227);
 
   airtelCorporateGifting.forEach((plan) => {
     const integer = Math.trunc(parseInt(plan.plan.slice(0, -2)));
