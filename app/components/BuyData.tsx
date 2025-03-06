@@ -89,9 +89,6 @@ const BuyData = ({
   const mtnSME = mtnPlans.filter((plan) => plan.plan_type === "SME");
   const alfasimMtnSME: Plan[] = [];
 
-  // const unitGBSME: number =
-  //   parseInt(mtnSME.find((sme) => sme.id == 7)!.plan_amount) + 10;
-
   const unitGBSME: number = getUnitPrice(mtnSME, 7);
 
   mtnSME.forEach((plan) => {
@@ -111,34 +108,12 @@ const BuyData = ({
           : (integer * unitGBSME).toString(),
     });
   });
-  const mtnSME2 = mtnPlans.filter((plan) => plan.plan_type === "SME2");
-  const alfasimMtnSME2: Plan[] = [];
-
-  const unitGBSME2: number = getUnitPrice(mtnSME, 7);
-
-  mtnSME2.forEach((plan) => {
-    const integer = Math.trunc(parseInt(plan.plan.slice(0, -2)));
-
-    alfasimMtnSME2.push({
-      id: plan.id,
-      dataplan_id: plan.dataplan_id,
-      network: plan.network,
-      plan_type: plan.plan_type,
-      plan_network: plan.plan_network,
-      month_validate: plan.month_validate,
-      plan: plan.plan,
-      plan_amount:
-        plan.plan.slice(-2) === "MB"
-          ? (parseInt(plan.plan_amount) + 5).toString()
-          : (integer * unitGBSME2).toString(),
-    });
-  });
 
   const mtnGifting = mtnPlans.filter((plan) => plan.plan_type === "GIFTING");
 
   const alfasimMtnGifting: Plan[] = [];
 
-  const unitGBGifting = 260;
+  const unitGBGifting = getUnitPrice(mtnGifting, 209);
 
   mtnGifting.forEach((plan) => {
     const integer = Math.trunc(parseInt(plan.plan.slice(0, -2)));
@@ -164,109 +139,11 @@ const BuyData = ({
     });
   });
 
-  const mtnCorporateGifting = mtnPlans.filter(
-    (plan) => plan.plan_type === "CORPORATE GIFTING"
-  );
-
-  const alfasimMtnCorporateGifting: Plan[] = [];
-
-  const unitGBCorporateGifting = 270;
-
-  mtnCorporateGifting.forEach((plan) => {
-    const integer = Math.trunc(parseInt(plan.plan.slice(0, -2)));
-
-    alfasimMtnCorporateGifting.push({
-      id: plan.id,
-      dataplan_id: plan.dataplan_id,
-      network: plan.network,
-      plan_type: plan.plan_type,
-      plan_network: plan.plan_network,
-      month_validate: plan.month_validate,
-      plan: plan.plan,
-      plan_amount:
-        plan.plan.slice(-2) === "MB"
-          ? (parseInt(plan.plan_amount) + 5).toString()
-          : (integer * unitGBCorporateGifting).toString(),
-    });
-  });
-
-  // const mtnCorporateGifting2 = mtnPlans.filter(
-  //   (plan) => plan.plan_type === "CORPORATE GIFTING2"
-  // );
-
-  // const alfasimMtnCorporateGifting2: Plan[] = [];
-
-  // const unitGBCorporateGifting2 = 265 + 5;
-
-  // mtnCorporateGifting2.forEach((plan) => {
-  //   const integer = Math.trunc(parseInt(plan.plan.slice(0, -2)));
-
-  //   alfasimMtnCorporateGifting2.push({
-  //     id: plan.id,
-  //     dataplan_id: plan.dataplan_id,
-  //     network: plan.network,
-  //     plan_type: plan.plan_type,
-  //     plan_network: plan.plan_network,
-  //     month_validate: plan.month_validate,
-  //     plan: plan.plan,
-  //     plan_amount:
-  //       plan.plan.slice(-2) === "MB"
-  //         ? (parseInt(plan.plan_amount) + 5).toString()
-  //         : (integer * unitGBCorporateGifting2).toString(),
-  //   });
-  // });
-
-  // const mtnDataCoupons = mtnPlans.filter(
-  //   (plan) => plan.plan_type === "DATA COUPONS"
-  // );
-
-  // const alfasimMtnDataCoupons: Plan[] = [];
-
-  // const unitGBDataCoupons = 245 + 5;
-
-  // mtnDataCoupons.forEach((plan) => {
-  //   const integer = Math.trunc(parseInt(plan.plan.slice(0, -2)));
-
-  //   alfasimMtnDataCoupons.push({
-  //     id: plan.id,
-  //     dataplan_id: plan.dataplan_id,
-  //     network: plan.network,
-  //     plan_type: plan.plan_type,
-  //     plan_network: plan.plan_network,
-  //     month_validate: plan.month_validate,
-  //     plan: plan.plan,
-  //     plan_amount:
-  //       plan.plan.slice(-2) === "MB"
-  //         ? (parseInt(plan.plan_amount) + 5).toString()
-  //         : (integer * unitGBDataCoupons).toString(),
-  //   });
-  // });
-
   //glo plans by type
 
   const gloGifting = gloPlans.filter((plan) => plan.plan_type === "GIFTING");
 
   const alfasimGloGifting: Plan[] = gloGifting;
-
-  // const unitGBGloGifting = 180 + 10;
-
-  // gloGifting.forEach((plan) => {
-  //   const integer = Math.trunc(parseInt(plan.plan.slice(0, -2)));
-
-  //   alfasimGloGifting.push({
-  //     id: plan.id,
-  //     dataplan_id: plan.dataplan_id,
-  //     network: plan.network,
-  //     plan_type: plan.plan_type,
-  //     plan_network: plan.plan_network,
-  //     month_validate: plan.month_validate,
-  //     plan: plan.plan,
-  //     plan_amount:
-  //       plan.plan.slice(-2) === "MB"
-  //         ? (parseInt(plan.plan_amount) + 5).toString()
-  //         : (integer * unitGBGloGifting).toString(),
-  //   });
-  // });
 
   const gloCorporateGifting = gloPlans.filter(
     (plan) => plan.plan_type === "CORPORATE GIFTING"
@@ -296,39 +173,16 @@ const BuyData = ({
 
   //etisalat plans by type
 
-  const etisalatGifting = etisalatPlans.filter(
-    (plan) => plan.plan_type === "GIFTING"
-  );
-
-  const alfasimEtisalatGifting: Plan[] = [];
-
-  const unitGBEtisalatGifting = 225 + 10;
-
-  etisalatGifting.forEach((plan) => {
-    const integer = Math.trunc(parseInt(plan.plan.slice(0, -2)));
-
-    alfasimEtisalatGifting.push({
-      id: plan.id,
-      dataplan_id: plan.dataplan_id,
-      network: plan.network,
-      plan_type: plan.plan_type,
-      plan_network: plan.plan_network,
-      month_validate: plan.month_validate,
-      plan: plan.plan,
-      plan_amount:
-        plan.plan.slice(-2) === "MB"
-          ? (parseInt(plan.plan_amount) + 5).toString()
-          : (integer * unitGBEtisalatGifting).toString(),
-    });
-  });
-
   const etisalatCorporateGifting = etisalatPlans.filter(
     (plan) => plan.plan_type === "CORPORATE GIFTING"
   );
 
   const alfasimEtisalatCorporateGifting: Plan[] = [];
 
-  const unitGBEtisalatCorporateGifting = 145 + 10;
+  const unitGBEtisalatCorporateGifting = getUnitPrice(
+    etisalatCorporateGifting,
+    242
+  );
 
   etisalatCorporateGifting.forEach((plan) => {
     const integer = Math.trunc(parseInt(plan.plan.slice(0, -2)));
@@ -357,40 +211,7 @@ const BuyData = ({
     });
   });
 
-  //airtel plans by type
-  /*
-  const airtelGifting = airtelPlans.filter(
-    (plan) => plan.plan_type === "GIFTING"
-  );
-
-  const alfasimAirtelGifting: Plan[] = [];
-
-  const unitGBAirtelGifting = 240;
-
-  airtelGifting.forEach((plan) => {
-    const integer = Math.trunc(parseInt(plan.plan.slice(0, -2)));
-
-    const decimalPart = plan.plan.split(".")[1][0];
-
-    const amount =
-      plan.plan.slice(-2) === "MB"
-        ? (parseInt(plan.plan_amount) + 5).toString()
-        : decimalPart === "5"
-        ? (integer * unitGBAirtelGifting + unitGBAirtelGifting / 2).toString()
-        : (integer * unitGBAirtelGifting).toString();
-
-    alfasimAirtelGifting.push({
-      id: plan.id,
-      dataplan_id: plan.dataplan_id,
-      network: plan.network,
-      plan_type: plan.plan_type,
-      plan_network: plan.plan_network,
-      month_validate: plan.month_validate,
-      plan: plan.plan,
-      plan_amount: amount,
-    });
-  });*/
-
+  //airtel plans
   const airtelCorporateGifting = airtelPlans.filter(
     (plan) => plan.plan_type === "CORPORATE GIFTING"
   );
@@ -450,9 +271,6 @@ const BuyData = ({
       case "SME":
         setDataPlan(alfasimMtnSME);
         break;
-      case "SME2":
-        setDataPlan(alfasimMtnSME2);
-        break;
       case "GIFTING":
         switch (currentNetwork) {
           case "MTN":
@@ -461,16 +279,10 @@ const BuyData = ({
           case "Glo":
             setDataPlan(alfasimGloGifting);
             break;
-          case "etisalat":
-            setDataPlan(alfasimEtisalatGifting);
-            break;
         }
         break;
       case "CORPORATE GIFTING":
         switch (currentNetwork) {
-          case "MTN":
-            setDataPlan(alfasimMtnCorporateGifting);
-            break;
           case "Glo":
             setDataPlan(alfasimGloCorporateGifting);
             break;
@@ -482,16 +294,6 @@ const BuyData = ({
             break;
         }
         break;
-      // case "CORPORATE GIFTING2":
-      //   switch (currentNetwork) {
-      //     case "MTN":
-      //       setDataPlan(alfasimMtnCorporateGifting2);
-      //       break;
-      //   }
-      //   break;
-      // case "DATA COUPONS":
-      //   setDataPlan(alfasimMtnDataCoupons);
-      //   break;
     }
   };
 
@@ -510,10 +312,6 @@ const BuyData = ({
       return;
     }
 
-    // const integer = Math.trunc(parseInt(selectedPlan?.plan.slice(0, -2)));
-
-    // const commission = selectedPlan?.plan.slice(-2) === "MB" ? 0 : integer * 1;
-
     const dataInfo: dataBodyType = {
       network: selectedPlan?.network.toString()!,
       plan: selectedPlan?.id.toString()!,
@@ -522,7 +320,12 @@ const BuyData = ({
       email: user.email,
     };
 
-    buyData(dataInfo);
+    setLoading(true);
+    buyData(dataInfo)
+      .then((data) => {
+        console.log("result" + data);
+      })
+      .finally(() => setLoading(false));
 
     // if (response.error) {
     //   const data: transactionTypes = {

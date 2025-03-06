@@ -7,18 +7,13 @@ import {
   AccountType,
   DBTransactionTypes,
   PaystackParams,
-  Plan,
-  VerifyParams,
   airtimeBodyType,
   dataBodyType,
   notificationTypes,
-  refsTypes,
   transactionTypes,
   userDataTypes,
 } from "./types";
-import { headers } from "next/headers";
 import { isDynamicServerError } from "next/dist/client/components/hooks-server-context";
-import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
 const monnifyUrl = process.env.NEXT_PUBLIC_MONNIFY_BASEURL as string;
 
@@ -187,14 +182,6 @@ export const handleCommission = async (
   referral_bonus: string
 ) => {
   try {
-    // const userData = await fetchUser(email);
-
-    // const { referee } = userData![0];
-
-    // const refereeData = await fetchUser(referee)
-
-    // const {referral_bonus} = refereeData![0]
-
     let newBonus = parseInt(referral_bonus) + commission;
 
     serverClient()
@@ -651,32 +638,15 @@ export const getDataPlans = async () => {
 //buy data
 
 export const buyData = async (data: dataBodyType) => {
-  axios.post(`${serverUrl}/data/buy`, JSON.stringify(data));
+  const response = await axios.post(`${serverUrl}/data/buy`, data);
+  console.log(response);
 };
 
 //buy airtime
 
 export const buyAirtime = async (data: airtimeBodyType) => {
-  axios.post(`${serverUrl}/airtime/buy`, JSON.stringify(data));
-  //   .then((response) => {
-  //     if (!response.ok) {
-  //       // throw new Error("Network response was not ok");
-  //     }
-
-  //     return response.json();
-  //   })
-  //   .then((data) => {
-  //     // console.log(data.error)
-  //     return data;
-  //   })
-  //   .catch((error) => {
-  //     if (isDynamicServerError(error)) {
-  //       throw error;
-  //     }
-  //     console.error("There was a problem with your fetch operation:", error);
-  //   });
-
-  // return response;
+  const response = await axios.post(`${serverUrl}/airtime/buy`, data);
+  return response;
 };
 
 export const verifyPayment = async (user: userDataTypes, reference: string) => {

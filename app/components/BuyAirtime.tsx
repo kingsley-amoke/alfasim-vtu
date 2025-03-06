@@ -74,7 +74,10 @@ const BuyAirtime = ({ user }: { user: userDataTypes }) => {
       email: user.email,
     };
 
-    buyAirtime(airtimeInfo);
+    setLoading(true);
+    buyAirtime(airtimeInfo)
+      .then((data) => console.log("data" + data))
+      .finally(() => setLoading(false));
 
     // let networkName = "";
 
