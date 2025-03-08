@@ -4,24 +4,20 @@ import React from "react";
 import Button from "./Button";
 import { useRouter, usePathname } from "next/navigation";
 import { BiExit } from "react-icons/bi";
-import Link from "next/link";
 import axios from "axios";
 import toast from "react-hot-toast";
 
 import { loggedInPaths } from "@/lib/shared";
-import Image from "next/image";
 import Notification from "./Notification";
 import { ToggleTheme } from "./ToggleTheme";
 import DrawerWrapper from "./DrawerWrapper";
 import { userDataTypes } from "@/lib/types";
-import { useUserStore } from "@/lib/store";
 
-const Navbar = ({user, count }: { count?: number; user?: userDataTypes }) => {
+const Navbar = ({ user, count }: { count?: number; user?: userDataTypes }) => {
   const path = usePathname();
   const router = useRouter();
 
   const handleLogout = async () => {
-
     await axios.get("/api/auth/logout");
 
     router.push("/");
@@ -35,27 +31,27 @@ const Navbar = ({user, count }: { count?: number; user?: userDataTypes }) => {
   return (
     <nav className="flex justify-between items-center py-5 px-5 mb-20 md:mb-0 md:px-10 w-full z-10 md:dark:bg-slate-950 fixed top-0 md:relative  md:top-auto dark:bg-black bg-white">
       {loggedInPaths.includes(path) && <DrawerWrapper user={user} />}
-      
+
       {path == "/" && (
         <>
-          <div className="md:hidden flex-1 w-full text-center text-xl font-bold">ALFASIM TELECOM</div>
-        <div className=" hidden w-full md:flex gap-32 justify-between items-center">
-         
-         
-          <div className="flex">
-            <ul className="flex gap-10">
-              <li className="hover:text-teal-800">
-                <a href="#services">Our Services</a>
-              </li>
-              <li className="hover:text-teal-800">
-                <a href="#pricing">Pricing</a>
-              </li>
-              <li className="hover:text-teal-800">
-                <a href="#footer">Contact us</a>
-              </li>
-            </ul>
+          <div className="md:hidden flex-1 w-full text-center text-xl font-bold">
+            ALFASIM TELECOM
           </div>
-          
+          <div className=" hidden w-full md:flex gap-32 justify-between items-center">
+            <div className="flex">
+              <ul className="flex gap-10">
+                <li className="hover:text-teal-800">
+                  <a href="#services">Our Services</a>
+                </li>
+                <li className="hover:text-teal-800">
+                  <a href="#pricing">Pricing</a>
+                </li>
+                <li className="hover:text-teal-800">
+                  <a href="#footer">Contact us</a>
+                </li>
+              </ul>
+            </div>
+
             <div className="hidden md:flex gap-4">
               <ToggleTheme />
 
@@ -63,63 +59,65 @@ const Navbar = ({user, count }: { count?: number; user?: userDataTypes }) => {
 
               <Button links="register">Register</Button>
             </div>
-          
-        </div>
+          </div>
         </>
       )}
       {path == "/register" && (
         <>
-        <div className="md:hidden flex-1 w-full text-center text-xl font-bold">ALFASIM TELECOM</div>
-        <div className="hidden md:flex gap-32 justify-between items-center w-full ">
-          
-          <div className="hidden md:flex">
-            <ul className="flex gap-10">
-              <li className="hover:text-teal-800">
-                <a href="#services">Our Services</a>
-              </li>
-              <li className="hover:text-teal-800">
-                <a href="#pricing">Pricing</a>
-              </li>
-              <li className="hover:text-teal-800">
-                <a href="#footer">Contact us</a>
-              </li>
-            </ul>
+          <div className="md:hidden flex-1 w-full text-center text-xl font-bold">
+            ALFASIM TELECOM
           </div>
-          <div>
-            <div className="hidden md:flex gap-4">
-              <ToggleTheme />
+          <div className="hidden md:flex gap-32 justify-between items-center w-full ">
+            <div className="hidden md:flex">
+              <ul className="flex gap-10">
+                <li className="hover:text-teal-800">
+                  <a href="#services">Our Services</a>
+                </li>
+                <li className="hover:text-teal-800">
+                  <a href="#pricing">Pricing</a>
+                </li>
+                <li className="hover:text-teal-800">
+                  <a href="#footer">Contact us</a>
+                </li>
+              </ul>
+            </div>
+            <div>
+              <div className="hidden md:flex gap-4">
+                <ToggleTheme />
 
-              <Button links="login">Login</Button>
+                <Button links="login">Login</Button>
+              </div>
             </div>
           </div>
-        </div>
-      </>
+        </>
       )}
       {path == "/login" && (
         <>
-          <div className="md:hidden flex-1 w-full text-center text-xl font-bold">ALFASIM TELECOM</div>
-        <div className="hidden md:flex gap-32 justify-between items-center w-full">
-          <div className="hidden md:flex">
-            <ul className="flex gap-10">
-              <li className="hover:text-teal-800">
-                <a href="#services">Our Services</a>
-              </li>
-              <li className="hover:text-teal-800">
-                <a href="#pricing">Pricing</a>
-              </li>
-              <li className="hover:text-teal-800">
-                <a href="#footer">Contact us</a>
-              </li>
-            </ul>
+          <div className="md:hidden flex-1 w-full text-center text-xl font-bold">
+            ALFASIM TELECOM
           </div>
-          <div className="hidden md:flex">
-            <div className="hidden md:flex gap-4">
-              <ToggleTheme />
+          <div className="hidden md:flex gap-32 justify-between items-center w-full">
+            <div className="hidden md:flex">
+              <ul className="flex gap-10">
+                <li className="hover:text-teal-800">
+                  <a href="#services">Our Services</a>
+                </li>
+                <li className="hover:text-teal-800">
+                  <a href="#pricing">Pricing</a>
+                </li>
+                <li className="hover:text-teal-800">
+                  <a href="#footer">Contact us</a>
+                </li>
+              </ul>
+            </div>
+            <div className="hidden md:flex">
+              <div className="hidden md:flex gap-4">
+                <ToggleTheme />
 
-              <Button links="register">Register</Button>
+                <Button links="register">Register</Button>
+              </div>
             </div>
           </div>
-        </div>
         </>
       )}
       {loggedInPaths.includes(path) && (

@@ -13,7 +13,7 @@ import {
   TableRow,
 } from "./Table";
 import { getLoggedUser } from "@/lib/data";
-import { DBTransactionTypes, notificationTypes, transactionTypes } from "@/lib/types";
+import { DBTransactionTypes, notificationTypes } from "@/lib/types";
 import Navbar from "./Navbar";
 
 import { Ban, CircleCheckBig, CircleDotDashedIcon } from "lucide-react";
@@ -30,12 +30,11 @@ const WalletSummaryPage = ({
   const path = usePathname();
 
   const [user, setUser] = useState({
-    email: '',
+    email: "",
     username: "",
     balance: "",
     referee: "",
-    is_admin: false
-  
+    is_admin: false,
   });
 
   const unreadNotifications = notifications.filter(
@@ -60,7 +59,9 @@ const WalletSummaryPage = ({
       <div className="mt-20 md:mt-0">
         <Table>
           <TableCaption>
-            {transactions.length === 0 ? (<p>No transaction. Fund your wallet</p>):(path === "/transactions" ? (
+            {transactions.length === 0 ? (
+              <p>No transaction. Fund your wallet</p>
+            ) : path === "/transactions" ? (
               "Transactions Summary"
             ) : (
               <Button
@@ -70,7 +71,7 @@ const WalletSummaryPage = ({
               >
                 See All Transactions
               </Button>
-            ))}
+            )}
           </TableCaption>
           <TableHeader>
             <TableRow>
@@ -92,7 +93,9 @@ const WalletSummaryPage = ({
                 }
                 onClick={() => router.push(`/transactions/${transaction.id}`)}
               >
-                <TableCell className="font-medium">{transaction.transaction_id}</TableCell>
+                <TableCell className="font-medium">
+                  {transaction.transaction_id}
+                </TableCell>
                 <TableCell className="">
                   {transaction?.created_at?.slice(0, 10)}
                 </TableCell>
@@ -115,11 +118,10 @@ const WalletSummaryPage = ({
                       <Ban color="red" />
                     </div>
                   ) : (
-                    
                     <div className="flex items-center justify-between gap-5">
-                    Pending
-                    <CircleDotDashedIcon color="orange" />
-                  </div>
+                      Pending
+                      <CircleDotDashedIcon color="orange" />
+                    </div>
                   )}
                 </TableCell>
               </TableRow>
