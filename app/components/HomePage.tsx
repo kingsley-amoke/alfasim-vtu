@@ -18,7 +18,6 @@ const HomePage = () => {
 
   const dialogRef = useRef<null | HTMLDialogElement>(null);
   const showDialog = searchParams.get("showDialog");
-  const reference = searchParams.get("trxref");
 
   const [unreadNotification, setUnreadNotification] = useState(0);
   const [user, setUser] = useState<userDataTypes>({
