@@ -23,7 +23,7 @@ import {
 import { Input } from "@/lib/ui/input";
 import { useRouter } from "next/navigation";
 import { userDataTypes } from "@/lib/types";
-import { deductBalance, fetchAllUsers, recharge } from "@/lib/data";
+import { fetchAllUsers } from "@/lib/data";
 import { Skeleton } from "./Skeleton";
 import {
   AlertDialogCancel,
@@ -82,22 +82,22 @@ const UserList = ({
 
   const fundUserWallet = (user: userDataTypes) => {
     setLoading(true);
-    recharge(user.email, amount).then(() => {
-      setLoading(false);
-      toast.success("Recharge successful");
-      window.location.reload();
-    });
+    // recharge(user.email, amount).then(() => {
+    //   setLoading(false);
+    //   toast.success("Recharge successful");
+    //   window.location.reload();
+    // });
   };
 
   const handleDeductBalance = (user: userDataTypes) => {
     setLoading(true);
     const newBalance = (parseInt(user.balance) - parseInt(amount)).toString();
 
-    deductBalance(user.email, newBalance).then(() => {
-      setLoading(false);
-      toast.success("Successful");
-      window.location.reload();
-    });
+    // deductBalance(user.email, newBalance).then(() => {
+    //   setLoading(false);
+    //   toast.success("Successful");
+    //   window.location.reload();
+    // });
   };
 
   useLayoutEffect(() => {

@@ -1,18 +1,15 @@
-import React from 'react'
-import AdminPage from '@/app/components/AdminPage'
-import { Suspense } from 'react'
-import { fetchRefs } from '@/lib/data'
+import React from "react";
+import AdminPage from "@/app/components/AdminPage";
+import { Suspense } from "react";
 
-const page = async() => {
-
+const page = async () => {
   return (
     <div>
-<Suspense>
-        
+      <Suspense>
         <AdminPage />
-</Suspense>
+      </Suspense>
     </div>
-  )
-}
+  );
+};
 
-export default page
+export default page;

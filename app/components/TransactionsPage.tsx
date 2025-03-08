@@ -13,7 +13,7 @@ import {
   TableRow,
 } from "./Table";
 import { getLoggedUser } from "@/lib/data";
-import { DBTransactionTypes, notificationTypes, transactionTypes } from "@/lib/types";
+import { DBTransactionTypes, notificationTypes } from "@/lib/types";
 import Navbar from "./Navbar";
 
 import { Ban, CircleCheckBig, CircleDotDashedIcon } from "lucide-react";
@@ -59,7 +59,9 @@ const WalletPage = ({
       <div className="mt-20 md:mt-0">
         <Table>
           <TableCaption>
-            {transactions.length === 0 ? (<p>No transaction. Fund your wallet</p>):(path === "/transactions" ? (
+            {transactions.length === 0 ? (
+              <p>No transaction. Fund your wallet</p>
+            ) : path === "/transactions" ? (
               "Transactions Summary"
             ) : (
               <Button
@@ -69,7 +71,7 @@ const WalletPage = ({
               >
                 See All Transactions
               </Button>
-            ))}
+            )}
           </TableCaption>
           <TableHeader>
             <TableRow>
@@ -93,16 +95,14 @@ const WalletPage = ({
                 }
                 onClick={() => router.push(`/transactions/${transaction.id}`)}
               >
-                <TableCell className="font-medium">{transaction.transaction_id}</TableCell>
+                <TableCell className="font-medium">
+                  {transaction.transaction_id}
+                </TableCell>
                 <TableCell className="">
                   {transaction?.created_at?.slice(0, 10)}
                 </TableCell>
-                <TableCell className="">
-                  {transaction?.network}
-                </TableCell>
-                <TableCell className="">
-                  {transaction?.phone}
-                </TableCell>
+                <TableCell className="">{transaction?.network}</TableCell>
+                <TableCell className="">{transaction?.phone}</TableCell>
 
                 <TableCell className="text-left">
                   {`NGN ${transaction.amount}`}
@@ -119,11 +119,10 @@ const WalletPage = ({
                       <Ban color="red" />
                     </div>
                   ) : (
-                    
                     <div className="flex items-center justify-between gap-5">
-                    Pending
-                    <CircleDotDashedIcon color="orange" />
-                  </div>
+                      Pending
+                      <CircleDotDashedIcon color="orange" />
+                    </div>
                   )}
                 </TableCell>
               </TableRow>

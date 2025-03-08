@@ -11,7 +11,6 @@ import UserList from "./UserList";
 import { Skeleton } from "./Skeleton";
 import { useSearchParams } from "next/navigation";
 import PaginationPage from "./Pagination";
-import { useUserStore } from "@/lib/store";
 
 const AdminPage = () => {
   const searchParams = useSearchParams();

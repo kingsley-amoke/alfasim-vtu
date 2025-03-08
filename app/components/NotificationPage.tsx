@@ -12,7 +12,7 @@ import {
   TableHeader,
   TableRow,
 } from "./Table";
-import { getLoggedUser, readNotifications } from "@/lib/data";
+import { getLoggedUser } from "@/lib/data";
 import { notificationTypes } from "@/lib/types";
 import Navbar from "./Navbar";
 
@@ -24,7 +24,7 @@ const NotificationPage = ({
   const router = useRouter();
 
   const readNotification = async (id: number) => {
-    readNotifications(id);
+    // readNotifications(id);
     router.push(`/notifications/${id}`);
   };
 
@@ -34,12 +34,11 @@ const NotificationPage = ({
 
   const count = unreadNotifications.length;
   const [user, setUser] = useState({
-    email:'',
+    email: "",
     username: "",
     balance: "",
-    referee:'',
-    is_admin: false
-   
+    referee: "",
+    is_admin: false,
   });
 
   const fetchLoggedUser = async () => {
