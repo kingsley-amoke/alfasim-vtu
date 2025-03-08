@@ -1,18 +1,7 @@
 "use client";
 
-import {
-  buyAirtime,
-  deductBalance,
-  handleBuyAirtime,
-  setTransaction,
-} from "@/lib/data";
-import {
-  Plan,
-  airtimeBodyType,
-  alertPropsTypes,
-  transactionTypes,
-  userDataTypes,
-} from "@/lib/types";
+import { buyAirtime } from "@/lib/data";
+import { airtimeBodyType, alertPropsTypes, userDataTypes } from "@/lib/types";
 
 import { Button } from "@/lib/ui/button";
 import { useRouter } from "next/navigation";
@@ -76,114 +65,17 @@ const BuyAirtime = ({ user }: { user: userDataTypes }) => {
 
     setLoading(true);
     buyAirtime(airtimeInfo)
-      .then((data) => console.log("data" + data))
+      .then((data) => {
+        if (data.data) {
+          toast.success("Successful");
+          console.log("result" + data);
+        } else if (data.error) {
+          toast.error("Something went wrong");
+        } else {
+          toast.error("Insufficient balance");
+        }
+      })
       .finally(() => setLoading(false));
-
-    // let networkName = "";
-
-    // switch (network) {
-    //   case "1":
-    //     networkName = "MTN";
-    //     break;
-    //   case "2":
-    //     networkName = "Glo";
-    //     break;
-    //   case "3":
-    //     networkName = "9mobile";
-    //     break;
-    //   case "4":
-    //     networkName = "Airtel";
-    //     break;
-    // }
-
-    // if (response.error) {
-    //   toast.error("Network Error, Try again later");
-    //   setLoading(false);
-
-    //   const data: transactionTypes = {
-    //     email: user?.email,
-    //     amount: amountToPay,
-    //     purpose: "airtime",
-    //     status: "failed",
-    //     transactionId: "failed",
-    //     phone: phone,
-    //     network: networkName,
-    //     planSize: amount,
-    //     previousBalance: user.balance,
-    //     newBalance: user.balance,
-    //   };
-
-    //   setTransaction(data);
-    //   return;
-    // }
-
-    // if (response.Status === "successful") {
-    //   toast.success("Successfull");
-
-    //   setLoading(false);
-
-    //   //create a transaction
-
-    //   const data: transactionTypes = {
-    //     email: user?.email,
-    //     amount: amountToPay,
-    //     purpose: "airtime",
-    //     status: response.Status,
-    //     transactionId: response.ident,
-    //     phone: phone,
-    //     network: networkName,
-    //     planSize: amount,
-    //     previousBalance: user.balance,
-    //     newBalance: (parseInt(user.balance) - parseInt(amountToPay)).toString(),
-    //   };
-
-    //   handleBuyAirtime(data).then(() => {
-    //     router.push("/dashboard");
-    //   });
-    // } else {
-    //   if (response.Status !== "failed") {
-    //     const data: transactionTypes = {
-    //       email: user?.email,
-    //       amount: amountToPay,
-    //       purpose: "airtime",
-    //       status: response.Status,
-    //       transactionId: response.ident,
-    //       phone: phone,
-    //       network: networkName,
-    //       planSize: amount,
-    //       previousBalance: user.balance,
-    //       newBalance: (
-    //         parseInt(user.balance) - parseInt(amountToPay)
-    //       ).toString(),
-    //     };
-    //     toast.error(response.Status);
-    //     setLoading(false);
-
-    //     deductBalance(data.email!, data.newBalance!);
-    //   }
-
-    //   toast.error(response.Status);
-    //   setLoading(false);
-
-    //   const data: transactionTypes = {
-    //     email: user?.email,
-    //     amount: amountToPay,
-    //     purpose: "airtime",
-    //     status: response.Status,
-    //     transactionId: response.ident,
-    //     phone: phone,
-    //     network: network,
-    //     planSize: amount,
-    //     previousBalance: user.balance,
-    //     newBalance:
-    //       response.results[0].Status === "failed"
-    //         ? user.balance
-    //         : (parseInt(user.balance) - parseInt(amountToPay)).toString(),
-    //   };
-
-    //   setTransaction(data);
-    // }
-    // setLoading(false);
   };
 
   const info: alertPropsTypes = {

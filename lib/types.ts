@@ -113,26 +113,18 @@ export interface modalProps {
   children: React.ReactNode;
 }
 
+export interface ReservedAccountRequestType {
+  username: string;
+  email: string;
+  name: string;
+}
+
 export interface notificationTypes {
   created_at: string;
   id: number;
   message: string;
   read: boolean;
   title: string;
-}
-export interface transactionTypes {
-  id?: string;
-  created_at?: string;
-  email: string | undefined;
-  purpose: string;
-  amount: string;
-  status: string;
-  network?: string | undefined;
-  planSize?: string;
-  previousBalance: string | undefined;
-  newBalance: string | undefined;
-  phone?: string;
-  transactionId?: string;
 }
 
 export interface DBTransactionTypes {
@@ -148,32 +140,6 @@ export interface DBTransactionTypes {
   new_balance: string;
   phone: string;
   transaction_id: string;
-}
-
-export interface refsTypes {
-  id: number;
-  created_at: string;
-  ref: string;
-}
-
-export interface PaystackParams {
-  amount: number;
-  email: string;
-  currency: string;
-  channels?: string[];
-  callback_url?: string;
-  metadata?: object;
-}
-
-export interface VerifyParams {
-  reference: string;
-}
-
-export interface PageProps {
-  searchParams?: {
-    trxref: string;
-    reference: string;
-  };
 }
 
 export type alertPropsTypes = {

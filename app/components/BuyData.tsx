@@ -1,26 +1,11 @@
 "use client";
 
-import React, { FormEvent, useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 
-import {
-  Plan,
-  PlanType,
-  dataBodyType,
-  dataPlanTypes,
-  planTypes,
-  transactionTypes,
-  userDataTypes,
-} from "@/lib/types";
-import {
-  buyData,
-  deductBalance,
-  handleBuyData,
-  handleCommission,
-  setTransaction,
-} from "@/lib/data";
+import { Plan, dataBodyType, dataPlanTypes, userDataTypes } from "@/lib/types";
+import { buyData } from "@/lib/data";
 import toast from "react-hot-toast";
-import { useRouter, useSearchParams } from "next/navigation";
-import Modal from "./Modal";
+import { useRouter } from "next/navigation";
 import {
   AlertDialog,
   AlertDialogAction,

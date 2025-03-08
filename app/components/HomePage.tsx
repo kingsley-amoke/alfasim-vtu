@@ -4,24 +4,13 @@ import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 
 import Navbar from "../components/Navbar";
 import Dashboard from "../components/Dashboard";
-import {
-  fetchAllUsers,
-  fetchNotifications,
-  fetchRefs,
-  fetchUserAccount,
-  getLoggedUser,
-  handleFundWallet,
-  recharge,
-  setTransaction,
-  verifyPayment,
-  verifyPaystackTransaction,
-} from "@/lib/data";
+import { fetchAllUsers, fetchNotifications, getLoggedUser } from "@/lib/data";
 import Modal from "./Modal";
 import Footer from "./Footer";
-import { useRouter, useSearchParams } from "next/navigation";
-import { AccountType, transactionTypes, userDataTypes } from "@/lib/types";
+import { useSearchParams } from "next/navigation";
+import { userDataTypes } from "@/lib/types";
 import { LoadingSkeleton } from "./Skeleton";
-import { useUserStore, useUsersStore } from "@/lib/store";
+import { useUsersStore } from "@/lib/store";
 
 const HomePage = () => {
   const searchParams = useSearchParams();
@@ -65,14 +54,6 @@ const HomePage = () => {
     if (!data) return;
 
     setUser(data);
-
-    if (!reference) return;
-
-    setLoading(true);
-
-    handleFundWallet(data, reference).then(() => {
-      setLoading(false);
-    });
   };
 
   const closeDialog = () => {
@@ -95,7 +76,7 @@ const HomePage = () => {
 
   useLayoutEffect(() => {
     fetchLoggedUser();
-  }, [reference]);
+  }, []);
 
   return (
     <>

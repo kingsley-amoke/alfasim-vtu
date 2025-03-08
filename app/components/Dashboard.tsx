@@ -12,17 +12,15 @@ import { MdMoney, MdOutline4GPlusMobiledata } from "react-icons/md";
 import Link from "next/link";
 
 import {
-  fetchLastTransaction,
   fetchUserAccount,
-  getCustomerAccount,
-  postUserAccounts,
   redeemBonus,
+  requestReservedAccount,
 } from "@/lib/data";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import FAQ from "./FAQ";
 import Notification from "./Notification";
-import { AccountType } from "@/lib/types";
+import { AccountType, ReservedAccountRequestType } from "@/lib/types";
 import { Button } from "@/lib/ui/button";
 
 const Dashboard = ({ count, user }: { count: number; user: any }) => {
@@ -45,54 +43,31 @@ const Dashboard = ({ count, user }: { count: number; user: any }) => {
         return;
       }
 
-      const response = await redeemBonus(user.username, user.referral_bonus);
-
-      response?.error && toast.error("An error occured");
-
-      toast.success("Bonus has been added to your wallet");
+      redeemBonus(user.username, user.referral_bonus).then((data) => {
+        if (data.data) {
+          toast.success("Bonus has been added to your wallet");
+          console.log("result" + data);
+        } else if (data.error) {
+          toast.error("Something went wrong");
+        }
+      });
 
       router.refresh;
     }
   };
 
   const requestAccount = async () => {
-    const contractCode = process.env
-      .NEXT_PUBLIC_MONNIFY_CONTRACT_CODE as string;
-    const bvn = process.env.NEXT_PUBLIC_BVN as string;
-
-    const config = {
-      accountReference: user.username,
-      accountName: "Alfasimdata Reserved Account",
-      currencyCode: "NGN",
-      contractCode: contractCode,
-      customerEmail: user?.email,
-      bvn: bvn,
-      customerName: user?.first_name + " " + user?.last_name,
-      getAllAvailableBanks: true,
+    const config: ReservedAccountRequestType = {
+      username: user.username,
+      email: user?.email,
+      name: user?.first_name + " " + user?.last_name,
     };
 
     setLoading(true);
-
-    const data = await getCustomerAccount(config);
-
-    if (!data) {
+    requestReservedAccount(config).then((res) => {
+      toast.success(res.message);
       setLoading(false);
-      toast.error("Failed to request account, please try again later");
-      return;
-    }
-
-    const userAccounts: AccountType = {
-      account_name: data.accountName,
-      account_reference: data.accountReference,
-      accounts: data.accounts,
-      bvn: data.bvn,
-      currency: data.currencyCode,
-      customer_email: data.customerEmail,
-      customer_name: data.customerName,
-    };
-    postUserAccounts(userAccounts);
-    setLoading(false);
-    toast.success("Account request submitted successfully");
+    });
   };
 
   const getAccounts = async () => {
