@@ -3,12 +3,6 @@
 import Image from "next/image";
 import React, { useState } from "react";
 import Button from "./Button";
-import {
-  fetchUserAccount,
-  getCustomerAccount,
-  postUserAccounts,
-} from "@/lib/data";
-import { AccountType } from "@/lib/types";
 
 const Hero = () => {
   return (
