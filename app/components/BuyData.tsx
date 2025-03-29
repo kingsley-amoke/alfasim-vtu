@@ -58,7 +58,7 @@ const BuyData = ({
 
   //Data types
 
-  const mtnDataTypes = ["SME", "SME2", "GIFTING", "CORPORATE GIFTING"];
+  const mtnDataTypes = ["GIFTING", "CORPORATE GIFTING"];
   const gloDataTypes = ["GIFTING", "CORPORATE GIFTING"];
   const etisalatDataTypes = ["GIFTING", "CORPORATE GIFTING"];
   const airtelDataTypes = ["GIFTING", "CORPORATE GIFTING"];
@@ -71,34 +71,34 @@ const BuyData = ({
 
   //mtn plans by type
 
-  const mtnSME = mtnPlans.filter((plan) => plan.plan_type === "SME");
-  const alfasimMtnSME: Plan[] = [];
+  // const mtnSME = mtnPlans.filter((plan) => plan.plan_type === "SME");
+  // const alfasimMtnSME: Plan[] = [];
 
-  const unitGBSME: number = getUnitPrice(mtnSME, 7);
+  // const unitGBSME: number = getUnitPrice(mtnSME, 7);
 
-  mtnSME.forEach((plan) => {
-    const integer = Math.trunc(parseInt(plan.plan.slice(0, -2)));
+  // mtnSME.forEach((plan) => {
+  //   const integer = Math.trunc(parseInt(plan.plan.slice(0, -2)));
 
-    alfasimMtnSME.push({
-      id: plan.id,
-      dataplan_id: plan.dataplan_id,
-      network: plan.network,
-      plan_type: plan.plan_type,
-      plan_network: plan.plan_network,
-      month_validate: plan.month_validate,
-      plan: plan.plan,
-      plan_amount:
-        plan.plan.slice(-2) === "MB"
-          ? (parseInt(plan.plan_amount) + 5).toString()
-          : (integer * unitGBSME).toString(),
-    });
-  });
+  //   alfasimMtnSME.push({
+  //     id: plan.id,
+  //     dataplan_id: plan.dataplan_id,
+  //     network: plan.network,
+  //     plan_type: plan.plan_type,
+  //     plan_network: plan.plan_network,
+  //     month_validate: plan.month_validate,
+  //     plan: plan.plan,
+  //     plan_amount:
+  //       plan.plan.slice(-2) === "MB"
+  //         ? (parseInt(plan.plan_amount) + 5).toString()
+  //         : (integer * unitGBSME).toString(),
+  //   });
+  // });
 
   const mtnGifting = mtnPlans.filter((plan) => plan.plan_type === "GIFTING");
 
   const alfasimMtnGifting: Plan[] = [];
 
-  const unitGBGifting = getUnitPrice(mtnGifting, 209);
+  const unitGBGifting = getUnitPrice(mtnGifting, 402);
 
   mtnGifting.forEach((plan) => {
     const integer = Math.trunc(parseInt(plan.plan.slice(0, -2)));
@@ -253,9 +253,6 @@ const BuyData = ({
   };
   const handleDataTypeSelect = (value: string) => {
     switch (value) {
-      case "SME":
-        setDataPlan(alfasimMtnSME);
-        break;
       case "GIFTING":
         switch (currentNetwork) {
           case "MTN":
@@ -314,9 +311,10 @@ const BuyData = ({
         } else if (data.error) {
           toast.error("Something went wrong");
         } else {
-          toast.error("Insufficient balance");
+          console.log(data);
         }
       })
+      .catch((err) => console.log(err))
       .finally(() => setLoading(false));
   };
 

@@ -6,5 +6,7 @@ import { Plan } from "./types";
 export function getUnitPrice(plan: Plan[], unitId: number): number {
   "use client";
 
-  return parseInt(plan.find((item) => item.id == unitId)!.plan_amount) + 10;
+  const myPlan: Plan = plan.find((item) => item.id == unitId)!;
+
+  return parseInt(myPlan.plan_amount) + 20;
 }
