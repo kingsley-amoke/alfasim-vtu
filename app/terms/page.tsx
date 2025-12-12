@@ -1,6 +1,4 @@
-import React, { useEffect, useState } from "react";
-import Navbar from "../components/Navbar";
-import { fetchNotifications, getLoggedUser } from "@/lib/data";
+
 
 const index = () => {
   return (
