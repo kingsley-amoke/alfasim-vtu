@@ -1,19 +1,12 @@
+import { serverClient } from "@/lib/serverConnection";
 
-import { serverClient } from "@/lib/serverConnection"
+export async function GET() {
+  const client = await serverClient();
+  const { error } = await client.auth.signOut();
 
-
-
-
-export async function GET(){
-    const { error } = await serverClient().auth.signOut()
-
-    if(!error){
-        
-        return new Response('logged out')
-    }else{
-        
-        return new Response('An error occurred')
-    }
-
+  if (!error) {
+    return new Response("logged out");
+  } else {
+    return new Response("An error occurred");
+  }
 }
-
