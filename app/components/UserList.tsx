@@ -11,15 +11,6 @@ import {
 } from "./Table";
 
 import { Button } from "@/lib/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/lib/ui/dialog";
 import { Input } from "@/lib/ui/input";
 import { useRouter } from "next/navigation";
 import { userDataTypes } from "@/lib/types";
@@ -46,7 +37,6 @@ const UserList = ({
   currentPage: string;
   per_page: string;
 }) => {
-  const router = useRouter();
   const [users, setUsers] = useState<userDataTypes[]>([]);
   const [amount, setAmount] = useState("");
   const [loading, setLoading] = useState(false);

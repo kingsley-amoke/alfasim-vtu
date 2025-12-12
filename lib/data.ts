@@ -16,8 +16,10 @@ const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL as string;
 
 //***************USERS AND CLIENTS************************//
 export const fetchAllUsers = async () => {
+  const client = await serverClient();
+
   try {
-    const { data } = await serverClient().from("users").select();
+    const { data } = await client.from("users").select();
 
     return data;
   } catch (error) {
@@ -29,12 +31,13 @@ export const fetchAllUsers = async () => {
 };
 
 export const fetchUsersByPage = async (page: string) => {
+  const client = await serverClient();
   const minValue = Number(page + "0");
   const maxValue = Number(page + "9");
 
   console.log(minValue, maxValue);
   try {
-    const { data } = await serverClient()
+    const { data } = await client
       .from("users")
       .select()
       .range(minValue, maxValue);
@@ -49,11 +52,9 @@ export const fetchUsersByPage = async (page: string) => {
 };
 
 export const fetchUser = async (email: string | undefined) => {
+  const client = await serverClient();
   try {
-    const { data } = await serverClient()
-      .from("users")
-      .select()
-      .eq("email", email);
+    const { data } = await client.from("users").select().eq("email", email);
 
     return data;
   } catch (error) {
@@ -65,10 +66,11 @@ export const fetchUser = async (email: string | undefined) => {
 };
 
 export const getLoggedUser = async () => {
+  const client = await serverClient();
   try {
     const {
       data: { user },
-    } = await serverClient().auth.getUser();
+    } = await client.auth.getUser();
 
     const data = await fetchUser(user?.email);
 
@@ -92,9 +94,10 @@ export const handleCommission = async (
   referral_bonus: string
 ) => {
   try {
+    const client = await serverClient();
     let newBonus = parseInt(referral_bonus) + commission;
 
-    serverClient()
+    client
       .from("users")
       .update({ referral_bonus: newBonus })
       .eq("email", referee)
@@ -108,10 +111,11 @@ export const handleCommission = async (
 };
 
 export const handleReferral = async (username: string, userEmail: string) => {
+  const client = await serverClient();
   let email = username + "@gmail.com";
 
   try {
-    serverClient()
+    client
       .from("users")
       .update({ referee: email })
       .eq("email", userEmail)
@@ -123,7 +127,7 @@ export const handleReferral = async (username: string, userEmail: string) => {
 
     let newReferral = parseInt(referrals) + 1;
 
-    serverClient()
+    client
       .from("users")
       .update({ referrals: newReferral })
       .eq("email", email)
@@ -149,8 +153,9 @@ export const redeemBonus = async (username: string, referral_bonus: string) => {
 //***************NOTIFICATIONS************************//
 
 export const fetchNotifications = async () => {
+  const client = await serverClient();
   try {
-    const { data, error } = await serverClient().from("notifications").select();
+    const { data, error } = await client.from("notifications").select();
 
     let notifications: notificationTypes[] = data!;
 
@@ -169,8 +174,9 @@ export const fetchNotifications = async () => {
 };
 
 export const fetchOneNotification = async (id: number) => {
+  const client = await serverClient();
   try {
-    const { data: notifications, error } = await serverClient()
+    const { data: notifications, error } = await client
       .from("notifications")
       .select("*")
       .eq("id", id);
@@ -194,8 +200,9 @@ export const fetchOneNotification = async (id: number) => {
 //***************TRANSACTIONS************************//
 
 export const fetchTransactions = async (email: string) => {
+  const client = await serverClient();
   try {
-    const { data, error } = await serverClient()
+    const { data, error } = await client
       .from("transactions")
       .select()
       .eq("email", email);
@@ -217,8 +224,9 @@ export const fetchTransactions = async (email: string) => {
 };
 
 export const fetchOneTransaction = async (id: string) => {
+  const client = await serverClient();
   try {
-    const { data: transactions, error } = await serverClient()
+    const { data: transactions, error } = await client
       .from("transactions")
       .select("*")
       .eq("id", id);
@@ -240,8 +248,9 @@ export const fetchOneTransaction = async (id: string) => {
 };
 
 export const fetchWalletHistory = async (email: string) => {
+  const client = await serverClient();
   try {
-    const { data: transactions, error } = await serverClient()
+    const { data: transactions, error } = await client
       .from("transactions")
       .select("*")
       .eq("email", email)
@@ -264,8 +273,9 @@ export const fetchWalletHistory = async (email: string) => {
 };
 
 export const fetchDataHistory = async (email: string) => {
+  const client = await serverClient();
   try {
-    const { data: transactions, error } = await serverClient()
+    const { data: transactions, error } = await client
       .from("transactions")
       .select("*")
       .eq("email", email)
@@ -288,8 +298,9 @@ export const fetchDataHistory = async (email: string) => {
 };
 
 export const fetchAirtimeHistory = async (email: string) => {
+  const client = await serverClient();
   try {
-    const { data: transactions, error } = await serverClient()
+    const { data: transactions, error } = await client
       .from("transactions")
       .select("*")
       .eq("email", email)
@@ -353,8 +364,9 @@ export const buyAirtime = async (data: airtimeBodyType) => {
 //***************RESERVED ACCOUNTS************************//
 
 export const fetchUserAccount = async (email: string) => {
+  const client = await serverClient();
   try {
-    const { data } = await serverClient()
+    const { data } = await client
       .from("accounts")
       .select()
       .eq("customer_email", email);
