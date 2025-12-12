@@ -8,7 +8,7 @@ import { LuRadioReceiver } from "react-icons/lu";
 import { FcElectricity } from "react-icons/fc";
 import { RiCoupon2Fill } from "react-icons/ri";
 import { GoGift } from "react-icons/go";
-import { MdMoney, MdOutline4GPlusMobiledata } from "react-icons/md";
+import { MdMoney, MdOutline4gPlusMobiledata } from "react-icons/md";
 import Link from "next/link";
 
 import {
@@ -204,7 +204,7 @@ const Dashboard = ({ count, user }: { count: number; user: any }) => {
             onClick={() => router.push("/data-transactions")}
           >
             <div>
-              <MdOutline4GPlusMobiledata size={40} />
+              <MdOutline4gPlusMobiledata size={40} />
             </div>
             <div className="w-1/2 md:w-1/3">
               <p>Data Transactions</p>

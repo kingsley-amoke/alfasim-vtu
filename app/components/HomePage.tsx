@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+import  { useEffect, useLayoutEffect, useRef, useState } from "react";
 
 import Navbar from "../components/Navbar";
 import Dashboard from "../components/Dashboard";
