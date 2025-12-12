@@ -28,7 +28,6 @@ const BuyData = ({
   plans: dataPlanTypes;
   user: userDataTypes;
 }) => {
-  const router = useRouter();
 
   const [loading, setLoading] = useState(false);
   const [planId, setPlanId] = useState("");
@@ -68,31 +67,6 @@ const BuyData = ({
   const gloPlans = plans.GLO_PLAN;
   const etisalatPlans = plans["9MOBILE_PLAN"];
   const airtelPlans = plans.AIRTEL_PLAN;
-
-  //mtn plans by type
-
-  // const mtnSME = mtnPlans.filter((plan) => plan.plan_type === "SME");
-  // const alfasimMtnSME: Plan[] = [];
-
-  // const unitGBSME: number = getUnitPrice(mtnSME, 7);
-
-  // mtnSME.forEach((plan) => {
-  //   const integer = Math.trunc(parseInt(plan.plan.slice(0, -2)));
-
-  //   alfasimMtnSME.push({
-  //     id: plan.id,
-  //     dataplan_id: plan.dataplan_id,
-  //     network: plan.network,
-  //     plan_type: plan.plan_type,
-  //     plan_network: plan.plan_network,
-  //     month_validate: plan.month_validate,
-  //     plan: plan.plan,
-  //     plan_amount:
-  //       plan.plan.slice(-2) === "MB"
-  //         ? (parseInt(plan.plan_amount) + 5).toString()
-  //         : (integer * unitGBSME).toString(),
-  //   });
-  // });
 
   const mtnGifting = mtnPlans.filter((plan) => plan.plan_type === "GIFTING");
 
